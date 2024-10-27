@@ -6,19 +6,25 @@ export default function Home() {
   const data = [
     {
       title: 'Register or login',
-      description: 'fvfkssvkpokvspkopv sflvsvofsvk mvsvsvmf mcs skcmkdmsk ckmmcdk kcsmkcsd j jdcjds mksmc'
+      description: 'fvfkssvkpokvspkopv sflvsvofsvk mvsvsvmf mcs skcmkdmsk ckmmcdk kcsmkcsd j jdcjds mksmc',
+      enableButton: true,
+      buttonText: 'Register'
     },
     {
       title: 'Choose preferences',
-      description: 'Quick way to choose where you must go today. Delicious and beautiful places await you'
+      description: 'Quick way to choose where you must go today. Delicious and beautiful places await you',
+      enableButton: false,
     },
     {
       title: 'Like or pass',
-      description: 'Quick way to choose where you must go today. Delicious and beautiful places await you'
+      description: 'Quick way to choose where you must go today. Delicious and beautiful places await you',
+      enableButton: false,
     },
     {
       title: 'Don`t like swipe?',
-      description: 'Quick way to choose where you must go today. Delicious and beautiful places await you'
+      description: 'Quick way to choose where you must go today. Delicious and beautiful places await you',
+      enableButton: true,
+      buttonText: 'Search'
     }
   ]
 
@@ -36,7 +42,7 @@ export default function Home() {
         <hr/>
         <div className='grid gap-2 mt-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
           {data.map((item, index) => (
-            <InfoItem title={item.title} description={item.description}/>
+            <InfoItem title={item.title} description={item.description} buttonText={item.buttonText} />
           ))}
         </div>
       </div>

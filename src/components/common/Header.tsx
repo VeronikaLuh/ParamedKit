@@ -1,7 +1,7 @@
 import React from 'react';
 import {imageUrl} from "@/utils/constants";
 import Image from "next/image";
-import './header.scss'
+import styles from './header.module.scss'
 
 const Header = () => {
 
@@ -10,12 +10,12 @@ const Header = () => {
       <div className='flex justify-between h-full'>
         <Image width='139' height='34'  src={`${imageUrl}/header/logo.png`} alt="logo"/>
         <div className='flex gap-[27px]'>
-          <button>Home page</button>
-          <button>Let's match</button>
-          <button>Research</button>
-          <button>About us</button>
+          <button className={`${styles.headerButton}`}>Home page</button>
+          <button className={`${styles.headerButton}`}>Let's match</button>
+          <button className={`${styles.headerButton}`}>Research</button>
+          <button className={`${styles.headerButton}`}>About us</button>
         </div>
-        <button>Register</button>
+        <button className={`${styles.headerButton}`}>Register</button>
       </div>
     </header>
   );
