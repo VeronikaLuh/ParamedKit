@@ -15,7 +15,7 @@ import { useState } from "react";
 
 export default function Match() {
   return (
-    <div className="flex justify-center mt-5 mb-5">
+    <div className="flex justify-center pt-5 pb-5 bg-[#9F784E]">
       <Card />
     </div>
   );
@@ -26,61 +26,30 @@ function Card() {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
 
   return (
-    <div
-      className="flex flex-col w-4/5 justify-center text-white border border-0 rounded-b-2xl rounded-t-3xl"
-      style={{ backgroundColor: "#9F784E" }}
-    >
-      <div
-        className="border rounded-3xl relative inline-block"
-        style={{ border: "5px #000000 solid" }}
-      >
+    <div className="flex flex-col w-4/5 justify-center text-white border border-0 rounded-b-2xl bg-[#947654] rounded-t-3xl drop-shadow-2xl">
+      <div className="border border-[5px] border-black rounded-3xl relative inline-block drop-shadow-2xl">
         <Image
           src="/assets/images/homepage/background.png"
           alt="Restourant image"
           width={0}
           height={0}
           sizes="100vw"
-          style={{
-            width: "100%",
-            height: "600px",
-            objectFit: "cover",
-            overflow: "hidden",
-          }}
-          className="rounded-2xl"
+          className="rounded-2xl overflow-hidden object-cover height-[600px] w-full"
         />
-        <div
-          className="absolute bottom-0 left-0 bg-opacity-50 bg-black rounded-2xl"
-          style={{ zIndex: "100", width: "420px", height: "240px" }}
-        >
-          <div
-            className="flex flex-col justify-center items-center"
-            style={{
-              width: "100%",
-              height: "100%",
-              fontSize: "32px",
-              fontWeight: "500",
-              lineHeight: "42px",
-            }}
-          >
+        <div className="absolute bottom-0 left-0 bg-opacity-50 bg-black rounded-2xl z-[100] w-[420px] h-[240px]">
+          <div className="flex flex-col justify-center items-center w-full h-full text-[32px] leading-[42px] font-medium">
             <span>Bibliotekа resto•Bar</span>
             <span>Lviv • 150 ₴ • Italic</span>
           </div>
         </div>
         <div
-          className="absolute rounded-full"
+          className="absolute rounded-full bg-[#5D462D] w-[130px] h-[130px] z-[101]"
           style={{
-            backgroundColor: "#5D462D",
-            width: "130px",
-            height: "130px",
             bottom: -60,
             left: 35,
-            zIndex: 101,
           }}
         >
-          <div
-            className="flex justify-center items-center"
-            style={{ width: "100%", height: "100%" }}
-          >
+          <div className="w-full h-full flex justify-center items-center">
             <Image
               src={arrowIcon}
               alt="forward icon"
@@ -89,68 +58,44 @@ function Card() {
           </div>
         </div>
         <div
-          className="absolute rounded-full"
+          className="absolute rounded-full bg-[#CF914E] w-[100px] h-[100px] z-[101]"
           style={{
-            backgroundColor: "#CF914E",
-            width: "100px",
-            height: "100px",
             bottom: -50,
             left: 200,
-            zIndex: 102,
           }}
         >
-          <div
-            className="flex justify-center items-center"
-            style={{ width: "100%", height: "100%" }}
-          >
+          <div className="w-full h-full flex justify-center items-center">
             <Image src={editIcon} alt="add review icon" />
           </div>
         </div>
         <div
-          className="absolute rounded-full"
+          className="absolute rounded-full bg-[#5D462D] w-[130px] h-[130px] z-[101]"
           style={{
-            backgroundColor: "#5D462D",
-            width: "130px",
-            height: "130px",
             bottom: -60,
             right: 35,
-            zIndex: 101,
           }}
         >
-          <div
-            className="flex justify-center items-center"
-            style={{ width: "100%", height: "100%" }}
-          >
+          <div className="w-full h-full flex justify-center items-center">
             <Image src={arrowIcon} alt="forward icon" />
           </div>
         </div>
         <div
-          className="absolute rounded-full"
+          className="absolute rounded-full bg-[#A10005] w-[100px] h-[100px] z-[101]"
           style={{
-            backgroundColor: "#A10005",
-            width: "100px",
-            height: "100px",
             bottom: -50,
             right: 200,
-            zIndex: 102,
           }}
         >
-          <div
-            className="flex justify-center items-center"
-            style={{ width: "100%", height: "100%" }}
-          >
+          <div className="w-full h-full flex justify-center items-center">
             <Image src={heartIcon} alt="heart icon" />
           </div>
         </div>
         <div
-          className="absolute rounded-full"
+          className="absolute rounded-full bg-[rgba(0,0,0,0.7)] w-[100px] h-[100px] z-[101]"
           style={{
-            backgroundColor: "rgba(0,0,0,0.7)",
-            width: "100px",
-            height: "100px",
             top: "40%",
             right: 10,
-            zIndex: 102,
+            display: currentPhotoIndex === countOfPhoto - 1 ? "none" : "block",
           }}
           onClick={() => {
             const newIndex = currentPhotoIndex + 1;
@@ -160,22 +105,16 @@ function Card() {
             }
           }}
         >
-          <div
-            className="flex justify-center items-center"
-            style={{ width: "100%", height: "100%" }}
-          >
+          <div className="flex justify-center items-center w-full h-full">
             <Image src={imageArrowIcon} alt="arrow icon" />
           </div>
         </div>
         <div
-          className="absolute rounded-full"
+          className="absolute rounded-full bg-[rgba(0,0,0,0.7)] w-[100px] h-[100px] z-[101]"
           style={{
-            backgroundColor: "rgba(0,0,0,0.7)",
-            width: "100px",
-            height: "100px",
             top: "40%",
             left: 10,
-            zIndex: 102,
+            display: currentPhotoIndex === 0 ? "none" : "block",
           }}
           onClick={() => {
             const newIndex = currentPhotoIndex - 1;
@@ -186,10 +125,8 @@ function Card() {
           }}
         >
           <div
-            className="flex justify-center items-center"
+            className="flex justify-center items-center w-full h-full"
             style={{
-              width: "100%",
-              height: "100%",
               transform: "rotate(3.142rad)",
             }}
           >
@@ -197,11 +134,10 @@ function Card() {
           </div>
         </div>
         <div
-          className="absolute"
+          className="absolute z-[101]"
           style={{
             left: "50%",
             bottom: 20,
-            zIndex: 101,
           }}
         >
           <div className="flex flex-row gap-3">
@@ -209,10 +145,8 @@ function Card() {
               return (
                 <div
                   key={index}
-                  className="rounded-full"
+                  className="rounded-full w-[14px] h-[14px]"
                   style={{
-                    width: "14px",
-                    height: "14px",
                     backgroundColor:
                       index === currentPhotoIndex ? "#FFF" : "#000",
                     opacity: index === currentPhotoIndex ? "100%" : "50%",
@@ -226,10 +160,7 @@ function Card() {
 
       <div id="card_content" className="pt-20 pl-8 pr-8">
         <h1 className="text-5xl ml-8">Restaurant title</h1>
-        <div
-          className="flex flex-row mt-6"
-          style={{ fontSize: "36px", fontWeight: "600", lineHeight: "48px" }}
-        >
+        <div className="flex flex-row mt-6 text-[36px] leading-[48px] font-semibold">
           <div className="inline-block w-1/2">
             <div className="flex flex-row gap-5">
               <Image src={pointIcon} alt="Point icon" />
@@ -259,10 +190,7 @@ function Card() {
             </div>
           </div>
         </div>
-        <div
-          className="mt-6"
-          style={{ fontSize: "25px", fontWeight: "600", lineHeight: "34px" }}
-        >
+        <div className="mt-6 text-[25px] font-semibold leading-[34px]">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi eget
           faucibus tortor. Vivamus blandit eros in enim mollis, vel lobortis
           neque eleifend. Sed a consectetur tellus, ut sodales nibh. Lorem ipsum
