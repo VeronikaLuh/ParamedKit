@@ -26,7 +26,7 @@ export default function Home() {
     <main className='text-white bg-[#9F784E]'>
       <div className='flex h-[582px] px-6'>
         <img className='absolute w-full top-0 left-0 right-0 h-[582px] ' src={`${imageUrl}/homepage/home-background.png`} alt="coffee"/>
-        <div className='z-10 flex justify-between text-[40px] w-full mt-[140px] font-medium'>
+        <div className='z-10 flex justify-between text-[40px] w-full mt-[80px] font-medium'>
           <h2 className='text-left max-w-[521px]'>Find the best place to hangout with friends or celebrate important event</h2>
           <h2 className='text-right max-w-[500px]'>Quick way to choose where you must go today. Delicious and beautiful places await you</h2>
         </div>
