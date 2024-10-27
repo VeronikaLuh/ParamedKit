@@ -1,10 +1,11 @@
 import RestaurantCard from "@/components/search-page/restaurant-card";
 import { imageUrl } from "@/utils/constants";
+import classes from "./page.module.scss";
 
 const SearchPage = () => {
   return (
     <div className="bg-[#9F784E] flex flex-col w-full px-64">
-      <div className="flex items-center bg-white rounded-[10px] gap-3 p-4 justify-between my-8">
+      <div className="flex items-center bg-white rounded-[10px] gap-3 p-4 justify-between my-8 drop-shadow-lg">
         <img
           className="h-[39px] w-[39px]"
           src={`${imageUrl}/searchpage/search.png`}
@@ -19,20 +20,23 @@ const SearchPage = () => {
       </div>
       <div className="flex justify-between mb-10">
         <div className="grid grid-cols-3 gap-8">
-          <select className="leading-none text-5xl px-20  rounded-[30px] text-[#5D462D] font-normal text-center">
-            <option>Nazar</option>
-            <option>Loh</option>
-          </select>
-          <select className="leading-none text-5xl px-20 rounded-[30px] text-[#5D462D] font-normal text-center">
-            <option>Nazar</option>
-            <option>Loh</option>
-          </select>
-          <select className="leading-none text-5xl px-20 rounded-[30px] text-[#5D462D] font-normal text-center">
-            <option>Nazar</option>
-            <option>Loh</option>
-          </select>
+          <div className={classes["custom-select"]}>
+            <select>
+              <option>Location</option>
+            </select>
+          </div>
+          <div className={classes["custom-select"]}>
+            <select>
+              <option>Price</option>
+            </select>
+          </div>
+          <div className={classes["custom-select"]}>
+            <select>
+              <option>Kind of food</option>
+            </select>
+          </div>
         </div>
-        <button className="bg-[#967149] font-bold text-white text-4xl px-20 rounded-[30px]">
+        <button className="bg-[#967149] font-bold text-white text-5xl px-20 rounded-[30px]">
           Search
         </button>
       </div>

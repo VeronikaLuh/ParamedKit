@@ -8,7 +8,7 @@ const RestaurantCard = () => {
         src={`${imageUrl}/searchpage/restourant-icon.jpg`}
         alt="Description of image"
       />
-      <div className="flex flex-col justify-start text-white max-h-[239px]">
+      <div className="flex flex-col self-start text-white max-h-[239px]">
         <h3 className="leading-none text-[36px] font-normal">
           Biblioteka resto•bar
         </h3>
