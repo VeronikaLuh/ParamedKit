@@ -1,0 +1,13 @@
+button {
+  background-color: #5D462D;
+  border-radius: 40px;
+  font-size: 1.5rem;
+  color: white;
+  padding: 0 1rem;
+  font-weight: bold;
+
+  &:focus {
+    background-color: white;
+    color: #5D462D;
+  }
+}
