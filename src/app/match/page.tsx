@@ -1,17 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import averagePriceIcon from "../../../public/assets/images/match/icon-average-price.svg";
-import clockIcon from "../../../public/assets/images/match/icon-clock.svg";
-import pointIcon from "../../../public/assets/images/match/icon-point.svg";
-import phoneIcon from "../../../public/assets/images/match/icon-phone.svg";
-import restaurantIcon from "../../../public/assets/images/match/icon-restaurant.svg";
-import moreDetailsIcon from "../../../public/assets/images/match/icon-more-details.svg";
 import heartIcon from "../../../public/assets/images/match/icon-heart.svg";
 import editIcon from "../../../public/assets/images/match/icon-edit.svg";
 import arrowIcon from "../../../public/assets/images/match/icon-back.svg";
 import imageArrowIcon from "../../../public/assets/images/match/icon-forward.svg";
+import Stat from "@/components/info/Stat";
 import { useState } from "react";
+import { iconUrl } from "@/utils/constants";
 
 export default function Match() {
   return (
@@ -162,32 +158,14 @@ function Card() {
         <h1 className="text-5xl ml-8">Restaurant title</h1>
         <div className="flex flex-row mt-6 text-[36px] leading-[48px] font-semibold">
           <div className="inline-block w-1/2">
-            <div className="flex flex-row gap-5">
-              <Image src={pointIcon} alt="Point icon" />
-              <span>Lviv, st. Krakivska, 7</span>
-            </div>
-            <div className="flex flex-row gap-5">
-              <Image src={clockIcon} alt="Working hours icon" />
-              <span>10:00 — 22:00</span>{" "}
-            </div>
-            <div className="flex flex-row gap-5">
-              <Image src={averagePriceIcon} alt="Price icon" />
-              <span>150-360</span>
-            </div>
+            <Stat icon="point" content="Lviv, st. Krakivska, 7" styles="mb-5" />
+            <Stat icon="clock" content="10:00 — 22:00" styles="mb-5" />
+            <Stat icon="coin" content="150-360 ₴" />
           </div>
           <div className="inline-block w-1/2">
-            <div className="flex flex-row gap-5">
-              <Image src={restaurantIcon} alt="Food type icon" />
-              <span>Italic food</span>
-            </div>
-            <div className="flex flex-row gap-5">
-              <Image src={phoneIcon} alt="Phone icon" />
-              <span>0963406073</span>
-            </div>
-            <div className="flex flex-row gap-5">
-              <Image src={moreDetailsIcon} alt="Menu icon" />
-              <span>Menu</span>
-            </div>
+            <Stat icon="cutlery" content="Italic food" styles="mb-5" />
+            <Stat icon="telephone" content="0963406073" styles="mb-5" />
+            <Stat icon="menu" content="Menu" />
           </div>
         </div>
         <div className="mt-6 text-[25px] font-semibold leading-[34px]">
@@ -202,9 +180,27 @@ function Card() {
           purus. Aenean auctor eros neque, vel mollis tortor lobortis vitae.
         </div>
       </div>
-      <div className="pt-6 pl-8 pr-8">
+      <div className="pt-6 pl-8 pr-8 pb-10">
         <h1 className="text-5xl ml-8 mb-4">Client's Review</h1>
-        <hr className="pb-5" />
+        <hr className="pb-7" />
+        <div className="flex   gap-8">
+          <div className="bg-[#5D462D] rounded-full py-6 px-5 shrink-0 h-fit">
+            <img src={`${iconUrl}/cake.svg`} alt="cake" />
+          </div>
+          <div className="flex flex-col gap-3">
+            <span className="text-4xl font-medium">Sweet Cake</span>
+            <img className="w-fit" src={`${iconUrl}/hearts.svg`} alt="rating" />
+            <span className="text-2xl">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+              eget faucibus tortor. Vivamus blandit eros in enim mollis, vel
+              lobortis neque eleifend. Sed a consectetur tellus, ut sodales
+              nibh. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              Nullam ut nulla urna. Aliquam dolor nisl, convallis sit amet diam
+              ut, tempor euismod massa. Etiam commodo placerat libero, ut
+              placerat elit sagittis vel.
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   );
