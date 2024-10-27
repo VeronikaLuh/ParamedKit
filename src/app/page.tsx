@@ -29,7 +29,7 @@ export default function Home() {
   ]
 
   return (
-    <main className='text-white bg-[#9F784E]'>
+    <main>
       <div className='flex h-[582px] px-6'>
         <img className='absolute w-full top-0 left-0 right-0 h-[582px] ' src={`${imageUrl}/homepage/home-background.png`} alt="coffee"/>
         <div className='z-10 flex justify-between text-[40px] w-full mt-[80px] font-medium'>

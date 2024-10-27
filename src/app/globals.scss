@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@mixin h1 {
+  font-size: 4rem;
+  line-height: 4.5rem;
+  font-weight: bold;
+}
+
 @mixin h2 {
   font-size: 2.5rem;
   line-height: 3rem;
@@ -15,6 +21,10 @@
 @mixin h4 {
   font-size: 1.5rem;
   line-height: 2rem;
+}
+
+h1 {
+  @include h1;
 }
 
 h2 {
@@ -31,4 +41,6 @@ h4 {
 
 body {
   padding-top: 67px;
+  background-color: #9F784E;
+  color: white;
 }
