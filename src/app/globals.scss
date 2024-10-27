@@ -7,6 +7,24 @@
   line-height: 3rem;
 }
 
+@mixin h3 {
+  font-size: 2rem;
+  line-height: 2.5rem;
+}
+
+@mixin h4 {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
 h2 {
   @include h2;
+}
+
+h3 {
+  @include h3;
+}
+
+h4 {
+  @include h4;
 }
