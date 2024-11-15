@@ -38,3 +38,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+**/.vs/
+Bin/
+bin/
+obj/
+*.user
