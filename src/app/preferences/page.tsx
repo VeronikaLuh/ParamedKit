@@ -23,7 +23,7 @@ const Preferences = () => {
   return (
     <div className="py-11">
       <img
-        className="float-right h-[400px]"
+        className="float-right h-[400px] hidden md:block"
         src={`${imageUrl}/preferences/cookie.png`}
       />
       <div className="px-14">
