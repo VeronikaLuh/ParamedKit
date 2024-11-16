@@ -1,0 +1,35 @@
+.selected-page-button {
+    position: relative; 
+    transition: all 0.3s;
+    &::after {
+        transition: all 0.3s;
+        top: 50%;
+        left:0;
+        transform: translate(0, -50%);
+        content: '';
+        position: absolute;
+        height: 0;
+        width: 0;
+    }
+  
+    &.active {
+        background-color: #9c7b58;
+        outline: none;
+        padding-left: 3rem;
+        &::after {
+            border-radius: 4px;
+            background: #F0BB81;
+            height: 115%;
+            width: 13px;
+        }
+    }
+  }
+  
+  .parent-div {
+    padding-left: 3rem;
+    transition: padding-left 0.3s ease;
+  
+    &.no-padding {
+      padding-left: 0;
+    }
+  }
