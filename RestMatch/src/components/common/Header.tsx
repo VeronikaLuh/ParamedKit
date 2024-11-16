@@ -1,11 +1,39 @@
-import React from "react";
-import { imageUrl } from "@/utils/constants";
+import React, {useEffect, useState} from "react";
+import {imageUrl} from "@/utils/constants";
 import Image from "next/image";
 import styles from "./header.module.scss";
+import {usePathname, useRouter} from "next/navigation";
+import {Routes} from "@/types/routes";
 
 const Header = () => {
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const [selectedRoute, setSelectedRoute] = useState<string>('');
+
+  const basicPages = [
+    {route: Routes.HOME, name: 'Home page'},
+    {route: Routes.MATCH, name: 'Let\'s match'},
+    {route: Routes.SEARCH, name: 'Research'},
+    {route: Routes.ABOUT_US, name: 'About us'},
+  ]
+
+  const handleRouteChange = async (url: Routes) => {
+    router.push(url);
+  }
+
+  useEffect(() => {
+    setSelectedRoute(`/${pathname.split('/')[1]}`)
+  }, [pathname]);
+
+  const isSelected = (route: Routes) => {
+    if (route === selectedRoute) {
+      return styles.selectedButton
+    }
+  }
+
   return (
-    <header className="bg-[#875C2D] fixed top-0 left-0 right-0 h-[67px] z-30 w-full pt-[12px] pb-[15px] px-3 z-[110]">
+    <header className="bg-[#875C2D] fixed top-0 left-0 right-0 h-[67px] w-full pt-[12px] pb-[15px] px-3 z-[110]">
       <div className="flex justify-between h-full">
         <Image
           width="139"
@@ -14,12 +42,11 @@ const Header = () => {
           alt="logo"
         />
         <div className="flex gap-[27px]">
-          <button className={`${styles.headerButton}`}>Home page</button>
-          <button className={`${styles.headerButton}`}>Let's match</button>
-          <button className={`${styles.headerButton}`}>Research</button>
-          <button className={`${styles.headerButton}`}>About us</button>
+          {basicPages.map((page, index) => (
+            <button key={index} onClick={() => handleRouteChange(page.route)} className={`${styles.headerButton} ${isSelected(page.route)}`}>{page.name}</button>
+          ))}
         </div>
-        <button className={`${styles.headerButton}`}>Register</button>
+        <button onClick={() => handleRouteChange(Routes.LOGIN)} className={`${styles.headerButton} ${isSelected(Routes.LOGIN)}`}>Register</button>
       </div>
     </header>
   );

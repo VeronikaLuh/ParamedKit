@@ -5,9 +5,9 @@
   color: white;
   padding: 0 1rem;
   font-weight: bold;
+}
 
-  &:focus {
-    background-color: white;
-    color: #5D462D;
-  }
+.selectedButton {
+  background-color: white;
+  color: #5D462D;
 }
