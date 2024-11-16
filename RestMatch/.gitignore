@@ -40,9 +40,3 @@ yarn-error.log*
 next-env.d.ts
 
 .idea
-
-**/.vs/
-Bin/
-bin/
-obj/
-*.user
