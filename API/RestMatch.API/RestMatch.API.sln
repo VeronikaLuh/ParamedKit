@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestMatch.API.Infrastructur
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestMatch.API.Domain", "RestMatch.API.Domain\RestMatch.API.Domain.csproj", "{C0EE4B2B-6A07-4180-9323-B8DF125C3F72}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestMatch.API.Utils", "RestMatch.API.Utils\RestMatch.API.Utils.csproj", "{B41F34BB-94A6-4F78-8F52-9DE8C514B0F8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestMatch.API.Application", "RestMatch.API.Application\RestMatch.API.Application.csproj", "{B2D90F3B-D1EE-40C5-B08F-8C843C625079}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{C0EE4B2B-6A07-4180-9323-B8DF125C3F72}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0EE4B2B-6A07-4180-9323-B8DF125C3F72}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0EE4B2B-6A07-4180-9323-B8DF125C3F72}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B41F34BB-94A6-4F78-8F52-9DE8C514B0F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B41F34BB-94A6-4F78-8F52-9DE8C514B0F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B41F34BB-94A6-4F78-8F52-9DE8C514B0F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B41F34BB-94A6-4F78-8F52-9DE8C514B0F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2D90F3B-D1EE-40C5-B08F-8C843C625079}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2D90F3B-D1EE-40C5-B08F-8C843C625079}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2D90F3B-D1EE-40C5-B08F-8C843C625079}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2D90F3B-D1EE-40C5-B08F-8C843C625079}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

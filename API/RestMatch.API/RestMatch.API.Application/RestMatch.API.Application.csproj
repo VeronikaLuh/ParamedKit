@@ -5,4 +5,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RestMatch.API.Infrastructure\RestMatch.API.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
