@@ -1,3 +1,5 @@
+using NSwag.Generation.Processors.Security;
+using NSwag;
 using RestMatch.API.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,14 +16,26 @@ builder.Services.AddCors(policy => {
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddSwaggerGen();
+builder.Services.AddOpenApiDocument(config =>
+{
+    config.Title = "RestMatch API";
+
+    config.DocumentProcessors.Add(new SecurityDefinitionAppender("Bearer",
+        new OpenApiSecurityScheme
+        {
+            Type = OpenApiSecuritySchemeType.ApiKey,
+            Name = "Authorization",
+            Description = "Copy 'Bearer ' + valid JWT token",
+            In = OpenApiSecurityApiKeyLocation.Header
+        }));
+});
 
 builder.Services.ConfigureDbContext(builder.Configuration);
 
 var app = builder.Build();
 
-app.UseSwagger();
-app.UseSwaggerUI();
+app.UseOpenApi();
+app.UseSwaggerUi();
 
 app.UseCors("AllowAnyOrigins");
 
