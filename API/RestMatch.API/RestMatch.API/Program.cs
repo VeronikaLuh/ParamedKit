@@ -4,6 +4,8 @@ using RestMatch.API.Domain.Interfaces;
 using RestMatch.API.Infrastructure.Data;
 using RestMatch.API.Infrastructure.Extensions;
 using RestMatch.API.Infrastructure.Repositories;
+using NSwag.Generation.Processors.Security;
+using NSwag;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,14 +30,26 @@ builder.Services.AddScoped<ICuisineTypeService, CuisineTypeService>();
 
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddSwaggerGen();
+builder.Services.AddOpenApiDocument(config =>
+{
+    config.Title = "RestMatch API";
+
+    config.DocumentProcessors.Add(new SecurityDefinitionAppender("Bearer",
+        new OpenApiSecurityScheme
+        {
+            Type = OpenApiSecuritySchemeType.ApiKey,
+            Name = "Authorization",
+            Description = "Copy 'Bearer ' + valid JWT token",
+            In = OpenApiSecurityApiKeyLocation.Header
+        }));
+});
 
 builder.Services.ConfigureDbContext(builder.Configuration);
 
 var app = builder.Build();
 
-app.UseSwagger();
-app.UseSwaggerUI();
+app.UseOpenApi();
+app.UseSwaggerUi();
 
 if (app.Environment.IsDevelopment())
 {
