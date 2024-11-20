@@ -3,7 +3,8 @@ using RestMatch.API.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddCors(policy => {
+builder.Services.AddCors(policy =>
+{
     policy.AddPolicy("AllowAnyOrigins", _ =>
     {
         _.AllowAnyOrigin()
@@ -13,6 +14,9 @@ builder.Services.AddCors(policy => {
 });
 
 builder.Services.AddControllers();
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen();
