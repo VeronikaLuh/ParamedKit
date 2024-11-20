@@ -31,8 +31,7 @@ namespace RestMatch.API.Infrastructure.Repositories
 
         public async Task<ICollection<RestaurantCuisine>?> GetRestaurantCuisines(int restaurantId)
         {
-            var restaurant = await GetRestaurant(restaurantId);
-            if (restaurant == null)
+            if (!RestaurantExists(restaurantId))
                 return null;
 
             return await _context.RestaurantCuisines.Where(r => r.RestaurantId == restaurantId)

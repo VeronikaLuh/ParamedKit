@@ -26,9 +26,8 @@ namespace RestMatch.API.Application.Services
         {
             var restaurant = await _repo.GetRestaurant(id);
             if (restaurant == null)
-            {
                 return null;
-            }
+
             return _mapper.Map<GetRestaurantResponseDto>(restaurant);
         }
 
@@ -106,7 +105,8 @@ namespace RestMatch.API.Application.Services
             return _mapper.Map<GetRestaurantCuisineResponseDto>(newCuisine);
         }
 
-        public async Task<bool> DeleteRestaurant(int id) => await _repo.DeleteRestaurant(id);
+        public async Task<bool> DeleteRestaurant(int id)
+            => await _repo.DeleteRestaurant(id);
 
         public async Task<bool> DeleteRestaurantImageUrl(int id)
             => await _repo.DeleteRestaurantImageUrl(id);

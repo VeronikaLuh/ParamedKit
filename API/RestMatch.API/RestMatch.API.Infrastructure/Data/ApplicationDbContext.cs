@@ -16,15 +16,15 @@ namespace RestMatch.API.Infrastructure.Data
 {
     public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) 
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
             //Database.Migrate();
-        } 
+        }
 
-        public DbSet<CuisineType> Cuisines { get; set; }
-        public DbSet<Restaurant> Restaurants { get; set; }
-        public DbSet<RestaurantCuisine> RestaurantCuisines { get; set; }
-        public DbSet<RestaurantImageUrl> RestaurantImageUrls { get; set; }
+        public DbSet<CuisineType> Cuisines { get; set; } = null!;
+        public DbSet<Restaurant> Restaurants { get; set; } = null!;
+        public DbSet<RestaurantCuisine> RestaurantCuisines { get; set; } = null!;
+        public DbSet<RestaurantImageUrl> RestaurantImageUrls { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -34,16 +34,15 @@ namespace RestMatch.API.Infrastructure.Data
                 Enum.GetValues(typeof(Cuisine))
                     .Cast<Cuisine>()
                     .Select(i => new CuisineType
-                    { 
+                    {
                         Id = (int)i,
                         Name = i.ToString(),
                     })
             );
-            
         }
 
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) 
-        { 
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
             try
             {
                 HandleValidationErrors();
@@ -76,7 +75,7 @@ namespace RestMatch.API.Infrastructure.Data
 
                 Exception exceptionNode = ex;
 
-                while(exceptionNode.InnerException != null)
+                while (exceptionNode.InnerException != null)
                 {
                     exceptionNode = exceptionNode.InnerException;
                 }
@@ -95,7 +94,7 @@ namespace RestMatch.API.Infrastructure.Data
                 .Entries()
                 .Where(e => (e.State == EntityState.Added) || (e.State == EntityState.Modified));
 
-            foreach(var entry in entries)
+            foreach (var entry in entries)
             {
                 var entity = entry.Entity;
                 var context = new ValidationContext(entity);
@@ -105,7 +104,7 @@ namespace RestMatch.API.Infrastructure.Data
                 {
                     IEnumerable<ValidationResult> failedValidationResults = results.Where(r => r != ValidationResult.Success);
 
-                    foreach (var result in failedValidationResults) 
+                    foreach (var result in failedValidationResults)
                     {
 
                         errorMessageBuilder.AppendLine("Validation errors found:");
