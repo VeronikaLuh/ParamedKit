@@ -42,6 +42,34 @@ namespace RestMatch.API.Controllers
             return Ok(restaurant);
         }
 
+        [HttpGet("imageUrls/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<GetRestaurantImageUrlResponseDto>> GetRestaurantImageUrl(int id)
+        {
+            var imageUrls = await _service.GetRestaurantImageUrl(id);
+            if (imageUrls == null)
+                return NotFound($"{nameof(RestaurantImageUrl)} wasn't found");
+
+            return Ok(imageUrls);
+        }
+
+        [HttpGet("{restaurantId}/imageUrls")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<ICollection<GetRestaurantImageUrlResponseDto>>> GetRestaurantImageUrls(int restaurantId)
+        {
+            var imageUrls = await _service.GetRestaurantImageUrls(restaurantId);
+            if (imageUrls == null)
+                return NotFound($"{nameof(Restaurant)} wasn't found");
+
+            if (imageUrls.Count == 0)
+                return NoContent();
+
+            return Ok(imageUrls);
+        }
+
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -50,6 +78,18 @@ namespace RestMatch.API.Controllers
         {
             if (!await _service.UpdateRestaurant(id, dto))
                 return NotFound($"{nameof(Restaurant)} wasn't found");
+
+            return NoContent();
+        }
+
+        [HttpPut("imageUrls/{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> PutRestaurantImageUrl(int id, PutRestaurantImageUrlRequestDto dto)
+        {
+            if (!await _service.UpdateRestaurantImageUrl(id, dto))
+                return NotFound($"{nameof(RestaurantImageUrl)} wasn't found");
 
             return NoContent();
         }
@@ -63,6 +103,19 @@ namespace RestMatch.API.Controllers
             return CreatedAtAction(nameof(GetRestaurant), new { id = restaurant.Id }, restaurant);
         }
 
+        [HttpPost("{restaurantId}/imageUrls")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<GetRestaurantResponseDto>> PostRestaurantImageUrl(int restaurantId, PostRestaurantImageUrlRequestDto dto)
+        {
+            var imageUrl = await _service.AddRestaurantImageUrl(restaurantId, dto);
+            if (imageUrl == null)
+                return NotFound($"{nameof(Restaurant)} wasn't found");
+
+            return CreatedAtAction(nameof(GetRestaurantImageUrl), new { id = imageUrl.Id }, imageUrl);
+        }
+
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -70,6 +123,17 @@ namespace RestMatch.API.Controllers
         {
             if (!await _service.DeleteRestaurant(id))
                 return NotFound($"{nameof(Restaurant)} wasn't found");
+
+            return NoContent();
+        }
+
+        [HttpDelete("imageUrls/{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeleteRestaurantImageUrl(int id)
+        {
+            if (!await _service.DeleteRestaurantImageUrl(id))
+                return NotFound($"{nameof(RestaurantImageUrl)} wasn't found");
 
             return NoContent();
         }

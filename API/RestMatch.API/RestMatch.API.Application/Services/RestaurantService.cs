@@ -32,10 +32,34 @@ namespace RestMatch.API.Application.Services
             return _mapper.Map<GetRestaurantResponseDto>(restaurant);
         }
 
+        public async Task<ICollection<GetRestaurantImageUrlResponseDto>?> GetRestaurantImageUrls(int restaurantId)
+        {
+            var restaurant = await _repo.GetRestaurant(restaurantId);
+            if (restaurant == null)
+                return null;
+
+            return _mapper.Map<List<GetRestaurantImageUrlResponseDto>>(restaurant.ImageUrls);
+        }
+
+        public async Task<GetRestaurantImageUrlResponseDto?> GetRestaurantImageUrl(int id)
+        {
+            var imageUrl = await _repo.GetRestaurantImageUrl(id);
+            if (imageUrl == null)
+                return null;
+
+            return _mapper.Map<GetRestaurantImageUrlResponseDto>(imageUrl);
+        }
+
         public async Task<bool> UpdateRestaurant(int id, PutRestaurantRequestDto dto)
         {
             var restaurant = _mapper.Map<Restaurant>(dto);
             return await _repo.UpdateRestaurant(id, restaurant);
+        }
+
+        public async Task<bool> UpdateRestaurantImageUrl(int id, PutRestaurantImageUrlRequestDto dto)
+        {
+            var imageUrl = _mapper.Map<RestaurantImageUrl>(dto);
+            return await _repo.UpdateRestaurantImageUrl(id, imageUrl);
         }
 
         public async Task<GetRestaurantResponseDto> AddRestaurant(PostRestaurantRequestDto dto)
@@ -45,6 +69,19 @@ namespace RestMatch.API.Application.Services
             return _mapper.Map<GetRestaurantResponseDto>(newRestaurant);
         }
 
+        public async Task<GetRestaurantImageUrlResponseDto?> AddRestaurantImageUrl(int restaurantId, PostRestaurantImageUrlRequestDto dto)
+        {
+            var imageUrl = _mapper.Map<RestaurantImageUrl>(dto);
+            var newimageUrl = await _repo.AddRestaurantImageUrl(restaurantId, imageUrl);
+            if (newimageUrl == null)
+                return null;
+
+            return _mapper.Map<GetRestaurantImageUrlResponseDto>(newimageUrl);
+        }
+
         public async Task<bool> DeleteRestaurant(int id) => await _repo.DeleteRestaurant(id);
+
+        public async Task<bool> DeleteRestaurantImageUrl(int id)
+            => await _repo.DeleteRestaurantImageUrl(id);
     }
 }

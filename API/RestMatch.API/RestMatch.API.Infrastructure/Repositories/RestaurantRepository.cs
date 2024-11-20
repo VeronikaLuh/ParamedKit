@@ -25,6 +25,10 @@ namespace RestMatch.API.Infrastructure.Repositories
                 .Include(r => r.Cuisines).Include(r => r.ImageUrls)
                 .FirstOrDefaultAsync();
 
+        public async Task<RestaurantImageUrl?> GetRestaurantImageUrl(int id) =>
+            await _context.RestaurantImageUrls.Where(r => r.Id == id)
+                .Include(r => r.Restaurant).FirstOrDefaultAsync();
+
         public async Task<bool> UpdateRestaurant(int id, Restaurant restaurant)
         {
             restaurant.Id = id;
@@ -44,11 +48,42 @@ namespace RestMatch.API.Infrastructure.Repositories
             return true;
         }
 
+        public async Task<bool> UpdateRestaurantImageUrl(int id, RestaurantImageUrl imageUrl)
+        {
+            imageUrl.Id = id;
+            _context.Entry(imageUrl).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!RestaurantImageUrlExists(imageUrl.Id))
+                    return false;
+                throw;
+            }
+
+            return true;
+        }
+
         public async Task<Restaurant> AddRestaurant(Restaurant restaurant)
         {
             _context.Restaurants.Add(restaurant);
             await _context.SaveChangesAsync();
             return restaurant;
+        }
+
+        public async Task<RestaurantImageUrl?> AddRestaurantImageUrl(int restaurantId, RestaurantImageUrl imageUrl)
+        {
+            var restaurant = await GetRestaurant(restaurantId);
+            if (restaurant == null)
+                return null;
+
+            imageUrl.Restaurant = restaurant;
+            _context.RestaurantImageUrls.Add(imageUrl);
+            await _context.SaveChangesAsync();
+            return imageUrl;
         }
 
         public async Task<bool> DeleteRestaurant(int id)
@@ -66,7 +101,22 @@ namespace RestMatch.API.Infrastructure.Repositories
             return true;
         }
 
+        public async Task<bool> DeleteRestaurantImageUrl(int id)
+        {
+            var imageUrl = await GetRestaurantImageUrl(id);
+            if (imageUrl == null)
+                return false;
+
+            _context.RestaurantImageUrls.Remove(imageUrl);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
         private bool RestaurantExists(int id) =>
             (_context.Restaurants?.Any(p => p.Id == id)).GetValueOrDefault();
+
+        private bool RestaurantImageUrlExists(int id) =>
+            (_context.RestaurantImageUrls?.Any(p => p.Id == id)).GetValueOrDefault();
     }
 }
