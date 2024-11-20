@@ -1,3 +1,4 @@
+using RestMatch.API.Infrastructure.Data;
 using RestMatch.API.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +23,14 @@ var app = builder.Build();
 
 app.UseSwagger();
 app.UseSwaggerUI();
+
+if (app.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<ApplicationDbContext>();
+    SeedExtensions.Initialize(services, context);
+}
 
 app.UseCors("AllowAnyOrigins");
 
