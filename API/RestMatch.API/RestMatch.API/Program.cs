@@ -23,6 +23,8 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped<IRestaurantRepository, RestaurantRepository>();
 builder.Services.AddScoped<IRestaurantService, RestaurantService>();
+builder.Services.AddScoped<ICuisineTypeRepository, CuisineTypeRepository>();
+builder.Services.AddScoped<ICuisineTypeService, CuisineTypeService>();
 
 builder.Services.AddEndpointsApiExplorer();
 

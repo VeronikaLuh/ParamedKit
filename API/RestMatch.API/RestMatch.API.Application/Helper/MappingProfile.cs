@@ -18,6 +18,7 @@ namespace RestMatch.API.Application.Helper
             CreateMap<RestaurantCuisine, GetRestaurantCuisineResponseDto>()
                 .ForMember(dest => dest.RestaurantId, opt => opt.MapFrom(src => src.Restaurant.Id))
                 .ForMember(dest => dest.TypeId, opt => opt.MapFrom(src => src.Type.Id));
+            CreateMap<CuisineType, GetCuisineTypeResponseDto>();
         }
     }
 }
