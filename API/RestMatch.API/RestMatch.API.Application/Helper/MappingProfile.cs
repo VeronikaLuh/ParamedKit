@@ -15,6 +15,9 @@ namespace RestMatch.API.Application.Helper
                 .ForMember(dest => dest.RestaurantId, opt => opt.MapFrom(src => src.Restaurant.Id));
             CreateMap<PutRestaurantImageUrlRequestDto, RestaurantImageUrl>();
             CreateMap<PostRestaurantImageUrlRequestDto, RestaurantImageUrl>();
+            CreateMap<RestaurantCuisine, GetRestaurantCuisineResponseDto>()
+                .ForMember(dest => dest.RestaurantId, opt => opt.MapFrom(src => src.Restaurant.Id))
+                .ForMember(dest => dest.TypeId, opt => opt.MapFrom(src => src.Type.Id));
         }
     }
 }

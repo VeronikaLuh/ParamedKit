@@ -29,6 +29,21 @@ namespace RestMatch.API.Infrastructure.Repositories
             await _context.RestaurantImageUrls.Where(r => r.Id == id)
                 .Include(r => r.Restaurant).FirstOrDefaultAsync();
 
+        public async Task<ICollection<RestaurantCuisine>?> GetRestaurantCuisines(int restaurantId)
+        {
+            var restaurant = await GetRestaurant(restaurantId);
+            if (restaurant == null)
+                return null;
+
+            return await _context.RestaurantCuisines.Where(r => r.RestaurantId == restaurantId)
+                .Include(r => r.Restaurant).Include(r => r.Type).ToListAsync();
+        }
+
+        public async Task<RestaurantCuisine?> GetRestaurantCuisine(int id) =>
+            await _context.RestaurantCuisines.Where(r => r.Id == id)
+                .Include(r => r.Restaurant).Include(r => r.Type)
+                    .FirstOrDefaultAsync();
+
         public async Task<bool> UpdateRestaurant(int id, Restaurant restaurant)
         {
             restaurant.Id = id;
@@ -86,6 +101,25 @@ namespace RestMatch.API.Infrastructure.Repositories
             return imageUrl;
         }
 
+        public async Task<RestaurantCuisine?> AddRestaurantCuisine(int restaurantId, int cuisineTypeId)
+        {
+            var restaurant = await GetRestaurant(restaurantId);
+            if (restaurant == null)
+                return null;
+            var cuisineType = await _context.Cuisines.FirstOrDefaultAsync(c => c.Id == cuisineTypeId);
+            if (cuisineType == null)
+                return null;
+
+            var cuisine = new RestaurantCuisine
+            {
+                Restaurant = restaurant,
+                Type = cuisineType
+            };
+            _context.RestaurantCuisines.Add(cuisine);
+            await _context.SaveChangesAsync();
+            return cuisine;
+        }
+
         public async Task<bool> DeleteRestaurant(int id)
         {
             var restaurant = await GetRestaurant(id);
@@ -108,6 +142,18 @@ namespace RestMatch.API.Infrastructure.Repositories
                 return false;
 
             _context.RestaurantImageUrls.Remove(imageUrl);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> DeleteRestaurantCuisine(int id)
+        {
+            var cuisine = await GetRestaurantCuisine(id);
+            if (cuisine == null)
+                return false;
+
+            _context.RestaurantCuisines.Remove(cuisine);
             await _context.SaveChangesAsync();
 
             return true;

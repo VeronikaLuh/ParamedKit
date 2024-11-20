@@ -50,6 +50,24 @@ namespace RestMatch.API.Application.Services
             return _mapper.Map<GetRestaurantImageUrlResponseDto>(imageUrl);
         }
 
+        public async Task<ICollection<GetRestaurantCuisineResponseDto>?> GetRestaurantCuisines(int restaurantId)
+        {
+            var cuisines = await _repo.GetRestaurantCuisines(restaurantId);
+            if (cuisines == null)
+                return null;
+
+            return _mapper.Map<List<GetRestaurantCuisineResponseDto>>(cuisines);
+        }
+
+        public async Task<GetRestaurantCuisineResponseDto?> GetRestaurantCuisine(int id)
+        {
+            var cuisine = await _repo.GetRestaurantCuisine(id);
+            if (cuisine == null)
+                return null;
+
+            return _mapper.Map<GetRestaurantCuisineResponseDto>(cuisine);
+        }
+
         public async Task<bool> UpdateRestaurant(int id, PutRestaurantRequestDto dto)
         {
             var restaurant = _mapper.Map<Restaurant>(dto);
@@ -79,9 +97,21 @@ namespace RestMatch.API.Application.Services
             return _mapper.Map<GetRestaurantImageUrlResponseDto>(newimageUrl);
         }
 
+        public async Task<GetRestaurantCuisineResponseDto?> AddRestaurantCuisine(int restaurantId, PostRestaurantCuisineRequestDto dto)
+        {
+            var newCuisine = await _repo.AddRestaurantCuisine(restaurantId, dto.TypeId);
+            if (newCuisine == null)
+                return null;
+
+            return _mapper.Map<GetRestaurantCuisineResponseDto>(newCuisine);
+        }
+
         public async Task<bool> DeleteRestaurant(int id) => await _repo.DeleteRestaurant(id);
 
         public async Task<bool> DeleteRestaurantImageUrl(int id)
             => await _repo.DeleteRestaurantImageUrl(id);
+
+        public async Task<bool> DeleteRestaurantCuisine(int id)
+            => await _repo.DeleteRestaurantCuisine(id);
     }
 }
