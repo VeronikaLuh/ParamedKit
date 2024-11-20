@@ -1,5 +1,9 @@
+using RestMatch.API.Application.Interfaces;
+using RestMatch.API.Application.Services;
+using RestMatch.API.Domain.Interfaces;
 using RestMatch.API.Infrastructure.Data;
 using RestMatch.API.Infrastructure.Extensions;
+using RestMatch.API.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +20,9 @@ builder.Services.AddCors(policy =>
 builder.Services.AddControllers();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddScoped<IRestaurantRepository, RestaurantRepository>();
+builder.Services.AddScoped<IRestaurantService, RestaurantService>();
 
 builder.Services.AddEndpointsApiExplorer();
 
