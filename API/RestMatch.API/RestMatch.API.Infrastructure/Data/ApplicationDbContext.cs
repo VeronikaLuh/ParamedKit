@@ -22,6 +22,9 @@ namespace RestMatch.API.Infrastructure.Data
         } 
 
         public DbSet<CuisineType> Cuisines { get; set; }
+        public DbSet<Restaurant> Restaurants { get; set; }
+        public DbSet<RestaurantCuisine> RestaurantCuisines { get; set; }
+        public DbSet<RestaurantImageUrl> RestaurantImageUrls { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
