@@ -10,6 +10,7 @@ namespace RestMatch.API.Domain.Models
 
         public int RestaurantId { get; set; }
         public Restaurant Restaurant { get; set; } = null!;
+        public int TypeId { get; set; }
         public CuisineType Type { get; set; } = null!;
     }
 }

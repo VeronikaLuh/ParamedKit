@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using RestMatch.API.Domain.Enums;
 using RestMatch.API.Domain.Models;
 
 namespace RestMatch.API.Infrastructure.Data
 {
     public static class SeedExtensions
     {
-        public static void Initialize(IServiceProvider serviceProvider, ApplicationDbContext context)
+        public static void Initialize(ModelBuilder modelBuilder)
         {
-            context.Database.EnsureCreated();
-
-            if (context.Restaurants.Any())
-                return;
-
             // Add dummy restaurants with price ranges
             List<Restaurant> restaurants = [
                 new()
@@ -92,56 +89,72 @@ namespace RestMatch.API.Infrastructure.Data
                     MenuUrl = "https://www.seasidegrill.com/menu"
                 }
             ];
-            foreach (var item in restaurants)
+            for (int i = 0; i < restaurants.Count; i++)
             {
-                item.CreatedAt = DateTime.UtcNow;
-                item.ModifiedAt = DateTime.UtcNow;
+                var restaurant = restaurants[i];
+                restaurant.Id = i + 1;
+                restaurant.CreatedAt = DateTime.UtcNow;
+                restaurant.ModifiedAt = DateTime.UtcNow;
             }
-            context.Restaurants.AddRange(restaurants);
+            modelBuilder.Entity<Restaurant>().HasData(restaurants);
 
             // Add dummy image urls
             string prefix = "http://example.com/";
-            foreach (var item in restaurants)
+            var imageUrls = new List<RestaurantImageUrl>();
+            int idCount = 0;
+            foreach (var restaurant in restaurants)
             {
-                string postfix = item.Name.ToLower().Replace(" ", "_");
+                string postfix = restaurant.Name.ToLower().Replace(" ", "_");
                 int imgCount = Random.Shared.Next(1, 3);
                 for (int i = 0; i < imgCount; i++)
                 {
+                    idCount++;
                     var imageUrl = new RestaurantImageUrl()
                     {
+                        Id = idCount,
                         Url = prefix + postfix + i.ToString(),
-                        Restaurant = item,
+                        RestaurantId = restaurant.Id,
                         CreatedAt = DateTime.UtcNow,
                         ModifiedAt = DateTime.UtcNow
                     };
-                    context.RestaurantImageUrls.Add(imageUrl);
+                    imageUrls.Add(imageUrl);
                 }
             }
+            modelBuilder.Entity<RestaurantImageUrl>().HasData(imageUrls);
 
             // Add dummy cuisines
-            var cuisineTypes = context.Cuisines.ToList();
-            foreach (var item in restaurants)
+            var cuisineTypes = Enum.GetValues(typeof(Cuisine))
+                .Cast<Cuisine>()
+                .Select(i => new CuisineType
+                {
+                    Id = (int)i,
+                    Name = i.ToString(),
+                });
+            var cuisines = new List<RestaurantCuisine>();
+            idCount = 0;
+            foreach (var restaurant in restaurants)
             {
                 // Coping list to prevent duplicate RestaurantCuisine
                 var avaibleCuisineTypes = cuisineTypes.ToList();
                 // WARN: Do not set maxValue in Random.Next to value more than cuisineTypes.Count
                 for (int i = 0; i < Random.Shared.Next(1, 3); i++)
                 {
+                    idCount++;
                     int index = Random.Shared.Next(avaibleCuisineTypes.Count);
                     var type = avaibleCuisineTypes[index];
                     avaibleCuisineTypes.RemoveAt(index);
                     var restaurantCuisine = new RestaurantCuisine()
                     {
-                        Restaurant = item,
-                        Type = type,
+                        Id = idCount,
+                        RestaurantId = restaurant.Id,
+                        TypeId = type.Id,
                         CreatedAt = DateTime.UtcNow,
                         ModifiedAt = DateTime.UtcNow
                     };
-                    context.RestaurantCuisines.Add(restaurantCuisine);
+                    cuisines.Add(restaurantCuisine);
                 }
             }
-
-            context.SaveChanges();
+            modelBuilder.Entity<RestaurantCuisine>().HasData(cuisines);
         }
     }
 }

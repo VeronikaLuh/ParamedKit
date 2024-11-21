@@ -18,7 +18,8 @@ namespace RestMatch.API.Infrastructure.Repositories
         }
 
         public async Task<ICollection<Restaurant>> GetRestaurants() =>
-            await _context.Restaurants.ToListAsync();
+            await _context.Restaurants.Include(r => r.Cuisines)
+                .Include(r => r.ImageUrls).ToListAsync();
 
         public async Task<Restaurant?> GetRestaurant(int id) =>
             await _context.Restaurants.Where(r => r.Id == id)
@@ -29,19 +30,10 @@ namespace RestMatch.API.Infrastructure.Repositories
             await _context.RestaurantImageUrls.Where(r => r.Id == id)
                 .Include(r => r.Restaurant).FirstOrDefaultAsync();
 
-        public async Task<ICollection<RestaurantCuisine>?> GetRestaurantCuisines(int restaurantId)
-        {
-            if (!RestaurantExists(restaurantId))
-                return null;
-
-            return await _context.RestaurantCuisines.Where(r => r.RestaurantId == restaurantId)
-                .Include(r => r.Restaurant).Include(r => r.Type).ToListAsync();
-        }
-
         public async Task<RestaurantCuisine?> GetRestaurantCuisine(int id) =>
             await _context.RestaurantCuisines.Where(r => r.Id == id)
                 .Include(r => r.Restaurant).Include(r => r.Type)
-                    .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync();
 
         public async Task<bool> UpdateRestaurant(int id, Restaurant restaurant)
         {
@@ -64,7 +56,12 @@ namespace RestMatch.API.Infrastructure.Repositories
 
         public async Task<bool> UpdateRestaurantImageUrl(int id, RestaurantImageUrl imageUrl)
         {
+            var oldImageUrl = await _context.RestaurantImageUrls.FirstOrDefaultAsync(r => r.Id == id);
+            if (oldImageUrl == null)
+                return false;
+            _context.Entry(oldImageUrl).State = EntityState.Detached;
             imageUrl.Id = id;
+            imageUrl.RestaurantId = oldImageUrl.RestaurantId;
             _context.Entry(imageUrl).State = EntityState.Modified;
 
             try

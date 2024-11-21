@@ -39,6 +39,7 @@ namespace RestMatch.API.Infrastructure.Data
                         Name = i.ToString(),
                     })
             );
+            SeedExtensions.Initialize(modelBuilder);
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

@@ -8,9 +8,7 @@ namespace RestMatch.API.Application.Interfaces
     {
         Task<ICollection<GetRestaurantResponseDto>> GetRestaurants();
         Task<GetRestaurantResponseDto?> GetRestaurant(int id);
-        Task<ICollection<GetRestaurantImageUrlResponseDto>?> GetRestaurantImageUrls(int restaurantId);
         Task<GetRestaurantImageUrlResponseDto?> GetRestaurantImageUrl(int id);
-        Task<ICollection<GetRestaurantCuisineResponseDto>?> GetRestaurantCuisines(int restaurantId);
         Task<GetRestaurantCuisineResponseDto?> GetRestaurantCuisine(int id);
         Task<bool> UpdateRestaurant(int id, PutRestaurantRequestDto dto);
         Task<bool> UpdateRestaurantImageUrl(int id, PutRestaurantImageUrlRequestDto dto);

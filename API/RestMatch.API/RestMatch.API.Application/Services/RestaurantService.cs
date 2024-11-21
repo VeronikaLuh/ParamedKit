@@ -31,15 +31,6 @@ namespace RestMatch.API.Application.Services
             return _mapper.Map<GetRestaurantResponseDto>(restaurant);
         }
 
-        public async Task<ICollection<GetRestaurantImageUrlResponseDto>?> GetRestaurantImageUrls(int restaurantId)
-        {
-            var restaurant = await _repo.GetRestaurant(restaurantId);
-            if (restaurant == null)
-                return null;
-
-            return _mapper.Map<List<GetRestaurantImageUrlResponseDto>>(restaurant.ImageUrls);
-        }
-
         public async Task<GetRestaurantImageUrlResponseDto?> GetRestaurantImageUrl(int id)
         {
             var imageUrl = await _repo.GetRestaurantImageUrl(id);
@@ -47,15 +38,6 @@ namespace RestMatch.API.Application.Services
                 return null;
 
             return _mapper.Map<GetRestaurantImageUrlResponseDto>(imageUrl);
-        }
-
-        public async Task<ICollection<GetRestaurantCuisineResponseDto>?> GetRestaurantCuisines(int restaurantId)
-        {
-            var cuisines = await _repo.GetRestaurantCuisines(restaurantId);
-            if (cuisines == null)
-                return null;
-
-            return _mapper.Map<List<GetRestaurantCuisineResponseDto>>(cuisines);
         }
 
         public async Task<GetRestaurantCuisineResponseDto?> GetRestaurantCuisine(int id)

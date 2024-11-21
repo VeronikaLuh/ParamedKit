@@ -9,7 +9,6 @@ namespace RestMatch.API.Domain.Interfaces
         Task<ICollection<Restaurant>> GetRestaurants();
         Task<Restaurant?> GetRestaurant(int id);
         Task<RestaurantImageUrl?> GetRestaurantImageUrl(int id);
-        Task<ICollection<RestaurantCuisine>?> GetRestaurantCuisines(int restaurantId);
         Task<RestaurantCuisine?> GetRestaurantCuisine(int id);
         Task<bool> UpdateRestaurant(int id, Restaurant restaurant);
         Task<bool> UpdateRestaurantImageUrl(int id, RestaurantImageUrl imageUrl);
