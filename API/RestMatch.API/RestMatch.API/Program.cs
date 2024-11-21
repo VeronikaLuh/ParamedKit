@@ -1,10 +1,11 @@
+using RestMatch.API.Infrastructure.Extensions;
 using NSwag.Generation.Processors.Security;
 using NSwag;
-using RestMatch.API.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddCors(policy => {
+builder.Services.AddCors(policy =>
+{
     policy.AddPolicy("AllowAnyOrigins", _ =>
     {
         _.AllowAnyOrigin()
@@ -14,6 +15,11 @@ builder.Services.AddCors(policy => {
 });
 
 builder.Services.AddControllers();
+
+builder.Services.ConfigureAutoMapper();
+builder.Services.ConfigureServices();
+builder.Services.ConfigureRepositories();
+
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddOpenApiDocument(config =>

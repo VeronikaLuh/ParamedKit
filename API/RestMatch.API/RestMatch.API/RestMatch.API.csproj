@@ -32,7 +32,7 @@
   </Target>
   
   <ItemGroup>
-    <ProjectReference Include="..\RestMatch.API.Infrastructure\RestMatch.API.Infrastructure.csproj" />
+    <ProjectReference Include="..\RestMatch.API.Application\RestMatch.API.Application.csproj" />
   </ItemGroup>
 
 </Project>
