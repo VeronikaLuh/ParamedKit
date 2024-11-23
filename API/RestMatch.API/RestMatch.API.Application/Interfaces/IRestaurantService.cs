@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using RestMatch.API.Application.Dtos;
+using RestMatch.API.Domain.Models;
 
 namespace RestMatch.API.Application.Interfaces
 {
     public interface IRestaurantService
     {
+        Task<IEnumerable<Restaurant>?> GetRestaurantRecomendation(int userId);
         Task<ICollection<GetRestaurantResponseDto>> GetRestaurants();
         Task<GetRestaurantResponseDto?> GetRestaurant(int id);
         Task<GetRestaurantImageUrlResponseDto?> GetRestaurantImageUrl(int id);

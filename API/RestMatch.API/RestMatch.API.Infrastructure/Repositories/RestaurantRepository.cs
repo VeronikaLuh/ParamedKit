@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,10 +12,14 @@ namespace RestMatch.API.Infrastructure.Repositories
     public class RestaurantRepository : IRestaurantRepository
     {
         private readonly ApplicationDbContext _context;
+        private readonly IUserSelectedCriteriasRepository _userSelectedCriteriasRepository;
+        private readonly IRestaurantCriteriasRepository _restaurantCriteriasRepository;
 
-        public RestaurantRepository(ApplicationDbContext context)
+        public RestaurantRepository(ApplicationDbContext context, IUserSelectedCriteriasRepository userSelectedCriteriasRepository, IRestaurantCriteriasRepository restaurantCriteriasRepository)
         {
             _context = context;
+            _userSelectedCriteriasRepository = userSelectedCriteriasRepository;
+            _restaurantCriteriasRepository = restaurantCriteriasRepository;
         }
 
         public async Task<ICollection<Restaurant>> GetRestaurants() =>
@@ -160,5 +165,28 @@ namespace RestMatch.API.Infrastructure.Repositories
 
         private bool RestaurantImageUrlExists(int id) =>
             (_context.RestaurantImageUrls?.Any(p => p.Id == id)).GetValueOrDefault();
+
+        public async Task<List<Restaurant>?> GetRecomendedRestaurants(int userId, int? page = 1)
+        {
+            var userSelectedCriteria = await _userSelectedCriteriasRepository.GetUserSelectedCriterias(userId);
+            if (userSelectedCriteria == null)
+            {
+                return null;
+            }
+
+            var restaurantsAndRates = await _restaurantCriteriasRepository.GetRestaurantCalculatedRate(userSelectedCriteria, page);
+
+            var restaurantsIds = restaurantsAndRates.Select(x => (int)x.RestaurantId);
+
+            var unsortedRecomendedRestaurants = await _context.Restaurants.Select(x => x).Where(r => restaurantsIds.Contains(r.Id)).ToListAsync();
+
+            var recomendedRestaurants = restaurantsAndRates.Select(x => unsortedRecomendedRestaurants.FirstOrDefault(e => e.Id == (int)x.RestaurantId)).ToList();
+            foreach (var item in restaurantsAndRates)
+            {
+                Console.WriteLine($"Id: {item.RestaurantId} Rate: {item.Rate}");
+            }
+
+            return recomendedRestaurants!;
+        }
     }
 }
