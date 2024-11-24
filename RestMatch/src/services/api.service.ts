@@ -57,7 +57,7 @@ const makeApiRequest = async (options: ApiRequestOptions, token?: string) => {
 }
 
 const makeHttpsRequest = async (options: HttpsRequestOptions) => {
-  const {req, res, url, method} = options;
+  const { req, url, method } = options;
   const headersParams: any = {
     'Content-Type': 'application/json',
     'Accept': '*/*'
@@ -69,7 +69,7 @@ const makeHttpsRequest = async (options: HttpsRequestOptions) => {
   }
 
   try {
-    let response = await axios({
+    const response = await axios({
       method: method,
       url: url,
       headers: headersParams,
@@ -78,7 +78,7 @@ const makeHttpsRequest = async (options: HttpsRequestOptions) => {
     });
 
     console.log('Response from backend:', response.data);
-    return res.status(response.status).json(response.data);
+    return response.data;
   } catch (error: any) {
     if (error.response && error.response.status === 302) {
       const redirectUrl = error.response.headers.location;
@@ -90,14 +90,14 @@ const makeHttpsRequest = async (options: HttpsRequestOptions) => {
         data: req.body,
       });
 
-      return res.status(redirectResponse.status).json(redirectResponse.data);
+      return redirectResponse.data;
     }
 
     console.error('Error from backend:', error);
     if (error.response) {
-      return res.status(error.response.status).json({error: error.response.data});
+      throw new Error(JSON.stringify({ status: error.response.status, data: error.response.data }));
     } else {
-      return res.status(500).json({message: 'Internal Server Error'});
+      throw new Error('Internal Server Error');
     }
   }
 }
