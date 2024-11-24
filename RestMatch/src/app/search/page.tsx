@@ -4,7 +4,7 @@ import RestaurantCard from "@/components/search-page/restaurant-card";
 import {imageUrl} from "@/utils/constants";
 import classes from "./page.module.scss";
 import restaurantService from "@/services/restaurant.service";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {Restaurant} from "@/models/Restaurant";
 import {Cuisine} from "@/models/Cuisines";
 
@@ -12,20 +12,20 @@ const SearchPage = () => {
   const [data, setData] = useState<Restaurant[]>([]);
   const [cuisinesTypes, setCuisinesTypes] = useState<Cuisine[]>([]);
 
-  const fetchRestaurants = async () => {
+  const fetchRestaurants = useCallback(async () => {
     const response = await restaurantService.getRestaurants();
     setData(response.data);
-  }
+  }, []);
 
-  const fetchCuisines = async () => {
+  const fetchCuisines = useCallback(async () => {
     const response = await restaurantService.getCuisines();
     setCuisinesTypes(response.data);
-  }
+  }, []);
 
   useEffect(() => {
     fetchRestaurants();
     fetchCuisines();
-  }, []);
+  }, [fetchCuisines, fetchRestaurants]);
 
 
   return (

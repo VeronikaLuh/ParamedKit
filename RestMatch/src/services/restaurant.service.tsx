@@ -9,7 +9,7 @@ const getRestaurants = async () => {
   });
 }
 
-const getRestaurant = async (id: number) => {
+const getRestaurant = async (id: string) => {
   return await ApiService.makeApiRequest({
     url: `/api/restaurant/${id}`,
     method: HttpMethods.GET
