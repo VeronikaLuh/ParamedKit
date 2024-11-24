@@ -23,8 +23,8 @@ namespace RestMatch.API.Controllers
         }
 
         [HttpGet]
-        [Route("hello{faceUserId:int}")]
-        public async Task<ActionResult<IEnumerable<Restaurant>>> GetUserRecomendation([FromRoute]int faceUserId)
+        [Route("hello/{faceUserId:int}")]
+        public async Task<ActionResult<IEnumerable<Restaurant>>> GetUserRecommendations([FromRoute]int faceUserId)
         {
             var result = await _service.GetRestaurantRecomendation(faceUserId);
 
@@ -39,9 +39,9 @@ namespace RestMatch.API.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(ICollection<GetRestaurantResponseDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult<ICollection<GetRestaurantResponseDto>>> GetRestaurants()
+        public async Task<ActionResult<ICollection<GetRestaurantResponseDto>>> GetRestaurants([FromQuery]string? location, [FromQuery]List<int>? cuisine, [FromQuery]int? lowestPrice, [FromQuery]int? highestPrice)
         {
-            var restaurants = await _service.GetRestaurants();
+            var restaurants = await _service.GetRestaurants(location, cuisine, lowestPrice, highestPrice);
             if (restaurants.Count == 0)
                 return NoContent();
 
