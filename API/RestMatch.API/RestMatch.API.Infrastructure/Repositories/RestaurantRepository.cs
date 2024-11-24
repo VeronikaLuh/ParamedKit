@@ -23,7 +23,12 @@ namespace RestMatch.API.Infrastructure.Repositories
             _restaurantCriteriasRepository = restaurantCriteriasRepository;
         }
 
-        public async Task<ICollection<Restaurant>> GetRestaurants(string? location, List<int>? cuisines, int? lowestPrice, int? highestPrice)
+        public async Task<ICollection<Restaurant>> GetRestaurants(
+            string? location,
+            List<int>? cuisines,
+            int? lowestPrice,
+            int? highestPrice,
+            string? sortOrder)
         {
             var query = _context.Restaurants.Select(x => x);
 
@@ -43,8 +48,19 @@ namespace RestMatch.API.Infrastructure.Repositories
                 query = FilterCuisines(query, cuisines);
             }
 
-            return await query.Include(r => r.Cuisines)
-                .Include(r => r.ImageUrls).ToListAsync();
+            query = sortOrder switch
+            {
+                "name_asc" => query.OrderBy(p => p.Name),
+                "name_desc" => query.OrderByDescending(p => p.Name),
+                "rating_asc" => query.OrderBy(p => p.Rating),
+                "rating_desc" => query.OrderByDescending(p => p.Rating),
+                "lower_price_asc" => query.OrderBy(p => p.LowerPrice),
+                "lower_price_desc" => query.OrderByDescending(p => p.LowerPrice),
+                "upper_price_asc" => query.OrderBy(p => p.UpperPrice),
+                "upper_price_desc" => query.OrderByDescending(p => p.UpperPrice),
+                _ => query.OrderBy(p => p.Name),
+            };
+            return await query.Include(r => r.ImageUrls).ToListAsync();
         }
 
         private IQueryable<Restaurant> FilterLocation(IQueryable<Restaurant> query, string location)
