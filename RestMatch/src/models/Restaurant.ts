@@ -1,10 +1,20 @@
+import {Cuisine} from "@/models/Cuisinej";
+import {ImageUrl} from "@/models/ImageUrl";
+
 export interface Restaurant {
-  id: string;
+  id: number;
+  cuisines: Cuisine[];
+  imageUrls: ImageUrl[];
   name: string;
-  location: string;
-  kindOfFood: string;
-  price: number;
+  country: string;
+  city: string;
+  address: string;
   rating: number;
-  imageUrl: string;
-  description: string;
+  lowerPrice: number;
+  upperPrice: number;
+  openingTime: string;
+  closingTime: string;
+  phoneNumber: string;
+  aboutText: string;
+  menuUrl: string;
 }
