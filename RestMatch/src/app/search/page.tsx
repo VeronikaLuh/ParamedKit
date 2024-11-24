@@ -59,8 +59,9 @@ const SearchPage = () => {
           </div>
           <div className={`${classes["custom-select"]} col-span-2`}>
             <select>
-              <option>Cuisine</option>
-              <option>Mediterranean</option>
+              {cuisinesTypes.length > 0 && cuisinesTypes.map((cuisine) => (
+                <option key={cuisine.id}>{cuisine.name}</option>
+              ))}
             </select>
           </div>
         </div>
@@ -77,6 +78,7 @@ const SearchPage = () => {
       {data.length > 0 && data.map((restaurant, index) => (
         <RestaurantCard
           key={index}
+          id={restaurant.id}
           name={restaurant.name}
           city={restaurant.city}
           price={restaurant.lowerPrice}

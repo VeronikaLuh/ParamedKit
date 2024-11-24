@@ -2,19 +2,23 @@ import {imageUrl} from "@/utils/constants";
 import React from "react";
 import {Cuisine} from "@/models/Cuisines";
 import {findRightCuisineType} from "@/utils/utils";
+import {useRouter} from "next/navigation";
+import {Routes} from "@/types/routes";
 
 interface RestaurantCardProps {
-  url?: string;
+  id: number;
   name: string;
   city: string;
   price: number;
   description: string;
   cuisinesTypes: Cuisine[];
   cuisineId: number;
+  url?: string;
 }
 
 const RestaurantCard: React.FC<RestaurantCardProps> = (
   {
+    id,
     url,
     name,
     city,
@@ -24,6 +28,13 @@ const RestaurantCard: React.FC<RestaurantCardProps> = (
     cuisineId
   }
 ) => {
+
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push(`${Routes.INFO}/${id}`)
+  }
+
   return (
     <div
       className="bg-[#8d6539] rounded-[10px] flex items-center justify-between mb-14 px-[31px] pt-[34px] pb-[24px] gap-4 drop-shadow-2xl min-w-[55.9rem]">
@@ -42,7 +53,7 @@ const RestaurantCard: React.FC<RestaurantCardProps> = (
         </p>
       </div>
       <div>
-        <button className="px-14 py-2 text-[25px] text-nowrap rounded-[30px] bg-[#CF914E] text-white font-bold">
+        <button className="px-14 py-2 text-[25px] text-nowrap rounded-[30px] bg-[#CF914E] text-white font-bold" onClick={handleClick}>
           VIEW MORE
         </button>
       </div>

@@ -9,6 +9,13 @@ const getRestaurants = async () => {
   });
 }
 
+const getRestaurant = async (id: number) => {
+  return await ApiService.makeApiRequest({
+    url: `/api/restaurant/${id}`,
+    method: HttpMethods.GET
+  });
+}
+
 const getCuisines = async () => {
   return await ApiService.makeApiRequest({
     url: '/api/cuisines',
@@ -41,6 +48,7 @@ const deleteRestaurant = async (id: number) => {
 
 const restaurantService = {
   getRestaurants,
+  getRestaurant,
   getCuisines,
   addRestaurant,
   updateRestaurant,
