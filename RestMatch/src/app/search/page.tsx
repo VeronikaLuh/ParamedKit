@@ -11,7 +11,7 @@ const SearchPage = () => {
           src={`${imageUrl}/searchpage/search.png`}
         />
         <input
-          className="text-[25px] focus:outline-none focus:border-transparent w-[85%]"
+          className="text-[25px] text-black focus:outline-none focus:border-transparent w-[85%]"
           placeholder="Search"
         />
         <button className="font-bold text-[#5D462D] text-2xl">
