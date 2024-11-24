@@ -8,12 +8,14 @@ namespace RestMatch.API.Domain.Interfaces
     public interface IRestaurantRepository
     {
         Task<List<Restaurant>?> GetRecomendedRestaurants(int userId, int? page = 1);
-        Task<ICollection<Restaurant>> GetRestaurants(
+        Task<PagedEntities<Restaurant>> GetRestaurants(
             string? location,
             List<int>? cuisines,
             int? lowestPrice,
             int? highestPrice,
-            string? sortOrder);
+            string? sortOrder,
+            int pageNumber,
+            int pageSize);
         Task<Restaurant?> GetRestaurant(int id);
         Task<RestaurantImageUrl?> GetRestaurantImageUrl(int id);
         Task<RestaurantCuisine?> GetRestaurantCuisine(int id);

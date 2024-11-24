@@ -19,13 +19,22 @@ namespace RestMatch.API.Application.Services
             _repo = repository;
         }
 
-        public async Task<ICollection<GetRestaurantResponseDto>> GetRestaurants(
+        public async Task<PagedEntities<GetRestaurantResponseDto>> GetRestaurants(
             string? location,
             List<int>? cuisine,
             int? lowestPrice,
             int? highestPrice,
-            string? sortOrder) =>
-            _mapper.Map<List<GetRestaurantResponseDto>>(await _repo.GetRestaurants(location, cuisine, lowestPrice, highestPrice, sortOrder));
+            string? sortOrder,
+            int pageNumber,
+            int pageSize)
+        {
+            var pagedRestaurants = await _repo.GetRestaurants(location, cuisine, lowestPrice, highestPrice, sortOrder, pageNumber, pageSize);
+            return new PagedEntities<GetRestaurantResponseDto>()
+            {
+                TotalPages = pagedRestaurants.TotalPages,
+                Entities = _mapper.Map<List<GetRestaurantResponseDto>>(pagedRestaurants.Entities)
+            };
+        }
 
         public async Task<GetRestaurantResponseDto?> GetRestaurant(int id)
         {

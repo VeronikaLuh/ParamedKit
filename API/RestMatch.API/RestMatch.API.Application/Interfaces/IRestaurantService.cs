@@ -8,7 +8,14 @@ namespace RestMatch.API.Application.Interfaces
     public interface IRestaurantService
     {
         Task<IEnumerable<Restaurant>?> GetRestaurantRecomendation(int userId);
-        Task<ICollection<GetRestaurantResponseDto>> GetRestaurants(string? location, List<int>? cuisine, int? lowestPrice, int? highestPrice, string? sortOrder);
+        Task<PagedEntities<GetRestaurantResponseDto>> GetRestaurants(
+            string? location,
+            List<int>? cuisine,
+            int? lowestPrice,
+            int? highestPrice,
+            string? sortOrder,
+            int pageNumber,
+            int pageSize);
         Task<GetRestaurantResponseDto?> GetRestaurant(int id);
         Task<GetRestaurantImageUrlResponseDto?> GetRestaurantImageUrl(int id);
         Task<GetRestaurantCuisineResponseDto?> GetRestaurantCuisine(int id);

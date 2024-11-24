@@ -23,12 +23,14 @@ namespace RestMatch.API.Infrastructure.Repositories
             _restaurantCriteriasRepository = restaurantCriteriasRepository;
         }
 
-        public async Task<ICollection<Restaurant>> GetRestaurants(
+        public async Task<PagedEntities<Restaurant>> GetRestaurants(
             string? location,
             List<int>? cuisines,
             int? lowestPrice,
             int? highestPrice,
-            string? sortOrder)
+            string? sortOrder,
+            int pageNumber,
+            int pageSize)
         {
             var query = _context.Restaurants.Select(x => x);
 
@@ -60,7 +62,17 @@ namespace RestMatch.API.Infrastructure.Repositories
                 "upper_price_desc" => query.OrderByDescending(p => p.UpperPrice),
                 _ => query.OrderBy(p => p.Name),
             };
-            return await query.Include(r => r.ImageUrls).ToListAsync();
+
+            int totalCount = await query.CountAsync();
+            var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+            var restaurants = await query
+                .Skip((pageNumber - 1) * pageSize).Take(pageSize)
+                .Include(r => r.ImageUrls).ToListAsync();
+            return new PagedEntities<Restaurant>()
+            {
+                TotalPages = totalPages,
+                Entities = restaurants
+            };
         }
 
         private IQueryable<Restaurant> FilterLocation(IQueryable<Restaurant> query, string location)
