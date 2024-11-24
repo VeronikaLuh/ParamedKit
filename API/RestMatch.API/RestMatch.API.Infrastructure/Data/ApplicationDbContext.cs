@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using RestMatch.API.Domain.Enums;
 using RestMatch.API.Domain.Models;
 using RestMatch.API.Domain.Models.Base;
+using RestMatch.API.Domain.Models.Recomendations;
+using RestMatch.API.Domain.Models.UserModel;
+using RestMatch.API.Domain.Models.UserModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -25,10 +28,26 @@ namespace RestMatch.API.Infrastructure.Data
         public DbSet<Restaurant> Restaurants { get; set; } = null!;
         public DbSet<RestaurantCuisine> RestaurantCuisines { get; set; } = null!;
         public DbSet<RestaurantImageUrl> RestaurantImageUrls { get; set; } = null!;
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<UserCriteria> UserCriterias { get; set; }
+        public DbSet<RestaurantCriteria> RestaurantCriterias { get; set; }
+        public DbSet<UserSelectedCriteria> UserSelectedCriterias { get; set; }
+        public DbSet<Review> Reviews { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<UserSelectedCriteria>()
+                .HasOne(u => u.User)
+                .WithMany(c => c.SelectedCriterias)
+                .HasForeignKey(u => u.UserId);
+
+            modelBuilder.Entity<UserSelectedCriteria>()
+                .HasOne(c => c.Cuisine)
+                .WithMany(c => c.SelectedCriterias)
+                .HasForeignKey(c => c.CuisineId);
 
             modelBuilder.Entity<CuisineType>().HasData(
                 Enum.GetValues(typeof(Cuisine))

@@ -15,6 +15,7 @@ namespace RestMatch.API.Domain.Models
         public string City { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;
         public double Rating { get; set; }
+        public int CountOfRate { get; set; }
         public int LowerPrice { get; set; }
         public int UpperPrice { get; set; }
         public TimeSpan OpeningTime { get; set; }

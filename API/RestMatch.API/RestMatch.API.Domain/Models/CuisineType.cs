@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using RestMatch.API.Domain.Models.UserModels;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace RestMatch.API.Domain.Models
 {
@@ -8,5 +10,6 @@ namespace RestMatch.API.Domain.Models
         public int Id { get; set; }
 
         public string Name { get; set; } = string.Empty;
+        public IEnumerable<UserSelectedCriteria> SelectedCriterias { get; set; }
     }
 }
