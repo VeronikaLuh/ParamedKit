@@ -27,9 +27,21 @@ namespace RestMatch.API.Infrastructure.Repositories
         {
             var cuisineNames = cuisinesIds.Select(x => ((Cuisine)x).ToString());
 
+            var orderedResult = _context.Restaurants.Where(x => ((x.UpperPrice + x.LowerPrice) / 2) <= 50).Select(x => x.Id);
+
             var query = await _context.Set<RestaurantCriteria>()
                 .Select("new (RestaurantId, " + cuisineNames.Aggregate((current, next) => $"{current} + {next}") + " as Rate)")
-                .ToDynamicListAsync();
+                .Where($"@0.Contains(RestaurantId)", orderedResult).OrderBy("Rate descending").ToDynamicListAsync();
+
+            if (query.Count < 10)
+            {
+                orderedResult = _context.Restaurants.Where(x => ((x.UpperPrice + x.LowerPrice) / 2) > 50).Select(x => x.Id);
+                var count = 10 - query.Count;
+                var secondQuery = await _context.Set<RestaurantCriteria>()
+                    .Select("new (RestaurantId, " + cuisineNames.Aggregate((current, next) => $"{current} + {next}") + " as Rate)")
+                    .Where($"@0.Contains(RestaurantId)", orderedResult).OrderBy("Rate descending").Take(count).ToDynamicListAsync();
+                query.AddRange(secondQuery);
+            }
 
             var result = query
                 .Select(dynamicObj => new RestaurantIdRate
@@ -37,7 +49,6 @@ namespace RestMatch.API.Infrastructure.Repositories
                     RestaurantId = dynamicObj.RestaurantId,
                     Rate = (double)dynamicObj.Rate
                 })
-                .OrderByDescending(x => x.Rate)
                 .ToList();
             return result;
         }
