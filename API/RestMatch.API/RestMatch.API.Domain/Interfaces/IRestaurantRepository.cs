@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using RestMatch.API.Domain.Models;
 
@@ -6,7 +7,8 @@ namespace RestMatch.API.Domain.Interfaces
 {
     public interface IRestaurantRepository
     {
-        Task<ICollection<Restaurant>> GetRestaurants();
+        Task<List<Restaurant>?> GetRecomendedRestaurants(int userId, int? page = 1);
+        Task<ICollection<Restaurant>> GetRestaurants(string? location, List<int>? cuisines, int? lowestPrice, int? highestPrice);
         Task<Restaurant?> GetRestaurant(int id);
         Task<RestaurantImageUrl?> GetRestaurantImageUrl(int id);
         Task<RestaurantCuisine?> GetRestaurantCuisine(int id);

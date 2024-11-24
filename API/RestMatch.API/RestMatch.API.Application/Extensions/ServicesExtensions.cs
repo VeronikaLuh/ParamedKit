@@ -12,6 +12,7 @@ namespace RestMatch.API.Infrastructure.Extensions
 
         public static void ConfigureServices(this IServiceCollection services)
         {
+            services.AddScoped<IRateService, RateService>();
             services.AddScoped<IRestaurantService, RestaurantService>();
             services.AddScoped<ICuisineTypeService, CuisineTypeService>();
         }

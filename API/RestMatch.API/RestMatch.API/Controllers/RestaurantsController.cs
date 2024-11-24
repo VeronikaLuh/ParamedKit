@@ -2,6 +2,10 @@ using Microsoft.AspNetCore.Mvc;
 using RestMatch.API.Domain.Models;
 using RestMatch.API.Application.Dtos;
 using RestMatch.API.Application.Interfaces;
+using RestMatch.API.Domain.Interfaces;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Running;
+using RestMatch.API.Domain.Models.Recomendations;
 
 namespace RestMatch.API.Controllers
 {
@@ -10,18 +14,34 @@ namespace RestMatch.API.Controllers
     public class RestaurantsController : ControllerBase
     {
         private readonly IRestaurantService _service;
+        private readonly IRestaurantCriteriasRepository _restaurantCriteriasRepository;
 
-        public RestaurantsController(IRestaurantService service)
+        public RestaurantsController(IRestaurantService service, IRestaurantCriteriasRepository restaurantCriteriasRepository)
         {
             _service = service;
+            _restaurantCriteriasRepository = restaurantCriteriasRepository;
+        }
+
+        [HttpGet]
+        [Route("hello/{faceUserId:int}")]
+        public async Task<ActionResult<IEnumerable<Restaurant>>> GetUserRecommendations([FromRoute]int faceUserId)
+        {
+            var result = await _service.GetRestaurantRecomendation(faceUserId);
+
+            if (result == null)
+            {
+                return NoContent();
+            }
+
+            return Ok(result);
         }
 
         [HttpGet]
         [ProducesResponseType(typeof(ICollection<GetRestaurantResponseDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult<ICollection<GetRestaurantResponseDto>>> GetRestaurants()
+        public async Task<ActionResult<ICollection<GetRestaurantResponseDto>>> GetRestaurants([FromQuery]string? location, [FromQuery]List<int>? cuisine, [FromQuery]int? lowestPrice, [FromQuery]int? highestPrice)
         {
-            var restaurants = await _service.GetRestaurants();
+            var restaurants = await _service.GetRestaurants(location, cuisine, lowestPrice, highestPrice);
             if (restaurants.Count == 0)
                 return NoContent();
 
