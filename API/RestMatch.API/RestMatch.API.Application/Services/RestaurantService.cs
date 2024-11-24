@@ -19,8 +19,8 @@ namespace RestMatch.API.Application.Services
             _repo = repository;
         }
 
-        public async Task<ICollection<GetRestaurantResponseDto>> GetRestaurants() =>
-            _mapper.Map<List<GetRestaurantResponseDto>>(await _repo.GetRestaurants());
+        public async Task<ICollection<GetRestaurantResponseDto>> GetRestaurants(string? location, List<int>? cuisine, int? lowestPrice, int? highestPrice) =>
+            _mapper.Map<List<GetRestaurantResponseDto>>(await _repo.GetRestaurants(location, cuisine, lowestPrice, highestPrice));
 
         public async Task<GetRestaurantResponseDto?> GetRestaurant(int id)
         {
