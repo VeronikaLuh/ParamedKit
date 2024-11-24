@@ -23,34 +23,44 @@ namespace RestMatch.API.Infrastructure.Repositories
             _context = contex;
         }
 
-        public async Task<List<RestaurantIdRate>> GetRestaurantCalculatedRate(List<int> cuisinesIds, int? page = 1)
+        public async Task<PagedEntities<RestaurantIdRate>> GetRestaurantCalculatedRate(List<int> cuisinesIds, int pageNumber, int pageSize)
         {
             var cuisineNames = cuisinesIds.Select(x => ((Cuisine)x).ToString());
 
             var orderedResult = _context.Restaurants.Where(x => ((x.UpperPrice + x.LowerPrice) / 2) <= 50).Select(x => x.Id);
 
-            var query = await _context.Set<RestaurantCriteria>()
+            var list = await _context.Set<RestaurantCriteria>()
                 .Select("new (RestaurantId, " + cuisineNames.Aggregate((current, next) => $"{current} + {next}") + " as Rate)")
-                .Where($"@0.Contains(RestaurantId)", orderedResult).OrderBy("Rate descending").ToDynamicListAsync();
+                .Where($"@0.Contains(RestaurantId)", orderedResult).OrderBy("Rate descending")
+                .Skip((pageNumber - 1) * pageSize).Take(pageSize).ToDynamicListAsync();
 
-            if (query.Count < 10)
+            int firstCount = await orderedResult.CountAsync();
+            var secondOrderedResult = _context.Restaurants.Where(x => ((x.UpperPrice + x.LowerPrice) / 2) > 50).Select(x => x.Id);
+            if (list.Count < pageSize)
             {
-                orderedResult = _context.Restaurants.Where(x => ((x.UpperPrice + x.LowerPrice) / 2) > 50).Select(x => x.Id);
-                var count = 10 - query.Count;
-                var secondQuery = await _context.Set<RestaurantCriteria>()
+                var count = pageSize - list.Count;
+                var secondList = await _context.Set<RestaurantCriteria>()
                     .Select("new (RestaurantId, " + cuisineNames.Aggregate((current, next) => $"{current} + {next}") + " as Rate)")
-                    .Where($"@0.Contains(RestaurantId)", orderedResult).OrderBy("Rate descending").Take(count).ToDynamicListAsync();
-                query.AddRange(secondQuery);
+                    .Where($"@0.Contains(RestaurantId)", secondOrderedResult).OrderBy("Rate descending")
+                    .Skip((pageNumber - 1) * pageNumber - firstCount).Take(count).ToDynamicListAsync();
+                list.AddRange(secondList);
             }
+            int secondCount = await secondOrderedResult.CountAsync();
+            int totalCount = firstCount + secondCount;
+            var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
 
-            var result = query
+            var result = list
                 .Select(dynamicObj => new RestaurantIdRate
                 {
                     RestaurantId = dynamicObj.RestaurantId,
                     Rate = (double)dynamicObj.Rate
-                })
-                .ToList();
-            return result;
+                }).ToList();
+
+            return new PagedEntities<RestaurantIdRate>()
+            {
+                TotalPages = totalPages,
+                Entities = result
+            };
         }
 
         public async Task<RestaurantCriteria> GetRestaurantCriteriaAsync(int restaurantId)
@@ -66,7 +76,7 @@ namespace RestMatch.API.Infrastructure.Repositories
         {
             var restaurantCriteria = await _context.RestaurantCriterias.FirstOrDefaultAsync(x => x.RestaurantId == restaurantId);
 
-            if(restaurantCriteria == null)
+            if (restaurantCriteria == null)
                 return false;
 
             var type = restaurantCriteria.GetType();
@@ -79,7 +89,7 @@ namespace RestMatch.API.Infrastructure.Repositories
                     int count = 1;
                     foreach (var property1 in type.GetProperties())
                     {
-                        if(property1.Name == "CountOfRate" + property.Name)
+                        if (property1.Name == "CountOfRate" + property.Name)
                         {
                             count = (int)property1.GetValue(restaurantCriteria) + 1;
                             property1.SetValue(restaurantCriteria, count);

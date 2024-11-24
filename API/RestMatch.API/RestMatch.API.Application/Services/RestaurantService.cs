@@ -110,9 +110,9 @@ namespace RestMatch.API.Application.Services
         public async Task<bool> DeleteRestaurantCuisine(int id)
             => await _repo.DeleteRestaurantCuisine(id);
 
-        public async Task<IEnumerable<Restaurant>?> GetRestaurantRecomendation(int userId)
+        public async Task<PagedEntities<Restaurant>?> GetRestaurantRecomendation(int userId, int pageNumber, int pageSize)
         {
-            var recomendedRestaurants = await _repo.GetRecomendedRestaurants(userId);
+            var recomendedRestaurants = await _repo.GetRecomendedRestaurants(userId, pageNumber, pageSize);
 
             if (recomendedRestaurants == null)
                 return null;

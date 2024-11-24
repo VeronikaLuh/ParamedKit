@@ -235,7 +235,7 @@ namespace RestMatch.API.Infrastructure.Repositories
         private bool RestaurantImageUrlExists(int id) =>
             (_context.RestaurantImageUrls?.Any(p => p.Id == id)).GetValueOrDefault();
 
-        public async Task<List<Restaurant>?> GetRecomendedRestaurants(int userId, int? page = 1)
+        public async Task<PagedEntities<Restaurant>?> GetRecomendedRestaurants(int userId, int pageNumber, int pageSize)
         {
             var userSelectedCriteria = await _userSelectedCriteriasRepository.GetUserSelectedCriterias(userId);
             if (userSelectedCriteria == null)
@@ -243,19 +243,23 @@ namespace RestMatch.API.Infrastructure.Repositories
                 return null;
             }
 
-            var restaurantsAndRates = await _restaurantCriteriasRepository.GetRestaurantCalculatedRate(userSelectedCriteria, page);
+            var restaurantsAndRates = await _restaurantCriteriasRepository.GetRestaurantCalculatedRate(userSelectedCriteria, pageNumber, pageSize);
 
-            var restaurantsIds = restaurantsAndRates.Select(x => (int)x.RestaurantId);
+            var restaurantsIds = restaurantsAndRates.Entities.Select(x => (int)x.RestaurantId);
 
             var unsortedRecomendedRestaurants = await _context.Restaurants.Select(x => x).Where(r => restaurantsIds.Contains(r.Id)).ToListAsync();
 
-            var recomendedRestaurants = restaurantsAndRates.Select(x => unsortedRecomendedRestaurants.FirstOrDefault(e => e.Id == (int)x.RestaurantId)).ToList();
-            foreach (var item in restaurantsAndRates)
+            var recomendedRestaurants = restaurantsAndRates.Entities.Select(x => unsortedRecomendedRestaurants.FirstOrDefault(e => e.Id == (int)x.RestaurantId)).ToList();
+            foreach (var item in restaurantsAndRates.Entities)
             {
                 Console.WriteLine($"Id: {item.RestaurantId} Rate: {item.Rate}");
             }
 
-            return recomendedRestaurants!;
+            return new PagedEntities<Restaurant>()
+            {
+                TotalPages = restaurantsAndRates.TotalPages,
+                Entities = recomendedRestaurants!
+            };
         }
     }
 }

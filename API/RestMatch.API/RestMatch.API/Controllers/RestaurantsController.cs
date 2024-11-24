@@ -24,9 +24,9 @@ namespace RestMatch.API.Controllers
 
         [HttpGet]
         [Route("hello/{faceUserId:int}")]
-        public async Task<ActionResult<PagedEntities<Restaurant>>> GetUserRecommendations([FromRoute] int faceUserId)
+        public async Task<ActionResult<PagedEntities<Restaurant>>> GetUserRecommendations([FromRoute] int faceUserId, [FromQuery] int pageNumber, [FromQuery] int pageSize)
         {
-            var result = await _service.GetRestaurantRecomendation(faceUserId);
+            var result = await _service.GetRestaurantRecomendation(faceUserId, pageNumber, pageSize);
 
             if (result == null)
             {

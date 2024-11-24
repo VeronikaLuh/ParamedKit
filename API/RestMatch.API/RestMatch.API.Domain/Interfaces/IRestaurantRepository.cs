@@ -7,7 +7,7 @@ namespace RestMatch.API.Domain.Interfaces
 {
     public interface IRestaurantRepository
     {
-        Task<List<Restaurant>?> GetRecomendedRestaurants(int userId, int? page = 1);
+        Task<PagedEntities<Restaurant>?> GetRecomendedRestaurants(int userId, int pageNumber, int pageSize);
         Task<PagedEntities<Restaurant>> GetRestaurants(
             string? location,
             List<int>? cuisines,
