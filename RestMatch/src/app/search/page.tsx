@@ -6,17 +6,25 @@ import classes from "./page.module.scss";
 import restaurantService from "@/services/restaurant.service";
 import {useEffect, useState} from "react";
 import {Restaurant} from "@/models/Restaurant";
+import {Cuisine} from "@/models/Cuisines";
 
 const SearchPage = () => {
   const [data, setData] = useState<Restaurant[]>([]);
+  const [cuisinesTypes, setCuisinesTypes] = useState<Cuisine[]>([]);
 
   const fetchRestaurants = async () => {
     const response = await restaurantService.getRestaurants();
     setData(response.data);
   }
 
+  const fetchCuisines = async () => {
+    const response = await restaurantService.getCuisines();
+    setCuisinesTypes(response.data);
+  }
+
   useEffect(() => {
     fetchRestaurants();
+    fetchCuisines();
   }, []);
 
 
@@ -73,6 +81,8 @@ const SearchPage = () => {
           city={restaurant.city}
           price={restaurant.lowerPrice}
           description={restaurant.aboutText}
+          cuisinesTypes={cuisinesTypes}
+          cuisineId={restaurant.cuisines[0].typeId}
         />
 
       ))}

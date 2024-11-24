@@ -1,9 +1,9 @@
-import {Cuisine} from "@/models/Cuisinej";
+import {CuisineDto} from "@/models/Cuisines";
 import {ImageUrl} from "@/models/ImageUrl";
 
 export interface Restaurant {
   id: number;
-  cuisines: Cuisine[];
+  cuisines: CuisineDto[];
   imageUrls: ImageUrl[];
   name: string;
   country: string;

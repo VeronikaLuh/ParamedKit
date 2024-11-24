@@ -1,5 +1,7 @@
-import { imageUrl } from "@/utils/constants";
+import {imageUrl} from "@/utils/constants";
 import React from "react";
+import {Cuisine} from "@/models/Cuisines";
+import {findRightCuisineType} from "@/utils/utils";
 
 interface RestaurantCardProps {
   url?: string;
@@ -7,11 +9,24 @@ interface RestaurantCardProps {
   city: string;
   price: number;
   description: string;
+  cuisinesTypes: Cuisine[];
+  cuisineId: number;
 }
 
-const RestaurantCard: React.FC<RestaurantCardProps> = ({url, name, city, description, price}) => {
+const RestaurantCard: React.FC<RestaurantCardProps> = (
+  {
+    url,
+    name,
+    city,
+    description,
+    price,
+    cuisinesTypes,
+    cuisineId
+  }
+) => {
   return (
-    <div className="bg-[#8d6539] rounded-[10px] flex items-center justify-between mb-14 px-[31px] pt-[34px] pb-[24px] gap-4 drop-shadow-2xl min-w-[55.9rem]">
+    <div
+      className="bg-[#8d6539] rounded-[10px] flex items-center justify-between mb-14 px-[31px] pt-[34px] pb-[24px] gap-4 drop-shadow-2xl min-w-[55.9rem]">
       <img
         className="rounded-lg w-[316px] h-[239px]"
         src={`${imageUrl}/searchpage/restourant-icon.jpg`}
@@ -21,7 +36,7 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({url, name, city, descrip
         <h3 className="leading-none text-[36px] font-normal">
           {name}
         </h3>
-        <h3 className="text-[32px]">{city} • {price} ₴ • Italic</h3>
+        <h3 className="text-[32px]">{city} • {price} ₴ • {findRightCuisineType(cuisinesTypes, cuisineId)}</h3>
         <p className="text-[20px] overflow-hidden">
           {description}
         </p>

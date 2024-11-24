@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server'
+import {NextResponse} from 'next/server'
 import {HttpMethods} from "@/types/enum";
 import ApiService from "@/services/api.service";
 
@@ -9,7 +9,7 @@ export async function GET(req: Request) {
     req: req
   });
 
-  return NextResponse.json({ data: response });
+  return NextResponse.json({data: response});
 }
 
 export async function POST(req: Request) {
@@ -19,10 +19,10 @@ export async function POST(req: Request) {
     req: req
   });
 
-  return NextResponse.json({ data: response });
+  return NextResponse.json({data: response});
 }
 
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
+export async function PUT(req: Request, {params}: { params: { id: string } }) {
   const id = parseInt(params.id, 10);
 
   const response = await ApiService.makeHttpsRequest({
@@ -31,10 +31,10 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
     req: req
   });
 
-  return NextResponse.json({ data: response });
+  return NextResponse.json({data: response});
 }
 
-export async function DELETE(req: Request, { params }: { params: { id: string } }) {
+export async function DELETE(req: Request, {params}: { params: { id: string } }) {
   const id = parseInt(params.id, 10);
 
   const response = await ApiService.makeHttpsRequest({
@@ -43,5 +43,5 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
     req: req
   });
 
-  return NextResponse.json({ data: response });
+  return NextResponse.json({data: response});
 }
