@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using RestMatch.API.Domain.Enums;
 using RestMatch.API.Domain.Models;
+using RestMatch.API.Domain.Models.UserModel;
 
 namespace RestMatch.API.Infrastructure.Data
 {
@@ -155,6 +156,16 @@ namespace RestMatch.API.Infrastructure.Data
                 }
             }
             modelBuilder.Entity<RestaurantCuisine>().HasData(cuisines);
+
+            modelBuilder.Entity<Role>().HasData(
+                Enum.GetValues(typeof(Roles))
+                    .Cast<Roles>()
+                    .Select(i => new Role
+                    {
+                        Id = (int)i,
+                        RoleName = i.ToString(),
+                    })
+            );
         }
     }
 }

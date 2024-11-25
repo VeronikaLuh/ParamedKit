@@ -3,9 +3,6 @@ using RestMatch.API.Domain.Models;
 using RestMatch.API.Application.Dtos;
 using RestMatch.API.Application.Interfaces;
 using RestMatch.API.Domain.Interfaces;
-using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Running;
-using RestMatch.API.Domain.Models.Recomendations;
 
 namespace RestMatch.API.Controllers
 {

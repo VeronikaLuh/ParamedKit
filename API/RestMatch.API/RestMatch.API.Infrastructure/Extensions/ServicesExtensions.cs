@@ -24,6 +24,7 @@ namespace RestMatch.API.Infrastructure.Extensions
             services.AddScoped<IRestaurantCriteriasRepository, RestaurantCriteriasRepository>();
             services.AddScoped<IUserSelectedCriteriasRepository, UserSelectedCriteriasRepository>();
             services.AddScoped<IReviewRepository, ReviewRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
         }
     }
 }
