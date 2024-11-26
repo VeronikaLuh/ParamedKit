@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RestMatch.API.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using RestMatch.API.Infrastructure.Data;
 namespace RestMatch.API.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241126125745_Add_Favourites_Table")]
+    partial class Add_Favourites_Table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -350,10 +353,10 @@ namespace RestMatch.API.Infrastructure.Migrations
                             ClosingTime = new TimeSpan(0, 22, 0, 0, 0),
                             CountOfRate = 0,
                             Country = "Fictivia",
-                            CreatedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1274),
+                            CreatedAt = new DateTime(2024, 11, 26, 12, 57, 44, 993, DateTimeKind.Utc).AddTicks(9722),
                             LowerPrice = 20,
                             MenuUrl = "https://www.goldenoak.com/menu",
-                            ModifiedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1277),
+                            ModifiedAt = new DateTime(2024, 11, 26, 12, 57, 44, 993, DateTimeKind.Utc).AddTicks(9728),
                             Name = "The Golden Oak",
                             OpeningTime = new TimeSpan(0, 10, 0, 0, 0),
                             PhoneNumber = "+1 234-567-8901",
@@ -369,10 +372,10 @@ namespace RestMatch.API.Infrastructure.Migrations
                             ClosingTime = new TimeSpan(0, 23, 0, 0, 0),
                             CountOfRate = 0,
                             Country = "Etherea",
-                            CreatedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1278),
+                            CreatedAt = new DateTime(2024, 11, 26, 12, 57, 44, 993, DateTimeKind.Utc).AddTicks(9728),
                             LowerPrice = 30,
                             MenuUrl = "https://www.lunabistro.com/menu",
-                            ModifiedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1279),
+                            ModifiedAt = new DateTime(2024, 11, 26, 12, 57, 44, 993, DateTimeKind.Utc).AddTicks(9728),
                             Name = "Luna’s Bistro",
                             OpeningTime = new TimeSpan(0, 11, 0, 0, 0),
                             PhoneNumber = "+2 345-678-9012",
@@ -388,10 +391,10 @@ namespace RestMatch.API.Infrastructure.Migrations
                             ClosingTime = new TimeSpan(0, 23, 30, 0, 0),
                             CountOfRate = 0,
                             Country = "Fictivia",
-                            CreatedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1279),
+                            CreatedAt = new DateTime(2024, 11, 26, 12, 57, 44, 993, DateTimeKind.Utc).AddTicks(9729),
                             LowerPrice = 50,
                             MenuUrl = "https://www.crimsonbarrel.com/menu",
-                            ModifiedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1279),
+                            ModifiedAt = new DateTime(2024, 11, 26, 12, 57, 44, 993, DateTimeKind.Utc).AddTicks(9729),
                             Name = "Crimson Barrel",
                             OpeningTime = new TimeSpan(0, 12, 0, 0, 0),
                             PhoneNumber = "+3 567-890-1234",
@@ -407,10 +410,10 @@ namespace RestMatch.API.Infrastructure.Migrations
                             ClosingTime = new TimeSpan(0, 20, 0, 0, 0),
                             CountOfRate = 0,
                             Country = "Arcadia",
-                            CreatedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1280),
+                            CreatedAt = new DateTime(2024, 11, 26, 12, 57, 44, 993, DateTimeKind.Utc).AddTicks(9729),
                             LowerPrice = 40,
                             MenuUrl = "https://www.velvetspoon.com/menu",
-                            ModifiedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1280),
+                            ModifiedAt = new DateTime(2024, 11, 26, 12, 57, 44, 993, DateTimeKind.Utc).AddTicks(9730),
                             Name = "The Velvet Spoon",
                             OpeningTime = new TimeSpan(0, 8, 30, 0, 0),
                             PhoneNumber = "+4 678-901-2345",
@@ -426,10 +429,10 @@ namespace RestMatch.API.Infrastructure.Migrations
                             ClosingTime = new TimeSpan(0, 21, 30, 0, 0),
                             CountOfRate = 0,
                             Country = "Nautica",
-                            CreatedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1280),
+                            CreatedAt = new DateTime(2024, 11, 26, 12, 57, 44, 993, DateTimeKind.Utc).AddTicks(9730),
                             LowerPrice = 25,
                             MenuUrl = "https://www.seasidegrill.com/menu",
-                            ModifiedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1281),
+                            ModifiedAt = new DateTime(2024, 11, 26, 12, 57, 44, 993, DateTimeKind.Utc).AddTicks(9730),
                             Name = "Seaside Grill",
                             OpeningTime = new TimeSpan(0, 9, 0, 0, 0),
                             PhoneNumber = "+5 890-123-4567",
@@ -470,58 +473,42 @@ namespace RestMatch.API.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1484),
-                            ModifiedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1485),
+                            CreatedAt = new DateTime(2024, 11, 26, 12, 57, 44, 993, DateTimeKind.Utc).AddTicks(9993),
+                            ModifiedAt = new DateTime(2024, 11, 26, 12, 57, 44, 993, DateTimeKind.Utc).AddTicks(9994),
                             RestaurantId = 1,
-                            TypeId = 9
+                            TypeId = 10
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1488),
-                            ModifiedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1488),
-                            RestaurantId = 1,
-                            TypeId = 10
+                            CreatedAt = new DateTime(2024, 11, 26, 12, 57, 44, 994, DateTimeKind.Utc).AddTicks(64),
+                            ModifiedAt = new DateTime(2024, 11, 26, 12, 57, 44, 994, DateTimeKind.Utc).AddTicks(64),
+                            RestaurantId = 2,
+                            TypeId = 7
                         },
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1537),
-                            ModifiedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1537),
-                            RestaurantId = 2,
-                            TypeId = 3
+                            CreatedAt = new DateTime(2024, 11, 26, 12, 57, 44, 994, DateTimeKind.Utc).AddTicks(73),
+                            ModifiedAt = new DateTime(2024, 11, 26, 12, 57, 44, 994, DateTimeKind.Utc).AddTicks(73),
+                            RestaurantId = 3,
+                            TypeId = 4
                         },
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1545),
-                            ModifiedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1546),
-                            RestaurantId = 3,
-                            TypeId = 3
+                            CreatedAt = new DateTime(2024, 11, 26, 12, 57, 44, 994, DateTimeKind.Utc).AddTicks(81),
+                            ModifiedAt = new DateTime(2024, 11, 26, 12, 57, 44, 994, DateTimeKind.Utc).AddTicks(81),
+                            RestaurantId = 4,
+                            TypeId = 4
                         },
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1553),
-                            ModifiedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1553),
-                            RestaurantId = 4,
-                            TypeId = 2
-                        },
-                        new
-                        {
-                            Id = 6,
-                            CreatedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1555),
-                            ModifiedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1556),
-                            RestaurantId = 4,
-                            TypeId = 10
-                        },
-                        new
-                        {
-                            Id = 7,
-                            CreatedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1564),
-                            ModifiedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1564),
+                            CreatedAt = new DateTime(2024, 11, 26, 12, 57, 44, 994, DateTimeKind.Utc).AddTicks(89),
+                            ModifiedAt = new DateTime(2024, 11, 26, 12, 57, 44, 994, DateTimeKind.Utc).AddTicks(89),
                             RestaurantId = 5,
-                            TypeId = 2
+                            TypeId = 1
                         });
                 });
 
@@ -556,56 +543,56 @@ namespace RestMatch.API.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1369),
-                            ModifiedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1370),
+                            CreatedAt = new DateTime(2024, 11, 26, 12, 57, 44, 993, DateTimeKind.Utc).AddTicks(9829),
+                            ModifiedAt = new DateTime(2024, 11, 26, 12, 57, 44, 993, DateTimeKind.Utc).AddTicks(9830),
                             RestaurantId = 1,
                             Url = "http://example.com/the_golden_oak0"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1372),
-                            ModifiedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1372),
-                            RestaurantId = 1,
-                            Url = "http://example.com/the_golden_oak1"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1405),
-                            ModifiedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1405),
+                            CreatedAt = new DateTime(2024, 11, 26, 12, 57, 44, 993, DateTimeKind.Utc).AddTicks(9870),
+                            ModifiedAt = new DateTime(2024, 11, 26, 12, 57, 44, 993, DateTimeKind.Utc).AddTicks(9870),
                             RestaurantId = 2,
                             Url = "http://example.com/luna’s_bistro0"
                         },
                         new
                         {
+                            Id = 3,
+                            CreatedAt = new DateTime(2024, 11, 26, 12, 57, 44, 993, DateTimeKind.Utc).AddTicks(9872),
+                            ModifiedAt = new DateTime(2024, 11, 26, 12, 57, 44, 993, DateTimeKind.Utc).AddTicks(9872),
+                            RestaurantId = 2,
+                            Url = "http://example.com/luna’s_bistro1"
+                        },
+                        new
+                        {
                             Id = 4,
-                            CreatedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1407),
-                            ModifiedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1408),
+                            CreatedAt = new DateTime(2024, 11, 26, 12, 57, 44, 993, DateTimeKind.Utc).AddTicks(9877),
+                            ModifiedAt = new DateTime(2024, 11, 26, 12, 57, 44, 993, DateTimeKind.Utc).AddTicks(9877),
                             RestaurantId = 3,
                             Url = "http://example.com/crimson_barrel0"
                         },
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1410),
-                            ModifiedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1410),
+                            CreatedAt = new DateTime(2024, 11, 26, 12, 57, 44, 993, DateTimeKind.Utc).AddTicks(9882),
+                            ModifiedAt = new DateTime(2024, 11, 26, 12, 57, 44, 993, DateTimeKind.Utc).AddTicks(9882),
                             RestaurantId = 4,
                             Url = "http://example.com/the_velvet_spoon0"
                         },
                         new
                         {
                             Id = 6,
-                            CreatedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1412),
-                            ModifiedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1412),
+                            CreatedAt = new DateTime(2024, 11, 26, 12, 57, 44, 993, DateTimeKind.Utc).AddTicks(9885),
+                            ModifiedAt = new DateTime(2024, 11, 26, 12, 57, 44, 993, DateTimeKind.Utc).AddTicks(9886),
                             RestaurantId = 4,
                             Url = "http://example.com/the_velvet_spoon1"
                         },
                         new
                         {
                             Id = 7,
-                            CreatedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1414),
-                            ModifiedAt = new DateTime(2024, 11, 26, 13, 58, 11, 813, DateTimeKind.Utc).AddTicks(1415),
+                            CreatedAt = new DateTime(2024, 11, 26, 12, 57, 44, 993, DateTimeKind.Utc).AddTicks(9890),
+                            ModifiedAt = new DateTime(2024, 11, 26, 12, 57, 44, 993, DateTimeKind.Utc).AddTicks(9890),
                             RestaurantId = 5,
                             Url = "http://example.com/seaside_grill0"
                         });
@@ -761,7 +748,7 @@ namespace RestMatch.API.Infrastructure.Migrations
             modelBuilder.Entity("RestMatch.API.Domain.Models.Favourite", b =>
                 {
                     b.HasOne("RestMatch.API.Domain.Models.Restaurant", "Restaurant")
-                        .WithMany()
+                        .WithMany("Favourites")
                         .HasForeignKey("RestaurantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -882,6 +869,8 @@ namespace RestMatch.API.Infrastructure.Migrations
             modelBuilder.Entity("RestMatch.API.Domain.Models.Restaurant", b =>
                 {
                     b.Navigation("Cuisines");
+
+                    b.Navigation("Favourites");
 
                     b.Navigation("ImageUrls");
                 });

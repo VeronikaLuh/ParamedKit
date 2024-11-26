@@ -34,6 +34,7 @@ namespace RestMatch.API.Infrastructure.Data
         public DbSet<RestaurantCriteria> RestaurantCriterias { get; set; }
         public DbSet<UserSelectedCriteria> UserSelectedCriterias { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<Favourite> Favourites { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
