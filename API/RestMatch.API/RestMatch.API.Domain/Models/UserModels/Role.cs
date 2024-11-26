@@ -5,11 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RestMatch.API.Domain.Models.UserModel
+namespace RestMatch.API.Domain.Models.UserModels
 {
     public class Role: BaseEntity
     {
         public int Id { get; set; }
         public string RoleName { get; set; }
+
+        public IEnumerable<User> User { get; set; }
     }
 }

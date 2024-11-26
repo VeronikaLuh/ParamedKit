@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RestMatch.API.Domain.Interfaces;
@@ -25,6 +25,7 @@ namespace RestMatch.API.Infrastructure.Extensions
             services.AddScoped<IUserSelectedCriteriasRepository, UserSelectedCriteriasRepository>();
             services.AddScoped<IReviewRepository, ReviewRepository>();
             services.AddScoped<IFavouritesRepository, FavouritesRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
         }
     }
 }

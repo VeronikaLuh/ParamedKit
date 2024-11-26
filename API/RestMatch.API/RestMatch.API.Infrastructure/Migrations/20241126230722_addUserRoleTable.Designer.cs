@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RestMatch.API.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using RestMatch.API.Infrastructure.Data;
 namespace RestMatch.API.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241126230722_addUserRoleTable")]
+    partial class addUserRoleTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,35 +92,6 @@ namespace RestMatch.API.Infrastructure.Migrations
                             Id = 10,
                             Name = "Ukrainian"
                         });
-                });
-
-            modelBuilder.Entity("RestMatch.API.Domain.Models.Favourite", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("ModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("RestaurantId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RestaurantId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Favourites");
                 });
 
             modelBuilder.Entity("RestMatch.API.Domain.Models.Recomendations.RestaurantCriteria", b =>
@@ -505,7 +479,7 @@ namespace RestMatch.API.Infrastructure.Migrations
                             CreatedAt = new DateTime(2024, 11, 26, 23, 7, 22, 127, DateTimeKind.Utc).AddTicks(1100),
                             ModifiedAt = new DateTime(2024, 11, 26, 23, 7, 22, 127, DateTimeKind.Utc).AddTicks(1100),
                             RestaurantId = 4,
-                            TypeId = 2
+                            TypeId = 3
                         },
                         new
                         {
@@ -774,25 +748,6 @@ namespace RestMatch.API.Infrastructure.Migrations
                     b.ToTable("UserSelectedCriterias");
                 });
 
-            modelBuilder.Entity("RestMatch.API.Domain.Models.Favourite", b =>
-                {
-                    b.HasOne("RestMatch.API.Domain.Models.Restaurant", "Restaurant")
-                        .WithMany()
-                        .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RestMatch.API.Domain.Models.UserModels.User", "User")
-                        .WithMany("Favourites")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Restaurant");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("RoleUser", b =>
                 {
                     b.Property<int>("RoleId")
@@ -927,10 +882,6 @@ namespace RestMatch.API.Infrastructure.Migrations
 
             modelBuilder.Entity("RestMatch.API.Domain.Models.UserModels.User", b =>
                 {
-                    b.Navigation("Favourites");
-
-                    b.Navigation("Role");
-
                     b.Navigation("SelectedCriterias");
                 });
 #pragma warning restore 612, 618

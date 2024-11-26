@@ -1,6 +1,8 @@
 using RestMatch.API.Infrastructure.Extensions;
 using NSwag.Generation.Processors.Security;
 using NSwag;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +38,20 @@ builder.Services.AddOpenApiDocument(config =>
         }));
 });
 
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer(config =>
+    {
+        config.RequireHttpsMetadata = true;
+        config.TokenValidationParameters = new TokenValidationParameters()
+        {
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
+                .GetBytes(builder.Configuration.GetSection("AppSettings:Secret").Value)),
+            ValidateIssuerSigningKey = true,
+            ValidateAudience = false,
+            ValidateIssuer = false,
+        };
+    });
+
 builder.Services.ConfigureDbContext(builder.Configuration);
 
 var app = builder.Build();
@@ -47,6 +63,7 @@ app.UseCors("AllowAnyOrigins");
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
