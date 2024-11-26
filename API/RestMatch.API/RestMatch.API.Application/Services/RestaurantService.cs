@@ -19,8 +19,22 @@ namespace RestMatch.API.Application.Services
             _repo = repository;
         }
 
-        public async Task<ICollection<GetRestaurantResponseDto>> GetRestaurants(string? location, List<int>? cuisine, int? lowestPrice, int? highestPrice) =>
-            _mapper.Map<List<GetRestaurantResponseDto>>(await _repo.GetRestaurants(location, cuisine, lowestPrice, highestPrice));
+        public async Task<PagedEntities<GetRestaurantResponseDto>> GetRestaurants(
+            string? location,
+            List<int>? cuisine,
+            int? lowestPrice,
+            int? highestPrice,
+            string? sortOrder,
+            int pageNumber,
+            int pageSize)
+        {
+            var pagedRestaurants = await _repo.GetRestaurants(location, cuisine, lowestPrice, highestPrice, sortOrder, pageNumber, pageSize);
+            return new PagedEntities<GetRestaurantResponseDto>()
+            {
+                TotalPages = pagedRestaurants.TotalPages,
+                Entities = _mapper.Map<List<GetRestaurantResponseDto>>(pagedRestaurants.Entities)
+            };
+        }
 
         public async Task<GetRestaurantResponseDto?> GetRestaurant(int id)
         {
@@ -96,9 +110,9 @@ namespace RestMatch.API.Application.Services
         public async Task<bool> DeleteRestaurantCuisine(int id)
             => await _repo.DeleteRestaurantCuisine(id);
 
-        public async Task<IEnumerable<Restaurant>?> GetRestaurantRecomendation(int userId)
+        public async Task<PagedEntities<Restaurant>?> GetRestaurantRecomendation(int userId, int pageNumber, int pageSize)
         {
-            var recomendedRestaurants = await _repo.GetRecomendedRestaurants(userId);
+            var recomendedRestaurants = await _repo.GetRecomendedRestaurants(userId, pageNumber, pageSize);
 
             if (recomendedRestaurants == null)
                 return null;

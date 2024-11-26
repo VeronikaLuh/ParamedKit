@@ -33,7 +33,7 @@ const Header = () => {
   }
 
   return (
-    <header className="bg-[#875C2D] fixed top-0 left-0 right-0 h-[67px] w-full pt-[12px] pb-[15px] px-3 z-[110]">
+    <header className="bg-[#352414] fixed top-0 left-0 right-0 h-[67px] w-full pt-[12px] pb-[15px] px-3 z-[110]">
       <div className="flex justify-between h-full">
         <Image
           width="139"

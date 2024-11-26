@@ -1,11 +1,37 @@
+'use client';
+
 import RestaurantCard from "@/components/search-page/restaurant-card";
-import { imageUrl } from "@/utils/constants";
+import {imageUrl} from "@/utils/constants";
 import classes from "./page.module.scss";
+import restaurantService from "@/services/restaurant.service";
+import {useCallback, useEffect, useState} from "react";
+import {Restaurant} from "@/models/Restaurant";
+import {Cuisine} from "@/models/Cuisines";
 
 const SearchPage = () => {
+  const [data, setData] = useState<Restaurant[]>([]);
+  const [cuisinesTypes, setCuisinesTypes] = useState<Cuisine[]>([]);
+
+  const fetchRestaurants = useCallback(async () => {
+    const response = await restaurantService.getRestaurants();
+    setData(response.data);
+  }, []);
+
+  const fetchCuisines = useCallback(async () => {
+    const response = await restaurantService.getCuisines();
+    setCuisinesTypes(response.data);
+  }, []);
+
+  useEffect(() => {
+    fetchRestaurants();
+    fetchCuisines();
+  }, [fetchCuisines, fetchRestaurants]);
+
+
   return (
     <div className="bg-[#9F784E] flex flex-col w-full min-w-[55.9rem] max-w-[100rem] mx-auto">
-      <div className="flex items-center bg-white rounded-[10px] gap-3 p-4 justify-between my-8 drop-shadow-lg min-w-[55.9rem]">
+      <div
+        className="flex items-center bg-white rounded-[10px] gap-3 p-4 justify-between my-8 drop-shadow-lg min-w-[55.9rem]">
         <img
           className="h-[39px] w-[39px]"
           src={`${imageUrl}/searchpage/search.png`}
@@ -33,8 +59,9 @@ const SearchPage = () => {
           </div>
           <div className={`${classes["custom-select"]} col-span-2`}>
             <select>
-              <option>Cuisine</option>
-              <option>Mediterranean</option>
+              {cuisinesTypes.length > 0 && cuisinesTypes.map((cuisine) => (
+                <option key={cuisine.id}>{cuisine.name}</option>
+              ))}
             </select>
           </div>
         </div>
@@ -44,17 +71,23 @@ const SearchPage = () => {
       </div>
       <div>
         <h3 className="text-[25px] font-medium mb-1">
-          Number of results: (12)
+          Number of results: ({data.length})
         </h3>
-        <h4 className="text-[20px] mb-7">1 to 5 of 12:</h4>
+        <h4 className="text-[20px] mb-7">1 to 5 of {data.length}:</h4>
       </div>
-      <RestaurantCard />
-      <RestaurantCard />
-      <RestaurantCard />
-      <RestaurantCard />
-      <RestaurantCard />
-      <RestaurantCard />
-      <RestaurantCard />
+      {data.length > 0 && data.map((restaurant, index) => (
+        <RestaurantCard
+          key={index}
+          id={restaurant.id}
+          name={restaurant.name}
+          city={restaurant.city}
+          price={restaurant.lowerPrice}
+          description={restaurant.aboutText}
+          cuisinesTypes={cuisinesTypes}
+          cuisineId={restaurant.cuisines[0].typeId}
+        />
+
+      ))}
     </div>
   );
 };

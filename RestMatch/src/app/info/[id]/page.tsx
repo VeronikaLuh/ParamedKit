@@ -1,8 +1,28 @@
-import React from 'react';
+'use client';
+
+import React, {useCallback, useEffect, useState} from 'react';
 import {iconUrl, imageUrl} from "@/utils/constants";
 import Stat from "@/components/info/Stat";
+import restaurantService from "@/services/restaurant.service";
+import {Restaurant} from "@/models/Restaurant";
+import {useParams} from "next/navigation";
 
 const Info = () => {
+  const [data, setData] = useState<Restaurant>();
+
+  const params = useParams();
+  const { id } = params as { id: string };
+
+  const fetchRestaurant = useCallback(async (id: string) => {
+    const response = await restaurantService.getRestaurant(id);
+    setData(response.data);
+  }, []);
+
+  useEffect(() => {
+    if (!id) return
+    fetchRestaurant(id);
+  }, [fetchRestaurant, id]);
+
   return (
     <div className='px-8 mt-10'>
       <div>
@@ -15,11 +35,11 @@ const Info = () => {
         <div className='mt-10 flex gap-11'>
           <img className='' src={`${imageUrl}/info/restaurant.png`} alt="restaurant"/>
           <div className='flex flex-col'>
-            <Stat icon='point' content='Lviv, st. Krakivska, 7' styles='mb-10'/>
+            <Stat icon='point' content={data?.address} styles='mb-10'/>
             <Stat icon='clock' content='10:00 — 22:00' styles='mb-10'/>
-            <Stat icon='coin' content='150-360 ₴' styles='mb-10'/>
+            <Stat icon='coin' content={`${data?.lowerPrice}-${data?.upperPrice} ₴`} styles='mb-10'/>
             <Stat icon='cutlery' content='Italic food' styles='mb-10'/>
-            <Stat icon='telephone' content='0963406073' styles='mb-10'/>
+            <Stat icon='telephone' content={data?.phoneNumber} styles='mb-10'/>
             <Stat icon='menu' content='Menu' styles='mb-10'/>
             <Stat icon='5' content={<img src={`${iconUrl}/hearts.svg`} alt="rating"/>}/>
           </div>
@@ -29,14 +49,7 @@ const Info = () => {
         <h1>About</h1>
         <hr className='mb-6'/>
         <span className='text-4xl font-medium'>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi eget faucibus
-          tortor. Vivamus blandit eros in enim mollis, vel lobortis neque eleifend. Sed a
-          consectetur tellus, ut sodales nibh. Lorem ipsum dolor sit amet, consectetur
-          adipiscing elit. Nullam ut nulla urna. Aliquam dolor nisl, convallis sit amet
-          diam ut, tempor euismod massa. Etiam commodo placerat libero, ut placerat elit
-          sagittis vel. Aenean dignissim suscipit metus nec ornare. Phasellus sed risus
-          quis metus vulputate mollis. Maecenas et justo at augue semper sagittis nec quis
-          purus. Aenean auctor eros neque, vel mollis tortor lobortis vitae.
+          {data?.aboutText}
         </span>
       </div>
       <div className='mt-11'>

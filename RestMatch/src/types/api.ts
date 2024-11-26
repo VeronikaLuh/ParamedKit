@@ -9,7 +9,6 @@ export interface ApiRequestOptions {
 export interface HttpsRequestOptions {
   url: string;
   req: any;
-  res: any;
   method: HttpMethods;
   data?: any;
 }

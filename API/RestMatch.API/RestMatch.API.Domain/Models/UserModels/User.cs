@@ -20,7 +20,7 @@ namespace RestMatch.API.Domain.Models.UserModels
         public string PasswordSalt { get; set; }
 
         public IEnumerable<Role> Role { get; set; }
-
+        public IEnumerable<Favourite> Favourites { get; set; }
         public IEnumerable<UserSelectedCriteria> SelectedCriterias { get; set; }
     }
 }
