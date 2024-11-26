@@ -16,6 +16,8 @@ namespace RestMatch.API.Controllers
             _authService = authService;
         }
 
+        [HttpPost]
+        [Route("login")]
         public async Task<ActionResult<string>> Login(LoginDto loginDto)
         {
             var token = string.Empty;
@@ -32,6 +34,8 @@ namespace RestMatch.API.Controllers
             return Ok(token);
         }
 
+        [HttpPost]
+        [Route("register")]
         public async Task<ActionResult<string>> Register(RegisterDto registerDto)
         {
             var token = await _authService.RegisterUser(registerDto);

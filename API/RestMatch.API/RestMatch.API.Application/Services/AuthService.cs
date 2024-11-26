@@ -42,13 +42,15 @@ namespace RestMatch.API.Application.Services
                 FirstName = registerDto.FirstName,
                 LastName = registerDto.LastName,
                 Nickname = registerDto.Nickname,
+                PasswordHash = JsonConvert.SerializeObject(passwordHash),
+                PasswordSalt = JsonConvert.SerializeObject(passwordSalt),
                 UserRoleId = 1
             };
 
             await _userRepository.CreateUser(user);
             await _userRepository.SaveChangesAsync();
 
-            return BuildToken(user);
+            return await BuildToken(user);
         }
 
         public async Task<string> LoginUser(LoginDto loginDto)
@@ -64,18 +66,24 @@ namespace RestMatch.API.Application.Services
                 throw new AuthenticationException("Log in failure. Try to verify your credentials.");
             }
 
-            return BuildToken(user);
+            return await BuildToken(user);
         }
 
-        public string BuildToken(User user)
+        public async Task<string> BuildToken(User user)
         {
+            var UserRole = await _userRepository.GetUserRole(user.Id);
+
             var claims = new List<Claim>
             {
                 new("sub", user.Id.ToString()),
                 new(ClaimTypes.Name, user.Nickname),
-                new(ClaimTypes.Email, user.Email),
-                new(ClaimTypes.Role, user.Role.ToString())
+                new(ClaimTypes.Email, user.Email)
             };
+
+            foreach (var role in UserRole)
+            {
+                claims.Add(new(ClaimTypes.Role, role.RoleName));
+            }
 
             var securityKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
                 _configuration.GetSection("AppSettings:Secret").Value));

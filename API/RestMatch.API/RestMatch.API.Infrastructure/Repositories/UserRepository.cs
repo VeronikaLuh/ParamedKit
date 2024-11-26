@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RestMatch.API.Domain.Interfaces;
+using RestMatch.API.Domain.Models.UserModel;
 using RestMatch.API.Domain.Models.UserModels;
 using RestMatch.API.Infrastructure.Data;
 using System;
@@ -21,6 +22,13 @@ namespace RestMatch.API.Infrastructure.Repositories
         public async Task<User?> FindUserByExpression(Expression<Func<User, bool>> expression)
         {
             return await _context.Users.FirstOrDefaultAsync(expression);
+        }
+
+        public async Task<IEnumerable<Role>> GetUserRole(int id)
+        {
+            var user = await _context.Users.Include(i => i.Role).FirstOrDefaultAsync(i => i.Id == id);
+
+            return user.Role;
         }
 
         public async Task SaveChangesAsync()
