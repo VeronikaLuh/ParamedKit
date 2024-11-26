@@ -1,4 +1,4 @@
-﻿using RestMatch.API.Domain.Models.UserModel;
+﻿using RestMatch.API.Domain.Enums;
 using RestMatch.API.Domain.Models.UserModels;
 using System;
 using System.Collections.Generic;
@@ -9,12 +9,12 @@ namespace RestMatch.API.Domain.Interfaces
 {
     public interface IUserRepository
     {
-        Task CreateUser(User user);
+        Task CreateUser(User user, IEnumerable<Roles> roles);
 
         Task<User?> FindUserByExpression(Expression<Func<User, bool>> expression);
 
         Task SaveChangesAsync();
 
-        Task<IEnumerable<Role>> GetUserRole(int id);
+        Task<IEnumerable<Role>> GetUserRoles(int id);
     }
 }

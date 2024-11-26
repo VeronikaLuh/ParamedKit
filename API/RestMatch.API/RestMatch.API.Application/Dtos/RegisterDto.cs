@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Azure.Core.Pipeline;
+using RestMatch.API.Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,5 +15,6 @@ namespace RestMatch.API.Application.Dtos
         public string Nickname { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        public IEnumerable<Roles> Roles { get; set; } = new List<Roles>() { Domain.Enums.Roles.User }; 
     }
 }

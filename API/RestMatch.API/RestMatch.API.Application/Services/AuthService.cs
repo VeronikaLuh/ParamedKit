@@ -44,10 +44,9 @@ namespace RestMatch.API.Application.Services
                 Nickname = registerDto.Nickname,
                 PasswordHash = JsonConvert.SerializeObject(passwordHash),
                 PasswordSalt = JsonConvert.SerializeObject(passwordSalt),
-                UserRoleId = 1
             };
 
-            await _userRepository.CreateUser(user);
+            await _userRepository.CreateUser(user, registerDto.Roles);
             await _userRepository.SaveChangesAsync();
 
             return await BuildToken(user);
@@ -71,7 +70,7 @@ namespace RestMatch.API.Application.Services
 
         public async Task<string> BuildToken(User user)
         {
-            var UserRole = await _userRepository.GetUserRole(user.Id);
+            var UserRole = await _userRepository.GetUserRoles(user.Id);
 
             var claims = new List<Claim>
             {

@@ -4,7 +4,6 @@ using RestMatch.API.Domain.Enums;
 using RestMatch.API.Domain.Models;
 using RestMatch.API.Domain.Models.Base;
 using RestMatch.API.Domain.Models.Recomendations;
-using RestMatch.API.Domain.Models.UserModel;
 using RestMatch.API.Domain.Models.UserModels;
 using System;
 using System.Collections.Generic;
@@ -48,16 +47,6 @@ namespace RestMatch.API.Infrastructure.Data
                 .HasOne(c => c.Cuisine)
                 .WithMany(c => c.SelectedCriterias)
                 .HasForeignKey(c => c.CuisineId);
-
-            modelBuilder.Entity<CuisineType>().HasData(
-                Enum.GetValues(typeof(Cuisine))
-                    .Cast<Cuisine>()
-                    .Select(i => new CuisineType
-                    {
-                        Id = (int)i,
-                        Name = i.ToString(),
-                    })
-            );
 
             SeedExtensions.Initialize(modelBuilder);
         }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RestMatch.API.Domain.Enums;
 using RestMatch.API.Domain.Interfaces;
-using RestMatch.API.Domain.Models.UserModel;
 using RestMatch.API.Domain.Models.UserModels;
 using RestMatch.API.Infrastructure.Data;
 using System;
@@ -14,8 +14,14 @@ namespace RestMatch.API.Infrastructure.Repositories
 {
     internal class UserRepository(ApplicationDbContext _context) : IUserRepository
     {
-        public async Task CreateUser(User user)
+        public async Task CreateUser(User user, IEnumerable<Roles> roles)
         {
+            var roleEntities = await _context.Roles
+                .Where(i => roles.Select(i => i.ToString()).Contains(i.RoleName))
+                .ToListAsync();
+
+            user.Role = roleEntities;
+
             await _context.Users.AddAsync(user);
         }
 
@@ -24,9 +30,11 @@ namespace RestMatch.API.Infrastructure.Repositories
             return await _context.Users.FirstOrDefaultAsync(expression);
         }
 
-        public async Task<IEnumerable<Role>> GetUserRole(int id)
+        public async Task<IEnumerable<Role>> GetUserRoles(int id)
         {
-            var user = await _context.Users.Include(i => i.Role).FirstOrDefaultAsync(i => i.Id == id);
+            var user = await _context.Users
+                .Include(i => i.Role)
+                .FirstOrDefaultAsync(i => i.Id == id);
 
             return user.Role;
         }
