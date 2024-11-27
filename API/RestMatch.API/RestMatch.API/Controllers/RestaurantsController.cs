@@ -3,6 +3,8 @@ using RestMatch.API.Domain.Models;
 using RestMatch.API.Application.Dtos;
 using RestMatch.API.Application.Interfaces;
 using RestMatch.API.Domain.Interfaces;
+using RestMatch.API.Application.Helper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RestMatch.API.Controllers
 {
@@ -21,9 +23,18 @@ namespace RestMatch.API.Controllers
 
         [HttpGet]
         [Route("hello/{faceUserId:int}")]
-        public async Task<ActionResult<PagedEntities<Restaurant>>> GetUserRecommendations([FromRoute] int faceUserId, [FromQuery] int pageNumber, [FromQuery] int pageSize)
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<ActionResult<PagedEntities<Restaurant>>> GetUserRecommendations([FromQuery] int pageNumber, [FromQuery] int pageSize)
         {
-            var result = await _service.GetRestaurantRecomendation(faceUserId, pageNumber, pageSize);
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            var userId = TokenDecode.GetUserIdFromToken(token);
+
+            if (userId == null)
+            {
+                return BadRequest("Can`t find user id in token");
+            }
+
+            var result = await _service.GetRestaurantRecomendation(userId.Value, pageNumber, pageSize);
 
             if (result == null)
             {

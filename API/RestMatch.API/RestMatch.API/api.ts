@@ -222,15 +222,12 @@ export class FavouritesClient extends ApiBase {
         return Promise.resolve<FileResponse>(null as any);
     }
 
-    removeFromFavourites(restaurantId: number): Promise<FileResponse> {
-        let url_ = this.baseUrl + "/api/Favourites/{restaurantId}";
-        if (restaurantId === undefined || restaurantId === null)
-            throw new Error("The parameter 'restaurantId' must be defined.");
-        url_ = url_.replace("{restaurantId}", encodeURIComponent("" + restaurantId));
+    getFavourites(): Promise<FileResponse> {
+        let url_ = this.baseUrl + "/api/Favourites";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
-            method: "DELETE",
+            method: "GET",
             headers: {
                 "Accept": "application/octet-stream"
             }
@@ -239,11 +236,11 @@ export class FavouritesClient extends ApiBase {
         return this.transformOptions(options_).then(transformedOptions_ => {
             return this.http.fetch(url_, transformedOptions_);
         }).then((_response: Response) => {
-            return this.processRemoveFromFavourites(_response);
+            return this.processGetFavourites(_response);
         });
     }
 
-    protected processRemoveFromFavourites(response: Response): Promise<FileResponse> {
+    protected processGetFavourites(response: Response): Promise<FileResponse> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200 || status === 206) {
@@ -265,12 +262,15 @@ export class FavouritesClient extends ApiBase {
         return Promise.resolve<FileResponse>(null as any);
     }
 
-    getFavourites(): Promise<FileResponse> {
-        let url_ = this.baseUrl + "/api/Favourites";
+    removeFromFavourites(favouriteId: number): Promise<FileResponse> {
+        let url_ = this.baseUrl + "/api/Favourites/{favouriteId}";
+        if (favouriteId === undefined || favouriteId === null)
+            throw new Error("The parameter 'favouriteId' must be defined.");
+        url_ = url_.replace("{favouriteId}", encodeURIComponent("" + favouriteId));
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
-            method: "GET",
+            method: "DELETE",
             headers: {
                 "Accept": "application/octet-stream"
             }
@@ -279,11 +279,11 @@ export class FavouritesClient extends ApiBase {
         return this.transformOptions(options_).then(transformedOptions_ => {
             return this.http.fetch(url_, transformedOptions_);
         }).then((_response: Response) => {
-            return this.processGetFavourites(_response);
+            return this.processRemoveFromFavourites(_response);
         });
     }
 
-    protected processGetFavourites(response: Response): Promise<FileResponse> {
+    protected processRemoveFromFavourites(response: Response): Promise<FileResponse> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200 || status === 206) {
@@ -469,7 +469,7 @@ export class RestaurantsClient extends ApiBase {
         this.baseUrl = baseUrl ?? "";
     }
 
-    getUserRecommendations(faceUserId: number, pageNumber: number | undefined, pageSize: number | undefined): Promise<PagedEntitiesOfRestaurant> {
+    getUserRecommendations(pageNumber: number | undefined, pageSize: number | undefined, faceUserId: string): Promise<PagedEntitiesOfRestaurant> {
         let url_ = this.baseUrl + "/api/Restaurants/hello/{faceUserId}?";
         if (faceUserId === undefined || faceUserId === null)
             throw new Error("The parameter 'faceUserId' must be defined.");

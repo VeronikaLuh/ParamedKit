@@ -34,9 +34,9 @@ namespace RestMatch.API.Application.Services
             return favourites;
         }
 
-        public async Task DeleteFromFavourites(int userId, int restaurantId)
+        public async Task DeleteFromFavourites(int favouriteId)
         {
-            await _favouritesRepository.RemoveFromFavourites(userId, restaurantId);
+            await _favouritesRepository.RemoveFromFavourites(favouriteId);
         }
     }
 }

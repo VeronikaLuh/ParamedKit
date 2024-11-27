@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RestMatch.API.Application.Helper;
 using RestMatch.API.Application.Interfaces;
 
 namespace RestMatch.API.Controllers
@@ -16,32 +18,51 @@ namespace RestMatch.API.Controllers
 
         [HttpPost]
         [Route("{restaurantId:int}")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult> AddNewFavourite([FromRoute]int restaurantId)
         {
-            int mockedUserId = 1;
-            await _favouritesService.AddNewFavourite(mockedUserId, restaurantId);
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            var userId = TokenDecode.GetUserIdFromToken(token);
+
+            if (userId == null)
+            {
+                return BadRequest("Can`t find user id in token");
+            }
+            await _favouritesService.AddNewFavourite(userId.Value, restaurantId);
             return Ok();
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult> GetFavourites()
         {
-            int mockedUserId = 1;
-            var favourites = await _favouritesService.GetFavourites(mockedUserId);
-            if (favourites == null)
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            Console.WriteLine(token);
+            if(token != null)
             {
-                return NoContent();
-            }
+                var userId = TokenDecode.GetUserIdFromToken(token);
 
-            return Ok(favourites);
+                if (userId == null)
+                {
+                    return BadRequest("Can`t find user id in token");
+                }
+                var favourites = await _favouritesService.GetFavourites(userId.Value);
+                if (favourites == null)
+                {
+                    return NoContent();
+                }
+
+                return Ok(favourites);
+            }
+            return BadRequest();
         }
 
         [HttpDelete]
-        [Route("{restaurantId:int}")]
-        public async Task<ActionResult> RemoveFromFavourites([FromRoute] int restaurantId)
+        [Route("{favouriteId:int}")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<ActionResult> RemoveFromFavourites([FromRoute] int favouriteId)
         {
-            int mockedUserId = 1;
-            await _favouritesService.DeleteFromFavourites(mockedUserId, restaurantId);
+            await _favouritesService.DeleteFromFavourites(favouriteId);
             return Ok();
         }
     }
