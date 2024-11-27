@@ -95,24 +95,67 @@ namespace RestMatch.API.Infrastructure.Repositories
             return query.Select(x => x).Include(r => r.Cuisines).Where(c => c.Cuisines.Any(r => cuisines.Contains(r.TypeId)));
         }
 
-        public async Task<Restaurant?> GetRestaurant(int id) =>
-            await _context.Restaurants.Where(r => r.Id == id)
-                .Include(r => r.Cuisines).Include(r => r.ImageUrls)
-                .FirstOrDefaultAsync();
+        public async Task<Restaurant?> GetRestaurant(int id)
+        {
+            return await _context.Restaurants
+                .Include(r => r.Cuisines)
+                .Include(r => r.ImageUrls)
+                .FirstOrDefaultAsync(i => i.Id == id);
+
+        }
 
         public async Task<bool> UpdateRestaurant(int id, Restaurant restaurant)
         {
             var oldRestaurant = await GetRestaurant(id);
-            if (oldRestaurant == null)
-                return false;
-            _context.RestaurantCuisines.RemoveRange(oldRestaurant.Cuisines);
-            _context.RestaurantImageUrls.RemoveRange(oldRestaurant.ImageUrls);
-            _context.Entry(oldRestaurant).State = EntityState.Detached;
 
-            restaurant.Id = id;
-            _context.Entry(restaurant).State = EntityState.Modified;
-            _context.RestaurantCuisines.AddRange(restaurant.Cuisines);
-            _context.RestaurantImageUrls.AddRange(restaurant.ImageUrls);
+            if (oldRestaurant == null)
+            {
+                return false;
+            }
+
+            _context.Entry(oldRestaurant).CurrentValues.SetValues(restaurant);
+
+            var existingCuisines = oldRestaurant.Cuisines.ToList();
+            var updatedCuisines = restaurant.Cuisines.ToList();
+
+            var cuisinesToRemove = existingCuisines
+                .Where(ec => !updatedCuisines.Any(uc => uc.Id == ec.Id))
+                .ToList();
+            _context.RestaurantCuisines.RemoveRange(cuisinesToRemove);
+
+            foreach (var updatedCuisine in updatedCuisines)
+            {
+                var existingCuisine = existingCuisines.FirstOrDefault(ec => ec.Id == updatedCuisine.Id);
+                if (existingCuisine != null)
+                {
+                    _context.Entry(existingCuisine).CurrentValues.SetValues(updatedCuisine);
+                }
+                else
+                {
+                    oldRestaurant.Cuisines.Add(updatedCuisine);
+                }
+            }
+
+            var existingImageUrls = oldRestaurant.ImageUrls.ToList();
+            var updatedImageUrls = restaurant.ImageUrls.ToList();
+
+            var imageUrlsToRemove = existingImageUrls
+                .Where(ei => !updatedImageUrls.Any(ui => ui.Id == ei.Id))
+                .ToList();
+            _context.RestaurantImageUrls.RemoveRange(imageUrlsToRemove);
+
+            foreach (var updatedImageUrl in updatedImageUrls)
+            {
+                var existingImageUrl = existingImageUrls.FirstOrDefault(ei => ei.Id == updatedImageUrl.Id);
+                if (existingImageUrl != null)
+                {
+                    _context.Entry(existingImageUrl).CurrentValues.SetValues(updatedImageUrl);
+                }
+                else
+                {
+                    oldRestaurant.ImageUrls.Add(updatedImageUrl);
+                }
+            }
 
             try
             {
@@ -121,7 +164,10 @@ namespace RestMatch.API.Infrastructure.Repositories
             catch (DbUpdateConcurrencyException)
             {
                 if (!RestaurantExists(restaurant.Id))
+                {
                     return false;
+                }
+
                 throw;
             }
 

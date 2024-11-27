@@ -413,7 +413,45 @@ export class RateClient extends ApiBase {
         this.baseUrl = baseUrl ?? "";
     }
 
-    createNewRewiew(model: CreateReviewDto): Promise<FileResponse> {
+    getAllReviews(restaurantId: number): Promise<ReviewDto[]> {
+        let url_ = this.baseUrl + "/api/Rate/{restaurantId}";
+        if (restaurantId === undefined || restaurantId === null)
+            throw new Error("The parameter 'restaurantId' must be defined.");
+        url_ = url_.replace("{restaurantId}", encodeURIComponent("" + restaurantId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processGetAllReviews(_response);
+        });
+    }
+
+    protected processGetAllReviews(response: Response): Promise<ReviewDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as ReviewDto[];
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<ReviewDto[]>(null as any);
+    }
+
+    createNewRewiew(model: ReviewDto): Promise<FileResponse> {
         let url_ = this.baseUrl + "/api/Rate";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -436,6 +474,49 @@ export class RateClient extends ApiBase {
     }
 
     protected processCreateNewRewiew(response: Response): Promise<FileResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            let fileNameMatch = contentDisposition ? /filename\*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/g.exec(contentDisposition) : undefined;
+            let fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[3] || fileNameMatch[2] : undefined;
+            if (fileName) {
+                fileName = decodeURIComponent(fileName);
+            } else {
+                fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+                fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            }
+            return response.blob().then(blob => { return { fileName: fileName, data: blob, status: status, headers: _headers }; });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<FileResponse>(null as any);
+    }
+
+    deleteReview(reviewId: number): Promise<FileResponse> {
+        let url_ = this.baseUrl + "/api/Rate/{reviewId}";
+        if (reviewId === undefined || reviewId === null)
+            throw new Error("The parameter 'reviewId' must be defined.");
+        url_ = url_.replace("{reviewId}", encodeURIComponent("" + reviewId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "DELETE",
+            headers: {
+                "Accept": "application/octet-stream"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processDeleteReview(_response);
+        });
+    }
+
+    protected processDeleteReview(response: Response): Promise<FileResponse> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200 || status === 206) {
@@ -779,12 +860,19 @@ export interface CuisineTypeDto {
     name?: string;
 }
 
-export interface CreateReviewDto {
+export interface ReviewDto {
+    id?: number | null;
     restaurantId?: number;
-    userId?: number;
+    user?: UserDto | null;
     title?: string;
     text?: string;
     rating?: number;
+}
+
+export interface UserDto {
+    id?: number;
+    nickName?: string;
+    imageUrl?: string;
 }
 
 export interface PagedEntitiesOfRestaurant {
@@ -850,6 +938,7 @@ export interface User extends BaseEntity {
     phoneNumber?: string | null;
     passwordHash?: string;
     passwordSalt?: string;
+    imageUrl?: string | null;
     role?: Role[];
     favourites?: Favourite[];
     selectedCriterias?: UserSelectedCriteria[];

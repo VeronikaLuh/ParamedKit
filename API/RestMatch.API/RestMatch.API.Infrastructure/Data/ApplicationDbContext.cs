@@ -49,7 +49,12 @@ namespace RestMatch.API.Infrastructure.Data
                 .WithMany(c => c.SelectedCriterias)
                 .HasForeignKey(c => c.CuisineId);
 
-            SeedExtensions.Initialize(modelBuilder);
+            var migrations = Database.GetAppliedMigrations();
+
+            if (!migrations.Contains("InitDatabase"))
+            {
+                SeedExtensions.Initialize(modelBuilder);
+            }
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
