@@ -1,8 +1,8 @@
 namespace RestMatch.API.Application.Dtos
 {
-    public class GetCuisineTypeResponseDto
+    public class CuisineTypeDto
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         public string Name { get; set; } = string.Empty;
     }

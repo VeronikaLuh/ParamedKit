@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Generic;
 
 namespace RestMatch.API.Application.Dtos
 {
-    public class RestaurantDtoBase
+    public class RestaurantDto
     {
+        public int? Id { get; set; }
+
         public string Name { get; set; } = string.Empty;
         public string Country { get; set; } = string.Empty;
         public string City { get; set; } = string.Empty;
@@ -16,5 +19,8 @@ namespace RestMatch.API.Application.Dtos
         public string PhoneNumber { get; set; } = string.Empty;
         public string AboutText { get; set; } = string.Empty;
         public string MenuUrl { get; set; } = string.Empty;
+
+        public IEnumerable<RestaurantCuisineDto> Cuisines { get; set; } = null!;
+        public IEnumerable<RestaurantImageUrlDto> ImageUrls { get; set; } = null!;
     }
 }

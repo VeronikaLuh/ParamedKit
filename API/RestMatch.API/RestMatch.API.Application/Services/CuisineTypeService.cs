@@ -18,7 +18,7 @@ namespace RestMatch.API.Application.Services
             _repo = repository;
         }
 
-        public async Task<ICollection<GetCuisineTypeResponseDto>> GetCuisineTypes() =>
-            _mapper.Map<List<GetCuisineTypeResponseDto>>(await _repo.GetCuisineTypes());
+        public async Task<ICollection<CuisineTypeDto>> GetCuisineTypes() =>
+            _mapper.Map<List<CuisineTypeDto>>(await _repo.GetCuisineTypes());
     }
 }

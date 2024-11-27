@@ -100,19 +100,19 @@ namespace RestMatch.API.Infrastructure.Repositories
                 .Include(r => r.Cuisines).Include(r => r.ImageUrls)
                 .FirstOrDefaultAsync();
 
-        public async Task<RestaurantImageUrl?> GetRestaurantImageUrl(int id) =>
-            await _context.RestaurantImageUrls.Where(r => r.Id == id)
-                .Include(r => r.Restaurant).FirstOrDefaultAsync();
-
-        public async Task<RestaurantCuisine?> GetRestaurantCuisine(int id) =>
-            await _context.RestaurantCuisines.Where(r => r.Id == id)
-                .Include(r => r.Restaurant).Include(r => r.Type)
-                .FirstOrDefaultAsync();
-
         public async Task<bool> UpdateRestaurant(int id, Restaurant restaurant)
         {
+            var oldRestaurant = await GetRestaurant(id);
+            if (oldRestaurant == null)
+                return false;
+            _context.RestaurantCuisines.RemoveRange(oldRestaurant.Cuisines);
+            _context.RestaurantImageUrls.RemoveRange(oldRestaurant.ImageUrls);
+            _context.Entry(oldRestaurant).State = EntityState.Detached;
+
             restaurant.Id = id;
             _context.Entry(restaurant).State = EntityState.Modified;
+            _context.RestaurantCuisines.AddRange(restaurant.Cuisines);
+            _context.RestaurantImageUrls.AddRange(restaurant.ImageUrls);
 
             try
             {
@@ -128,66 +128,14 @@ namespace RestMatch.API.Infrastructure.Repositories
             return true;
         }
 
-        public async Task<bool> UpdateRestaurantImageUrl(int id, RestaurantImageUrl imageUrl)
-        {
-            var oldImageUrl = await _context.RestaurantImageUrls.FirstOrDefaultAsync(r => r.Id == id);
-            if (oldImageUrl == null)
-                return false;
-            _context.Entry(oldImageUrl).State = EntityState.Detached;
-            imageUrl.Id = id;
-            imageUrl.RestaurantId = oldImageUrl.RestaurantId;
-            _context.Entry(imageUrl).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RestaurantImageUrlExists(imageUrl.Id))
-                    return false;
-                throw;
-            }
-
-            return true;
-        }
-
         public async Task<Restaurant> AddRestaurant(Restaurant restaurant)
         {
+            restaurant.Id = 0;
             _context.Restaurants.Add(restaurant);
+            _context.RestaurantCuisines.AddRange(restaurant.Cuisines);
+            _context.RestaurantImageUrls.AddRange(restaurant.ImageUrls);
             await _context.SaveChangesAsync();
             return restaurant;
-        }
-
-        public async Task<RestaurantImageUrl?> AddRestaurantImageUrl(int restaurantId, RestaurantImageUrl imageUrl)
-        {
-            var restaurant = await GetRestaurant(restaurantId);
-            if (restaurant == null)
-                return null;
-
-            imageUrl.Restaurant = restaurant;
-            _context.RestaurantImageUrls.Add(imageUrl);
-            await _context.SaveChangesAsync();
-            return imageUrl;
-        }
-
-        public async Task<RestaurantCuisine?> AddRestaurantCuisine(int restaurantId, int cuisineTypeId)
-        {
-            var restaurant = await GetRestaurant(restaurantId);
-            if (restaurant == null)
-                return null;
-            var cuisineType = await _context.Cuisines.FirstOrDefaultAsync(c => c.Id == cuisineTypeId);
-            if (cuisineType == null)
-                return null;
-
-            var cuisine = new RestaurantCuisine
-            {
-                Restaurant = restaurant,
-                Type = cuisineType
-            };
-            _context.RestaurantCuisines.Add(cuisine);
-            await _context.SaveChangesAsync();
-            return cuisine;
         }
 
         public async Task<bool> DeleteRestaurant(int id)
@@ -205,35 +153,8 @@ namespace RestMatch.API.Infrastructure.Repositories
             return true;
         }
 
-        public async Task<bool> DeleteRestaurantImageUrl(int id)
-        {
-            var imageUrl = await GetRestaurantImageUrl(id);
-            if (imageUrl == null)
-                return false;
-
-            _context.RestaurantImageUrls.Remove(imageUrl);
-            await _context.SaveChangesAsync();
-
-            return true;
-        }
-
-        public async Task<bool> DeleteRestaurantCuisine(int id)
-        {
-            var cuisine = await GetRestaurantCuisine(id);
-            if (cuisine == null)
-                return false;
-
-            _context.RestaurantCuisines.Remove(cuisine);
-            await _context.SaveChangesAsync();
-
-            return true;
-        }
-
         private bool RestaurantExists(int id) =>
             (_context.Restaurants?.Any(p => p.Id == id)).GetValueOrDefault();
-
-        private bool RestaurantImageUrlExists(int id) =>
-            (_context.RestaurantImageUrls?.Any(p => p.Id == id)).GetValueOrDefault();
 
         public async Task<PagedEntities<Restaurant>?> GetRecomendedRestaurants(int userId, int pageNumber, int pageSize)
         {

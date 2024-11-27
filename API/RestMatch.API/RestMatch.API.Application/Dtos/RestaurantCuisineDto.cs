@@ -1,6 +1,6 @@
 namespace RestMatch.API.Application.Dtos
 {
-    public class RestaurantCuisineDtoBase
+    public class RestaurantCuisineDto
     {
         public int TypeId { get; set; }
     }
