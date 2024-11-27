@@ -1164,6 +1164,9 @@ export interface UserSelectedCriteria extends BaseEntity {
     userId?: number;
     user?: User;
     cuisineId?: number;
+    lowestPrice?: number;
+    highestPrice?: number;
+    location?: string;
     cuisine?: CuisineType;
 }
 
