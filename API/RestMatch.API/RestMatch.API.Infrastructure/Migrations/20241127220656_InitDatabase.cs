@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace RestMatch.API.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class hello : Migration
+    public partial class InitDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -81,6 +81,7 @@ namespace RestMatch.API.Infrastructure.Migrations
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PasswordSalt = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -308,6 +309,9 @@ namespace RestMatch.API.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     CuisineId = table.Column<int>(type: "int", nullable: false),
+                    LowestPrice = table.Column<int>(type: "int", nullable: false),
+                    HighestPrice = table.Column<int>(type: "int", nullable: false),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -350,11 +354,11 @@ namespace RestMatch.API.Infrastructure.Migrations
                 columns: new[] { "Id", "AboutText", "Address", "City", "ClosingTime", "CountOfRate", "Country", "CreatedAt", "LowerPrice", "MenuUrl", "ModifiedAt", "Name", "OpeningTime", "PhoneNumber", "Rating", "UpperPrice" },
                 values: new object[,]
                 {
-                    { 1, "A cozy restaurant in the heart of the forest, offering seasonal dishes.", "123 Forest Lane, Oakland", "Oakland", new TimeSpan(0, 22, 0, 0, 0), 0, "Fictivia", new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4469), 20, "https://www.goldenoak.com/menu", new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4473), "The Golden Oak", new TimeSpan(0, 10, 0, 0, 0), "+1 234-567-8901", 4.2999999999999998, 50 },
-                    { 2, "Serving fusion dishes with a magical twist.", "45 Crescent Drive, Moonlight", "Moonlight", new TimeSpan(0, 23, 0, 0, 0), 0, "Etherea", new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4473), 30, "https://www.lunabistro.com/menu", new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4474), "Luna’s Bistro", new TimeSpan(0, 11, 0, 0, 0), "+2 345-678-9012", 4.7000000000000002, 75 },
-                    { 3, "A steakhouse specializing in rare cuts and wines.", "89 Ironwood Avenue, Redstone", "Redstone", new TimeSpan(0, 23, 30, 0, 0), 0, "Fictivia", new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4474), 50, "https://www.crimsonbarrel.com/menu", new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4474), "Crimson Barrel", new TimeSpan(0, 12, 0, 0, 0), "+3 567-890-1234", 4.5, 150 },
-                    { 4, "Upscale dining with an elegant atmosphere.", "25 Sparkling Rd, Glimmerstone", "Glimmerstone", new TimeSpan(0, 20, 0, 0, 0), 0, "Arcadia", new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4475), 40, "https://www.velvetspoon.com/menu", new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4475), "The Velvet Spoon", new TimeSpan(0, 8, 30, 0, 0), "+4 678-901-2345", 4.2000000000000002, 80 },
-                    { 5, "Fresh seafood and grill dishes with an ocean view.", "101 Beachfront Blvd, Oceanview", "Oceanview", new TimeSpan(0, 21, 30, 0, 0), 0, "Nautica", new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4475), 25, "https://www.seasidegrill.com/menu", new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4476), "Seaside Grill", new TimeSpan(0, 9, 0, 0, 0), "+5 890-123-4567", 4.5999999999999996, 60 }
+                    { 1, "A cozy restaurant in the heart of the forest, offering seasonal dishes.", "123 Forest Lane, Oakland", "Oakland", new TimeSpan(0, 22, 0, 0, 0), 0, "Fictivia", new DateTime(2024, 11, 27, 22, 6, 55, 768, DateTimeKind.Utc).AddTicks(9635), 20, "https://www.goldenoak.com/menu", new DateTime(2024, 11, 27, 22, 6, 55, 768, DateTimeKind.Utc).AddTicks(9641), "The Golden Oak", new TimeSpan(0, 10, 0, 0, 0), "+1 234-567-8901", 4.2999999999999998, 50 },
+                    { 2, "Serving fusion dishes with a magical twist.", "45 Crescent Drive, Moonlight", "Moonlight", new TimeSpan(0, 23, 0, 0, 0), 0, "Etherea", new DateTime(2024, 11, 27, 22, 6, 55, 768, DateTimeKind.Utc).AddTicks(9642), 30, "https://www.lunabistro.com/menu", new DateTime(2024, 11, 27, 22, 6, 55, 768, DateTimeKind.Utc).AddTicks(9642), "Luna’s Bistro", new TimeSpan(0, 11, 0, 0, 0), "+2 345-678-9012", 4.7000000000000002, 75 },
+                    { 3, "A steakhouse specializing in rare cuts and wines.", "89 Ironwood Avenue, Redstone", "Redstone", new TimeSpan(0, 23, 30, 0, 0), 0, "Fictivia", new DateTime(2024, 11, 27, 22, 6, 55, 768, DateTimeKind.Utc).AddTicks(9643), 50, "https://www.crimsonbarrel.com/menu", new DateTime(2024, 11, 27, 22, 6, 55, 768, DateTimeKind.Utc).AddTicks(9643), "Crimson Barrel", new TimeSpan(0, 12, 0, 0, 0), "+3 567-890-1234", 4.5, 150 },
+                    { 4, "Upscale dining with an elegant atmosphere.", "25 Sparkling Rd, Glimmerstone", "Glimmerstone", new TimeSpan(0, 20, 0, 0, 0), 0, "Arcadia", new DateTime(2024, 11, 27, 22, 6, 55, 768, DateTimeKind.Utc).AddTicks(9643), 40, "https://www.velvetspoon.com/menu", new DateTime(2024, 11, 27, 22, 6, 55, 768, DateTimeKind.Utc).AddTicks(9644), "The Velvet Spoon", new TimeSpan(0, 8, 30, 0, 0), "+4 678-901-2345", 4.2000000000000002, 80 },
+                    { 5, "Fresh seafood and grill dishes with an ocean view.", "101 Beachfront Blvd, Oceanview", "Oceanview", new TimeSpan(0, 21, 30, 0, 0), 0, "Nautica", new DateTime(2024, 11, 27, 22, 6, 55, 768, DateTimeKind.Utc).AddTicks(9644), 25, "https://www.seasidegrill.com/menu", new DateTime(2024, 11, 27, 22, 6, 55, 768, DateTimeKind.Utc).AddTicks(9645), "Seaside Grill", new TimeSpan(0, 9, 0, 0, 0), "+5 890-123-4567", 4.5999999999999996, 60 }
                 });
 
             migrationBuilder.InsertData(
@@ -372,15 +376,12 @@ namespace RestMatch.API.Infrastructure.Migrations
                 columns: new[] { "Id", "CreatedAt", "ModifiedAt", "RestaurantId", "TypeId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4814), new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4815), 1, 3 },
-                    { 2, new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4817), new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4817), 1, 10 },
-                    { 3, new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4827), new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4828), 2, 1 },
-                    { 4, new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4829), new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4829), 2, 9 },
-                    { 5, new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4839), new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4839), 3, 2 },
-                    { 6, new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4841), new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4841), 3, 10 },
-                    { 7, new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4850), new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4850), 4, 5 },
-                    { 8, new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4858), new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4858), 5, 7 },
-                    { 9, new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4859), new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4859), 5, 8 }
+                    { 1, new DateTime(2024, 11, 27, 22, 6, 55, 769, DateTimeKind.Utc).AddTicks(249), new DateTime(2024, 11, 27, 22, 6, 55, 769, DateTimeKind.Utc).AddTicks(250), 1, 1 },
+                    { 2, new DateTime(2024, 11, 27, 22, 6, 55, 769, DateTimeKind.Utc).AddTicks(269), new DateTime(2024, 11, 27, 22, 6, 55, 769, DateTimeKind.Utc).AddTicks(270), 2, 5 },
+                    { 3, new DateTime(2024, 11, 27, 22, 6, 55, 769, DateTimeKind.Utc).AddTicks(285), new DateTime(2024, 11, 27, 22, 6, 55, 769, DateTimeKind.Utc).AddTicks(286), 3, 2 },
+                    { 4, new DateTime(2024, 11, 27, 22, 6, 55, 769, DateTimeKind.Utc).AddTicks(300), new DateTime(2024, 11, 27, 22, 6, 55, 769, DateTimeKind.Utc).AddTicks(300), 4, 9 },
+                    { 5, new DateTime(2024, 11, 27, 22, 6, 55, 769, DateTimeKind.Utc).AddTicks(313), new DateTime(2024, 11, 27, 22, 6, 55, 769, DateTimeKind.Utc).AddTicks(313), 5, 10 },
+                    { 6, new DateTime(2024, 11, 27, 22, 6, 55, 769, DateTimeKind.Utc).AddTicks(351), new DateTime(2024, 11, 27, 22, 6, 55, 769, DateTimeKind.Utc).AddTicks(351), 5, 4 }
                 });
 
             migrationBuilder.InsertData(
@@ -388,13 +389,14 @@ namespace RestMatch.API.Infrastructure.Migrations
                 columns: new[] { "Id", "CreatedAt", "ModifiedAt", "RestaurantId", "Url" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4584), new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4585), 1, "http://example.com/the_golden_oak0" },
-                    { 2, new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4623), new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4624), 2, "http://example.com/luna’s_bistro0" },
-                    { 3, new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4627), new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4627), 3, "http://example.com/crimson_barrel0" },
-                    { 4, new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4665), new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4666), 3, "http://example.com/crimson_barrel1" },
-                    { 5, new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4669), new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4669), 4, "http://example.com/the_velvet_spoon0" },
-                    { 6, new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4673), new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4673), 5, "http://example.com/seaside_grill0" },
-                    { 7, new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4674), new DateTime(2024, 11, 27, 14, 43, 24, 312, DateTimeKind.Utc).AddTicks(4674), 5, "http://example.com/seaside_grill1" }
+                    { 1, new DateTime(2024, 11, 27, 22, 6, 55, 768, DateTimeKind.Utc).AddTicks(9949), new DateTime(2024, 11, 27, 22, 6, 55, 768, DateTimeKind.Utc).AddTicks(9950), 1, "http://example.com/the_golden_oak0" },
+                    { 2, new DateTime(2024, 11, 27, 22, 6, 55, 769, DateTimeKind.Utc).AddTicks(1), new DateTime(2024, 11, 27, 22, 6, 55, 769, DateTimeKind.Utc).AddTicks(2), 2, "http://example.com/luna’s_bistro0" },
+                    { 3, new DateTime(2024, 11, 27, 22, 6, 55, 769, DateTimeKind.Utc).AddTicks(7), new DateTime(2024, 11, 27, 22, 6, 55, 769, DateTimeKind.Utc).AddTicks(8), 3, "http://example.com/crimson_barrel0" },
+                    { 4, new DateTime(2024, 11, 27, 22, 6, 55, 769, DateTimeKind.Utc).AddTicks(13), new DateTime(2024, 11, 27, 22, 6, 55, 769, DateTimeKind.Utc).AddTicks(13), 3, "http://example.com/crimson_barrel1" },
+                    { 5, new DateTime(2024, 11, 27, 22, 6, 55, 769, DateTimeKind.Utc).AddTicks(17), new DateTime(2024, 11, 27, 22, 6, 55, 769, DateTimeKind.Utc).AddTicks(18), 4, "http://example.com/the_velvet_spoon0" },
+                    { 6, new DateTime(2024, 11, 27, 22, 6, 55, 769, DateTimeKind.Utc).AddTicks(22), new DateTime(2024, 11, 27, 22, 6, 55, 769, DateTimeKind.Utc).AddTicks(22), 4, "http://example.com/the_velvet_spoon1" },
+                    { 7, new DateTime(2024, 11, 27, 22, 6, 55, 769, DateTimeKind.Utc).AddTicks(25), new DateTime(2024, 11, 27, 22, 6, 55, 769, DateTimeKind.Utc).AddTicks(26), 5, "http://example.com/seaside_grill0" },
+                    { 8, new DateTime(2024, 11, 27, 22, 6, 55, 769, DateTimeKind.Utc).AddTicks(27), new DateTime(2024, 11, 27, 22, 6, 55, 769, DateTimeKind.Utc).AddTicks(28), 5, "http://example.com/seaside_grill1" }
                 });
 
             migrationBuilder.CreateIndex(

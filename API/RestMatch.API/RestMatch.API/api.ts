@@ -222,14 +222,14 @@ export class FavouritesClient extends ApiBase {
         return Promise.resolve<FileResponse>(null as any);
     }
 
-    getFavourites(): Promise<FileResponse> {
+    getFavourites(): Promise<Favourite[]> {
         let url_ = this.baseUrl + "/api/Favourites";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: RequestInit = {
             method: "GET",
             headers: {
-                "Accept": "application/octet-stream"
+                "Accept": "application/json"
             }
         };
 
@@ -240,26 +240,21 @@ export class FavouritesClient extends ApiBase {
         });
     }
 
-    protected processGetFavourites(response: Response): Promise<FileResponse> {
+    protected processGetFavourites(response: Response): Promise<Favourite[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            let fileNameMatch = contentDisposition ? /filename\*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/g.exec(contentDisposition) : undefined;
-            let fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[3] || fileNameMatch[2] : undefined;
-            if (fileName) {
-                fileName = decodeURIComponent(fileName);
-            } else {
-                fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-                fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            }
-            return response.blob().then(blob => { return { fileName: fileName, data: blob, status: status, headers: _headers }; });
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as Favourite[];
+            return result200;
+            });
         } else if (status !== 200 && status !== 204) {
             return response.text().then((_responseText) => {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<FileResponse>(null as any);
+        return Promise.resolve<Favourite[]>(null as any);
     }
 
     removeFromFavourites(favouriteId: number): Promise<FileResponse> {
@@ -306,102 +301,6 @@ export class FavouritesClient extends ApiBase {
     }
 }
 
-export class PingClient extends ApiBase {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        super();
-        this.http = http ? http : window as any;
-        this.baseUrl = baseUrl ?? "";
-    }
-
-    getPing(): Promise<FileResponse> {
-        let url_ = this.baseUrl + "/api/Ping";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: RequestInit = {
-            method: "GET",
-            headers: {
-                "Accept": "application/octet-stream"
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.processGetPing(_response);
-        });
-    }
-
-    protected processGetPing(response: Response): Promise<FileResponse> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            let fileNameMatch = contentDisposition ? /filename\*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/g.exec(contentDisposition) : undefined;
-            let fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[3] || fileNameMatch[2] : undefined;
-            if (fileName) {
-                fileName = decodeURIComponent(fileName);
-            } else {
-                fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-                fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            }
-            return response.blob().then(blob => { return { fileName: fileName, data: blob, status: status, headers: _headers }; });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<FileResponse>(null as any);
-    }
-
-    postPing(requestBody: any): Promise<FileResponse> {
-        let url_ = this.baseUrl + "/api/Ping";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(requestBody);
-
-        let options_: RequestInit = {
-            body: content_,
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/octet-stream"
-            }
-        };
-
-        return this.transformOptions(options_).then(transformedOptions_ => {
-            return this.http.fetch(url_, transformedOptions_);
-        }).then((_response: Response) => {
-            return this.processPostPing(_response);
-        });
-    }
-
-    protected processPostPing(response: Response): Promise<FileResponse> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200 || status === 206) {
-            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
-            let fileNameMatch = contentDisposition ? /filename\*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/g.exec(contentDisposition) : undefined;
-            let fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[3] || fileNameMatch[2] : undefined;
-            if (fileName) {
-                fileName = decodeURIComponent(fileName);
-            } else {
-                fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
-                fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
-            }
-            return response.blob().then(blob => { return { fileName: fileName, data: blob, status: status, headers: _headers }; });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<FileResponse>(null as any);
-    }
-}
-
 export class RateClient extends ApiBase {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
@@ -413,7 +312,45 @@ export class RateClient extends ApiBase {
         this.baseUrl = baseUrl ?? "";
     }
 
-    createNewRewiew(model: CreateReviewDto): Promise<FileResponse> {
+    getAllReviews(restaurantId: number): Promise<ReviewDto[]> {
+        let url_ = this.baseUrl + "/api/Rate/{restaurantId}";
+        if (restaurantId === undefined || restaurantId === null)
+            throw new Error("The parameter 'restaurantId' must be defined.");
+        url_ = url_.replace("{restaurantId}", encodeURIComponent("" + restaurantId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processGetAllReviews(_response);
+        });
+    }
+
+    protected processGetAllReviews(response: Response): Promise<ReviewDto[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as ReviewDto[];
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<ReviewDto[]>(null as any);
+    }
+
+    createNewRewiew(model: ReviewDto): Promise<FileResponse> {
         let url_ = this.baseUrl + "/api/Rate";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -436,6 +373,49 @@ export class RateClient extends ApiBase {
     }
 
     protected processCreateNewRewiew(response: Response): Promise<FileResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            let fileNameMatch = contentDisposition ? /filename\*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/g.exec(contentDisposition) : undefined;
+            let fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[3] || fileNameMatch[2] : undefined;
+            if (fileName) {
+                fileName = decodeURIComponent(fileName);
+            } else {
+                fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+                fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            }
+            return response.blob().then(blob => { return { fileName: fileName, data: blob, status: status, headers: _headers }; });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<FileResponse>(null as any);
+    }
+
+    deleteReview(reviewId: number): Promise<FileResponse> {
+        let url_ = this.baseUrl + "/api/Rate/{reviewId}";
+        if (reviewId === undefined || reviewId === null)
+            throw new Error("The parameter 'reviewId' must be defined.");
+        url_ = url_.replace("{reviewId}", encodeURIComponent("" + reviewId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "DELETE",
+            headers: {
+                "Accept": "application/octet-stream"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processDeleteReview(_response);
+        });
+    }
+
+    protected processDeleteReview(response: Response): Promise<FileResponse> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200 || status === 206) {
@@ -779,22 +759,55 @@ export interface CuisineTypeDto {
     name?: string;
 }
 
-export interface CreateReviewDto {
-    restaurantId?: number;
-    userId?: number;
-    title?: string;
-    text?: string;
-    rating?: number;
-}
-
-export interface PagedEntitiesOfRestaurant {
-    totalPages?: number;
-    entities?: Restaurant[];
-}
-
 export interface BaseEntity {
     createdAt?: Date | null;
     modifiedAt?: Date | null;
+}
+
+export interface Favourite extends BaseEntity {
+    id?: number;
+    userId?: number;
+    user?: User;
+    restaurantId?: number;
+    restaurant?: Restaurant;
+}
+
+export interface User extends BaseEntity {
+    id?: number;
+    firstName?: string;
+    lastName?: string;
+    nickname?: string;
+    email?: string;
+    phoneNumber?: string | null;
+    passwordHash?: string;
+    passwordSalt?: string;
+    imageUrl?: string | null;
+    role?: Role[];
+    favourites?: Favourite[];
+    selectedCriterias?: UserSelectedCriteria[];
+}
+
+export interface Role extends BaseEntity {
+    id?: number;
+    roleName?: string;
+    user?: User[];
+}
+
+export interface UserSelectedCriteria extends BaseEntity {
+    id?: number;
+    userId?: number;
+    user?: User;
+    cuisineId?: number;
+    lowestPrice?: number;
+    highestPrice?: number;
+    location?: string;
+    cuisine?: CuisineType;
+}
+
+export interface CuisineType {
+    id?: number;
+    name?: string;
+    selectedCriterias?: UserSelectedCriteria[];
 }
 
 export interface Restaurant extends BaseEntity {
@@ -824,56 +837,31 @@ export interface RestaurantCuisine extends BaseEntity {
     type?: CuisineType;
 }
 
-export interface CuisineType {
-    id?: number;
-    name?: string;
-    selectedCriterias?: UserSelectedCriteria[];
-}
-
-export interface UserSelectedCriteria extends BaseEntity {
-    id?: number;
-    userId?: number;
-    user?: User;
-    cuisineId?: number;
-    lowestPrice?: number;
-    highestPrice?: number;
-    location?: string;
-    cuisine?: CuisineType;
-}
-
-export interface User extends BaseEntity {
-    id?: number;
-    firstName?: string;
-    lastName?: string;
-    nickname?: string;
-    email?: string;
-    phoneNumber?: string | null;
-    passwordHash?: string;
-    passwordSalt?: string;
-    role?: Role[];
-    favourites?: Favourite[];
-    selectedCriterias?: UserSelectedCriteria[];
-}
-
-export interface Role extends BaseEntity {
-    id?: number;
-    roleName?: string;
-    user?: User[];
-}
-
-export interface Favourite extends BaseEntity {
-    id?: number;
-    userId?: number;
-    user?: User;
-    restaurantId?: number;
-    restaurant?: Restaurant;
-}
-
 export interface RestaurantImageUrl extends BaseEntity {
     id?: number;
     url?: string;
     restaurantId?: number;
     restaurant?: Restaurant;
+}
+
+export interface ReviewDto {
+    id?: number | null;
+    restaurantId?: number;
+    user?: UserDto | null;
+    title?: string;
+    text?: string;
+    rating?: number;
+}
+
+export interface UserDto {
+    id?: number;
+    nickName?: string;
+    imageUrl?: string;
+}
+
+export interface PagedEntitiesOfRestaurant {
+    totalPages?: number;
+    entities?: Restaurant[];
 }
 
 export interface PagedEntitiesOfRestaurantDto {
