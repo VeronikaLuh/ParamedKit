@@ -23,11 +23,15 @@ namespace RestMatch.API.Infrastructure.Repositories
             _context = contex;
         }
 
-        public async Task<PagedEntities<RestaurantIdRate>> GetRestaurantCalculatedRate(List<int> cuisinesIds, int pageNumber, int pageSize)
+        public async Task<PagedEntities<RestaurantIdRate>> GetRestaurantCalculatedRate(int userId, List<int> cuisinesIds, int pageNumber, int pageSize)
         {
             var cuisineNames = cuisinesIds.Select(x => ((Cuisine)x).ToString());
 
-            var orderedResult = _context.Restaurants.Where(x => ((x.UpperPrice + x.LowerPrice) / 2) <= 50).Select(x => x.Id);
+            var userPriceAndLocation = _context.UserSelectedCriterias.FirstOrDefault(x => x.Id == userId);
+
+            var orderedResult = _context.Restaurants
+                .Where(x => ((x.UpperPrice + x.LowerPrice) / 2) <= ((userPriceAndLocation.LowestPrice + userPriceAndLocation.HighestPrice) / 2) && x.City != userPriceAndLocation.Location)
+                .Select(x => x.Id);
 
             var list = await _context.Set<RestaurantCriteria>()
                 .Select("new (RestaurantId, " + cuisineNames.Aggregate((current, next) => $"{current} + {next}") + " as Rate)")
@@ -35,7 +39,9 @@ namespace RestMatch.API.Infrastructure.Repositories
                 .Skip((pageNumber - 1) * pageSize).Take(pageSize).ToDynamicListAsync();
 
             int firstCount = await orderedResult.CountAsync();
-            var secondOrderedResult = _context.Restaurants.Where(x => ((x.UpperPrice + x.LowerPrice) / 2) > 50).Select(x => x.Id);
+            var secondOrderedResult = _context.Restaurants
+                .Where(x => ((x.UpperPrice + x.LowerPrice) / 2) > ((userPriceAndLocation.LowestPrice + userPriceAndLocation.HighestPrice) / 2) && x.City != userPriceAndLocation.Location)
+                .Select(x => x.Id);
             if (list.Count < pageSize)
             {
                 var count = pageSize - list.Count;

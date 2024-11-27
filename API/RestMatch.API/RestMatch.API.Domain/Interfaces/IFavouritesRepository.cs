@@ -8,6 +8,7 @@ namespace RestMatch.API.Domain.Interfaces
     {
         Task AddNewFavourite(int restaurantId, int userId);
         Task<List<Favourite>> GetFavourites(int userId);
-        Task RemoveFromFavourites(int userId, int restaurantId);
+        Task RemoveFromFavourites(int favouriteId);
     }
 }
+    

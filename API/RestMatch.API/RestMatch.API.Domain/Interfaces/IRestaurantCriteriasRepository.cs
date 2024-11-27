@@ -10,7 +10,7 @@ namespace RestMatch.API.Domain.Interfaces
 {
     public interface IRestaurantCriteriasRepository
     {
-        Task<PagedEntities<RestaurantIdRate>> GetRestaurantCalculatedRate(List<int> cuisinesIds, int pageNumber, int pageSize);
+        Task<PagedEntities<RestaurantIdRate>> GetRestaurantCalculatedRate(int userId, List<int> cuisinesIds, int pageNumber, int pageSize);
         Task<RestaurantCriteria> GetRestaurantCriteriaAsync(int restaurantId);
         Task<bool> UpdateRestaurantCriteriaAsync(int rate, List<int> userSelectedCriterias, int restaurantId);
     }

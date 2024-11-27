@@ -164,7 +164,7 @@ namespace RestMatch.API.Infrastructure.Repositories
                 return null;
             }
 
-            var restaurantsAndRates = await _restaurantCriteriasRepository.GetRestaurantCalculatedRate(userSelectedCriteria, pageNumber, pageSize);
+            var restaurantsAndRates = await _restaurantCriteriasRepository.GetRestaurantCalculatedRate(userId, userSelectedCriteria, pageNumber, pageSize);
 
             var restaurantsIds = restaurantsAndRates.Entities.Select(x => (int)x.RestaurantId);
 
