@@ -128,7 +128,7 @@ export class CuisineTypesClient extends ApiBase {
         this.baseUrl = baseUrl ?? "";
     }
 
-    getCuisineTypes(): Promise<GetCuisineTypeResponseDto[]> {
+    getCuisineTypes(): Promise<CuisineTypeDto[]> {
         let url_ = this.baseUrl + "/api/CuisineTypes";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -146,13 +146,13 @@ export class CuisineTypesClient extends ApiBase {
         });
     }
 
-    protected processGetCuisineTypes(response: Response): Promise<GetCuisineTypeResponseDto[]> {
+    protected processGetCuisineTypes(response: Response): Promise<CuisineTypeDto[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as GetCuisineTypeResponseDto[];
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as CuisineTypeDto[];
             return result200;
             });
         } else if (status === 204) {
@@ -164,7 +164,7 @@ export class CuisineTypesClient extends ApiBase {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<GetCuisineTypeResponseDto[]>(null as any);
+        return Promise.resolve<CuisineTypeDto[]>(null as any);
     }
 }
 
@@ -515,7 +515,7 @@ export class RestaurantsClient extends ApiBase {
         return Promise.resolve<PagedEntitiesOfRestaurant>(null as any);
     }
 
-    getRestaurants(location: string | null | undefined, cuisine: number[] | null | undefined, lowestPrice: number | null | undefined, highestPrice: number | null | undefined, sortOrder: string | null | undefined, pageNumber: number | undefined, pageSize: number | undefined): Promise<PagedEntitiesOfGetRestaurantResponseDto> {
+    getRestaurants(location: string | null | undefined, cuisine: number[] | null | undefined, lowestPrice: number | null | undefined, highestPrice: number | null | undefined, sortOrder: string | null | undefined, pageNumber: number | undefined, pageSize: number | undefined): Promise<PagedEntitiesOfRestaurantDto> {
         let url_ = this.baseUrl + "/api/Restaurants?";
         if (location !== undefined && location !== null)
             url_ += "location=" + encodeURIComponent("" + location) + "&";
@@ -551,13 +551,13 @@ export class RestaurantsClient extends ApiBase {
         });
     }
 
-    protected processGetRestaurants(response: Response): Promise<PagedEntitiesOfGetRestaurantResponseDto> {
+    protected processGetRestaurants(response: Response): Promise<PagedEntitiesOfRestaurantDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as PagedEntitiesOfGetRestaurantResponseDto;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as PagedEntitiesOfRestaurantDto;
             return result200;
             });
         } else if (status === 204) {
@@ -569,10 +569,10 @@ export class RestaurantsClient extends ApiBase {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<PagedEntitiesOfGetRestaurantResponseDto>(null as any);
+        return Promise.resolve<PagedEntitiesOfRestaurantDto>(null as any);
     }
 
-    postRestaurant(dto: PostRestaurantRequestDto): Promise<GetRestaurantResponseDto> {
+    postRestaurant(dto: RestaurantDto): Promise<RestaurantDto> {
         let url_ = this.baseUrl + "/api/Restaurants";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -594,13 +594,13 @@ export class RestaurantsClient extends ApiBase {
         });
     }
 
-    protected processPostRestaurant(response: Response): Promise<GetRestaurantResponseDto> {
+    protected processPostRestaurant(response: Response): Promise<RestaurantDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 201) {
             return response.text().then((_responseText) => {
             let result201: any = null;
-            result201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as GetRestaurantResponseDto;
+            result201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as RestaurantDto;
             return result201;
             });
         } else if (status === 400) {
@@ -614,10 +614,10 @@ export class RestaurantsClient extends ApiBase {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<GetRestaurantResponseDto>(null as any);
+        return Promise.resolve<RestaurantDto>(null as any);
     }
 
-    getRestaurant(id: number): Promise<GetRestaurantResponseDto> {
+    getRestaurant(id: number): Promise<RestaurantDto> {
         let url_ = this.baseUrl + "/api/Restaurants/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -638,13 +638,13 @@ export class RestaurantsClient extends ApiBase {
         });
     }
 
-    protected processGetRestaurant(response: Response): Promise<GetRestaurantResponseDto> {
+    protected processGetRestaurant(response: Response): Promise<RestaurantDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as GetRestaurantResponseDto;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as RestaurantDto;
             return result200;
             });
         } else if (status === 404) {
@@ -658,10 +658,10 @@ export class RestaurantsClient extends ApiBase {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<GetRestaurantResponseDto>(null as any);
+        return Promise.resolve<RestaurantDto>(null as any);
     }
 
-    putRestaurant(id: number, dto: PutRestaurantRequestDto): Promise<void> {
+    putRestaurant(id: number, dto: RestaurantDto): Promise<void> {
         let url_ = this.baseUrl + "/api/Restaurants/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -753,7 +753,7 @@ export class RestaurantsClient extends ApiBase {
         return Promise.resolve<void>(null as any);
     }
 
-    getRestaurantImageUrl(id: number): Promise<GetRestaurantImageUrlResponseDto> {
+    getRestaurantImageUrl(id: number): Promise<RestaurantImageUrlDto> {
         let url_ = this.baseUrl + "/api/Restaurants/imageUrls/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -774,13 +774,13 @@ export class RestaurantsClient extends ApiBase {
         });
     }
 
-    protected processGetRestaurantImageUrl(response: Response): Promise<GetRestaurantImageUrlResponseDto> {
+    protected processGetRestaurantImageUrl(response: Response): Promise<RestaurantImageUrlDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as GetRestaurantImageUrlResponseDto;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as RestaurantImageUrlDto;
             return result200;
             });
         } else if (status === 404) {
@@ -794,10 +794,10 @@ export class RestaurantsClient extends ApiBase {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<GetRestaurantImageUrlResponseDto>(null as any);
+        return Promise.resolve<RestaurantImageUrlDto>(null as any);
     }
 
-    putRestaurantImageUrl(id: number, dto: PutRestaurantImageUrlRequestDto): Promise<void> {
+    putRestaurantImageUrl(id: number, dto: RestaurantImageUrlDto): Promise<void> {
         let url_ = this.baseUrl + "/api/Restaurants/imageUrls/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -889,7 +889,7 @@ export class RestaurantsClient extends ApiBase {
         return Promise.resolve<void>(null as any);
     }
 
-    getRestaurantCuisine(id: number): Promise<GetRestaurantCuisineResponseDto> {
+    getRestaurantCuisine(id: number): Promise<RestaurantCuisineDto> {
         let url_ = this.baseUrl + "/api/Restaurants/cuisines/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -910,13 +910,13 @@ export class RestaurantsClient extends ApiBase {
         });
     }
 
-    protected processGetRestaurantCuisine(response: Response): Promise<GetRestaurantCuisineResponseDto> {
+    protected processGetRestaurantCuisine(response: Response): Promise<RestaurantCuisineDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as GetRestaurantCuisineResponseDto;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as RestaurantCuisineDto;
             return result200;
             });
         } else if (status === 404) {
@@ -930,7 +930,7 @@ export class RestaurantsClient extends ApiBase {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<GetRestaurantCuisineResponseDto>(null as any);
+        return Promise.resolve<RestaurantCuisineDto>(null as any);
     }
 
     deleteRestaurantCuisine(id: number): Promise<void> {
@@ -974,7 +974,7 @@ export class RestaurantsClient extends ApiBase {
         return Promise.resolve<void>(null as any);
     }
 
-    postRestaurantImageUrl(restaurantId: number, dto: PostRestaurantImageUrlRequestDto): Promise<GetRestaurantImageUrlResponseDto> {
+    postRestaurantImageUrl(restaurantId: number, dto: RestaurantImageUrlDto): Promise<RestaurantImageUrlDto> {
         let url_ = this.baseUrl + "/api/Restaurants/{restaurantId}/imageUrls";
         if (restaurantId === undefined || restaurantId === null)
             throw new Error("The parameter 'restaurantId' must be defined.");
@@ -999,13 +999,13 @@ export class RestaurantsClient extends ApiBase {
         });
     }
 
-    protected processPostRestaurantImageUrl(response: Response): Promise<GetRestaurantImageUrlResponseDto> {
+    protected processPostRestaurantImageUrl(response: Response): Promise<RestaurantImageUrlDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 201) {
             return response.text().then((_responseText) => {
             let result201: any = null;
-            result201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as GetRestaurantImageUrlResponseDto;
+            result201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as RestaurantImageUrlDto;
             return result201;
             });
         } else if (status === 400) {
@@ -1025,10 +1025,10 @@ export class RestaurantsClient extends ApiBase {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<GetRestaurantImageUrlResponseDto>(null as any);
+        return Promise.resolve<RestaurantImageUrlDto>(null as any);
     }
 
-    postRestaurantCuisine(restaurantId: number, dto: PostRestaurantCuisineRequestDto): Promise<GetRestaurantCuisineResponseDto> {
+    postRestaurantCuisine(restaurantId: number, dto: RestaurantCuisineDto): Promise<RestaurantCuisineDto> {
         let url_ = this.baseUrl + "/api/Restaurants/{restaurantId}/cuisines";
         if (restaurantId === undefined || restaurantId === null)
             throw new Error("The parameter 'restaurantId' must be defined.");
@@ -1053,13 +1053,13 @@ export class RestaurantsClient extends ApiBase {
         });
     }
 
-    protected processPostRestaurantCuisine(response: Response): Promise<GetRestaurantCuisineResponseDto> {
+    protected processPostRestaurantCuisine(response: Response): Promise<RestaurantCuisineDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 201) {
             return response.text().then((_responseText) => {
             let result201: any = null;
-            result201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as GetRestaurantCuisineResponseDto;
+            result201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as RestaurantCuisineDto;
             return result201;
             });
         } else if (status === 400) {
@@ -1079,7 +1079,7 @@ export class RestaurantsClient extends ApiBase {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<GetRestaurantCuisineResponseDto>(null as any);
+        return Promise.resolve<RestaurantCuisineDto>(null as any);
     }
 }
 
@@ -1103,8 +1103,8 @@ export enum Roles {
     Admin = 3,
 }
 
-export interface GetCuisineTypeResponseDto {
-    id?: number;
+export interface CuisineTypeDto {
+    id?: number | null;
     name?: string;
 }
 
@@ -1202,12 +1202,13 @@ export interface RestaurantImageUrl extends BaseEntity {
     restaurant?: Restaurant;
 }
 
-export interface PagedEntitiesOfGetRestaurantResponseDto {
+export interface PagedEntitiesOfRestaurantDto {
     totalPages?: number;
-    entities?: GetRestaurantResponseDto[];
+    entities?: RestaurantDto[];
 }
 
-export interface RestaurantDtoBase {
+export interface RestaurantDto {
+    id?: number | null;
     name?: string;
     country?: string;
     city?: string;
@@ -1220,28 +1221,18 @@ export interface RestaurantDtoBase {
     phoneNumber?: string;
     aboutText?: string;
     menuUrl?: string;
+    cuisines?: RestaurantCuisineDto[];
+    imageUrls?: RestaurantImageUrlDto[];
 }
 
-export interface GetRestaurantResponseDto extends RestaurantDtoBase {
-    id?: number;
-    cuisines?: GetRestaurantCuisineResponseDto[];
-    imageUrls?: GetRestaurantImageUrlResponseDto[];
-}
-
-export interface RestaurantCuisineDtoBase {
+export interface RestaurantCuisineDto {
+    id?: number | null;
     typeId?: number;
 }
 
-export interface GetRestaurantCuisineResponseDto extends RestaurantCuisineDtoBase {
-    id?: number;
-}
-
-export interface RestaurantImageUrlDtoBase {
+export interface RestaurantImageUrlDto {
+    id?: number | null;
     url?: string;
-}
-
-export interface GetRestaurantImageUrlResponseDto extends RestaurantImageUrlDtoBase {
-    id?: number;
 }
 
 export interface ProblemDetails {
@@ -1252,21 +1243,6 @@ export interface ProblemDetails {
     instance?: string | null;
 
     [key: string]: any;
-}
-
-export interface PutRestaurantRequestDto extends RestaurantDtoBase {
-}
-
-export interface PutRestaurantImageUrlRequestDto extends RestaurantImageUrlDtoBase {
-}
-
-export interface PostRestaurantRequestDto extends RestaurantDtoBase {
-}
-
-export interface PostRestaurantImageUrlRequestDto extends RestaurantImageUrlDtoBase {
-}
-
-export interface PostRestaurantCuisineRequestDto extends RestaurantCuisineDtoBase {
 }
 
 export interface FileResponse {

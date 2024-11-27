@@ -154,6 +154,7 @@ namespace RestMatch.API.Infrastructure.Repositories
 
         public async Task<Restaurant> AddRestaurant(Restaurant restaurant)
         {
+            restaurant.Id = 0;
             _context.Restaurants.Add(restaurant);
             await _context.SaveChangesAsync();
             return restaurant;
@@ -165,6 +166,7 @@ namespace RestMatch.API.Infrastructure.Repositories
             if (restaurant == null)
                 return null;
 
+            imageUrl.Id = 0;
             imageUrl.Restaurant = restaurant;
             _context.RestaurantImageUrls.Add(imageUrl);
             await _context.SaveChangesAsync();

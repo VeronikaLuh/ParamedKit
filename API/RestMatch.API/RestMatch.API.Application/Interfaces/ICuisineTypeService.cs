@@ -6,6 +6,6 @@ namespace RestMatch.API.Application.Interfaces
 {
     public interface ICuisineTypeService
     {
-        Task<ICollection<GetCuisineTypeResponseDto>> GetCuisineTypes();
+        Task<ICollection<CuisineTypeDto>> GetCuisineTypes();
     }
 }
