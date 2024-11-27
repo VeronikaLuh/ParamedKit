@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestMatch.API.Application.Helper;
 using RestMatch.API.Application.Interfaces;
+using RestMatch.API.Domain.Models;
 
 namespace RestMatch.API.Controllers
 {
@@ -34,7 +35,7 @@ namespace RestMatch.API.Controllers
 
         [HttpGet]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<ActionResult> GetFavourites()
+        public async Task<ActionResult<IEnumerable<Favourite>>> GetFavourites()
         {
             var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
             Console.WriteLine(token);
