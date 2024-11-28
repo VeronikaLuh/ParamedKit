@@ -8,7 +8,7 @@ namespace RestMatch.API.Application.Interfaces
     public interface IRestaurantService
     {
         Task<PagedEntities<Restaurant>?> GetRestaurantRecomendation(int userId, int pageNumber, int pageSize);
-        Task<PagedEntities<GetRestaurantResponseDto>> GetRestaurants(
+        Task<PagedEntities<RestaurantDto>> GetRestaurants(
             string? location,
             List<int>? cuisine,
             int? lowestPrice,
@@ -16,16 +16,9 @@ namespace RestMatch.API.Application.Interfaces
             string? sortOrder,
             int pageNumber,
             int pageSize);
-        Task<GetRestaurantResponseDto?> GetRestaurant(int id);
-        Task<GetRestaurantImageUrlResponseDto?> GetRestaurantImageUrl(int id);
-        Task<GetRestaurantCuisineResponseDto?> GetRestaurantCuisine(int id);
-        Task<bool> UpdateRestaurant(int id, PutRestaurantRequestDto dto);
-        Task<bool> UpdateRestaurantImageUrl(int id, PutRestaurantImageUrlRequestDto dto);
-        Task<GetRestaurantResponseDto> AddRestaurant(PostRestaurantRequestDto dto);
-        Task<GetRestaurantImageUrlResponseDto?> AddRestaurantImageUrl(int restaurantId, PostRestaurantImageUrlRequestDto dto);
-        Task<GetRestaurantCuisineResponseDto?> AddRestaurantCuisine(int restaurantId, PostRestaurantCuisineRequestDto dto);
+        Task<RestaurantDto?> GetRestaurant(int id);
+        Task<bool> UpdateRestaurant(int id, RestaurantDto dto);
+        Task<RestaurantDto> AddRestaurant(RestaurantDto dto);
         Task<bool> DeleteRestaurant(int id);
-        Task<bool> DeleteRestaurantImageUrl(int id);
-        Task<bool> DeleteRestaurantCuisine(int id);
     }
 }

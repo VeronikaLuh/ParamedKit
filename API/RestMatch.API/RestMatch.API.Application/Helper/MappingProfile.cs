@@ -9,14 +9,10 @@ namespace RestMatch.API.Application.Helper
     {
         public MappingProfile()
         {
-            CreateMap<Restaurant, GetRestaurantResponseDto>();
-            CreateMap<PutRestaurantRequestDto, Restaurant>();
-            CreateMap<PostRestaurantRequestDto, Restaurant>();
-            CreateMap<RestaurantImageUrl, GetRestaurantImageUrlResponseDto>();
-            CreateMap<PutRestaurantImageUrlRequestDto, RestaurantImageUrl>();
-            CreateMap<PostRestaurantImageUrlRequestDto, RestaurantImageUrl>();
-            CreateMap<RestaurantCuisine, GetRestaurantCuisineResponseDto>();
-            CreateMap<CuisineType, GetCuisineTypeResponseDto>();
+            CreateMap<Restaurant, RestaurantDto>().ReverseMap();
+            CreateMap<RestaurantImageUrl, RestaurantImageUrlDto>().ReverseMap();
+            CreateMap<RestaurantCuisine, RestaurantCuisineDto>().ReverseMap();
+            CreateMap<CuisineType, CuisineTypeDto>().ReverseMap();
         }
     }
 }

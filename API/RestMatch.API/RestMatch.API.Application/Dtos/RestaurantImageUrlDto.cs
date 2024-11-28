@@ -1,6 +1,6 @@
 namespace RestMatch.API.Application.Dtos
 {
-    public class RestaurantImageUrlDtoBase
+    public class RestaurantImageUrlDto
     {
         public string Url { get; set; } = string.Empty;
     }

@@ -16,9 +16,9 @@ namespace RestMatch.API.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(ICollection<GetCuisineTypeResponseDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ICollection<CuisineTypeDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult<ICollection<GetCuisineTypeResponseDto>>> GetCuisineTypes()
+        public async Task<ActionResult<ICollection<CuisineTypeDto>>> GetCuisineTypes()
         {
             var cuisineTypes = await _service.GetCuisineTypes();
             if (cuisineTypes.Count == 0)

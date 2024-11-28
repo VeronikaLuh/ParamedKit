@@ -11,6 +11,6 @@ namespace RestMatch.API.Application.Interfaces
     {
         Task AddNewFavourite(int userId, int restaurantId);
         Task<List<Favourite>?> GetFavourites(int userId);
-        Task DeleteFromFavourites(int userId, int restaurantId);
+        Task DeleteFromFavourites(int favouriteId);
     }
 }

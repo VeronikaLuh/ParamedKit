@@ -95,24 +95,67 @@ namespace RestMatch.API.Infrastructure.Repositories
             return query.Select(x => x).Include(r => r.Cuisines).Where(c => c.Cuisines.Any(r => cuisines.Contains(r.TypeId)));
         }
 
-        public async Task<Restaurant?> GetRestaurant(int id) =>
-            await _context.Restaurants.Where(r => r.Id == id)
-                .Include(r => r.Cuisines).Include(r => r.ImageUrls)
-                .FirstOrDefaultAsync();
+        public async Task<Restaurant?> GetRestaurant(int id)
+        {
+            return await _context.Restaurants
+                .Include(r => r.Cuisines)
+                .Include(r => r.ImageUrls)
+                .FirstOrDefaultAsync(i => i.Id == id);
 
-        public async Task<RestaurantImageUrl?> GetRestaurantImageUrl(int id) =>
-            await _context.RestaurantImageUrls.Where(r => r.Id == id)
-                .Include(r => r.Restaurant).FirstOrDefaultAsync();
-
-        public async Task<RestaurantCuisine?> GetRestaurantCuisine(int id) =>
-            await _context.RestaurantCuisines.Where(r => r.Id == id)
-                .Include(r => r.Restaurant).Include(r => r.Type)
-                .FirstOrDefaultAsync();
+        }
 
         public async Task<bool> UpdateRestaurant(int id, Restaurant restaurant)
         {
-            restaurant.Id = id;
-            _context.Entry(restaurant).State = EntityState.Modified;
+            var oldRestaurant = await GetRestaurant(id);
+
+            if (oldRestaurant == null)
+            {
+                return false;
+            }
+
+            _context.Entry(oldRestaurant).CurrentValues.SetValues(restaurant);
+
+            var existingCuisines = oldRestaurant.Cuisines.ToList();
+            var updatedCuisines = restaurant.Cuisines.ToList();
+
+            var cuisinesToRemove = existingCuisines
+                .Where(ec => !updatedCuisines.Any(uc => uc.Id == ec.Id))
+                .ToList();
+            _context.RestaurantCuisines.RemoveRange(cuisinesToRemove);
+
+            foreach (var updatedCuisine in updatedCuisines)
+            {
+                var existingCuisine = existingCuisines.FirstOrDefault(ec => ec.Id == updatedCuisine.Id);
+                if (existingCuisine != null)
+                {
+                    _context.Entry(existingCuisine).CurrentValues.SetValues(updatedCuisine);
+                }
+                else
+                {
+                    oldRestaurant.Cuisines.Add(updatedCuisine);
+                }
+            }
+
+            var existingImageUrls = oldRestaurant.ImageUrls.ToList();
+            var updatedImageUrls = restaurant.ImageUrls.ToList();
+
+            var imageUrlsToRemove = existingImageUrls
+                .Where(ei => !updatedImageUrls.Any(ui => ui.Id == ei.Id))
+                .ToList();
+            _context.RestaurantImageUrls.RemoveRange(imageUrlsToRemove);
+
+            foreach (var updatedImageUrl in updatedImageUrls)
+            {
+                var existingImageUrl = existingImageUrls.FirstOrDefault(ei => ei.Id == updatedImageUrl.Id);
+                if (existingImageUrl != null)
+                {
+                    _context.Entry(existingImageUrl).CurrentValues.SetValues(updatedImageUrl);
+                }
+                else
+                {
+                    oldRestaurant.ImageUrls.Add(updatedImageUrl);
+                }
+            }
 
             try
             {
@@ -121,31 +164,10 @@ namespace RestMatch.API.Infrastructure.Repositories
             catch (DbUpdateConcurrencyException)
             {
                 if (!RestaurantExists(restaurant.Id))
+                {
                     return false;
-                throw;
-            }
+                }
 
-            return true;
-        }
-
-        public async Task<bool> UpdateRestaurantImageUrl(int id, RestaurantImageUrl imageUrl)
-        {
-            var oldImageUrl = await _context.RestaurantImageUrls.FirstOrDefaultAsync(r => r.Id == id);
-            if (oldImageUrl == null)
-                return false;
-            _context.Entry(oldImageUrl).State = EntityState.Detached;
-            imageUrl.Id = id;
-            imageUrl.RestaurantId = oldImageUrl.RestaurantId;
-            _context.Entry(imageUrl).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RestaurantImageUrlExists(imageUrl.Id))
-                    return false;
                 throw;
             }
 
@@ -154,40 +176,12 @@ namespace RestMatch.API.Infrastructure.Repositories
 
         public async Task<Restaurant> AddRestaurant(Restaurant restaurant)
         {
+            restaurant.Id = 0;
             _context.Restaurants.Add(restaurant);
+            _context.RestaurantCuisines.AddRange(restaurant.Cuisines);
+            _context.RestaurantImageUrls.AddRange(restaurant.ImageUrls);
             await _context.SaveChangesAsync();
             return restaurant;
-        }
-
-        public async Task<RestaurantImageUrl?> AddRestaurantImageUrl(int restaurantId, RestaurantImageUrl imageUrl)
-        {
-            var restaurant = await GetRestaurant(restaurantId);
-            if (restaurant == null)
-                return null;
-
-            imageUrl.Restaurant = restaurant;
-            _context.RestaurantImageUrls.Add(imageUrl);
-            await _context.SaveChangesAsync();
-            return imageUrl;
-        }
-
-        public async Task<RestaurantCuisine?> AddRestaurantCuisine(int restaurantId, int cuisineTypeId)
-        {
-            var restaurant = await GetRestaurant(restaurantId);
-            if (restaurant == null)
-                return null;
-            var cuisineType = await _context.Cuisines.FirstOrDefaultAsync(c => c.Id == cuisineTypeId);
-            if (cuisineType == null)
-                return null;
-
-            var cuisine = new RestaurantCuisine
-            {
-                Restaurant = restaurant,
-                Type = cuisineType
-            };
-            _context.RestaurantCuisines.Add(cuisine);
-            await _context.SaveChangesAsync();
-            return cuisine;
         }
 
         public async Task<bool> DeleteRestaurant(int id)
@@ -205,35 +199,8 @@ namespace RestMatch.API.Infrastructure.Repositories
             return true;
         }
 
-        public async Task<bool> DeleteRestaurantImageUrl(int id)
-        {
-            var imageUrl = await GetRestaurantImageUrl(id);
-            if (imageUrl == null)
-                return false;
-
-            _context.RestaurantImageUrls.Remove(imageUrl);
-            await _context.SaveChangesAsync();
-
-            return true;
-        }
-
-        public async Task<bool> DeleteRestaurantCuisine(int id)
-        {
-            var cuisine = await GetRestaurantCuisine(id);
-            if (cuisine == null)
-                return false;
-
-            _context.RestaurantCuisines.Remove(cuisine);
-            await _context.SaveChangesAsync();
-
-            return true;
-        }
-
         private bool RestaurantExists(int id) =>
             (_context.Restaurants?.Any(p => p.Id == id)).GetValueOrDefault();
-
-        private bool RestaurantImageUrlExists(int id) =>
-            (_context.RestaurantImageUrls?.Any(p => p.Id == id)).GetValueOrDefault();
 
         public async Task<PagedEntities<Restaurant>?> GetRecomendedRestaurants(int userId, int pageNumber, int pageSize)
         {
@@ -243,7 +210,7 @@ namespace RestMatch.API.Infrastructure.Repositories
                 return null;
             }
 
-            var restaurantsAndRates = await _restaurantCriteriasRepository.GetRestaurantCalculatedRate(userSelectedCriteria, pageNumber, pageSize);
+            var restaurantsAndRates = await _restaurantCriteriasRepository.GetRestaurantCalculatedRate(userId, userSelectedCriteria, pageNumber, pageSize);
 
             var restaurantsIds = restaurantsAndRates.Entities.Select(x => (int)x.RestaurantId);
 

@@ -27,7 +27,9 @@ namespace RestMatch.API.Infrastructure.Repositories
 
         public async Task<User?> FindUserByExpression(Expression<Func<User, bool>> expression)
         {
-            return await _context.Users.FirstOrDefaultAsync(expression);
+            return await _context.Users
+                .Include(i => i.Role)
+                .FirstOrDefaultAsync(expression);
         }
 
         public async Task<IEnumerable<Role>> GetUserRoles(int id)

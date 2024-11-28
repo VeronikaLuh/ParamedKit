@@ -6,6 +6,7 @@ export enum Routes {
   SEARCH = '/search',
   MATCH = '/match',
   PREFERENCES = '/preferences',
-  PROFILE = '/profile',
+  PROFILE = '/user-page',
   LOGIN = '/login',
+  SIGN_UP = '/signup'
 }

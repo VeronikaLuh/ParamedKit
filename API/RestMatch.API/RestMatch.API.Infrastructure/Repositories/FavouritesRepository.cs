@@ -35,9 +35,9 @@ namespace RestMatch.API.Infrastructure.Repositories
             return favourites;
         }
 
-        public async Task RemoveFromFavourites(int userId, int restaurantId)
+        public async Task RemoveFromFavourites(int favouriteId)
         {
-            var favourite = await _context.Favourites.FirstOrDefaultAsync(x => x.UserId == userId && x.RestaurantId == restaurantId);
+            var favourite = await _context.Favourites.FirstOrDefaultAsync(x => x.Id == favouriteId);
 
             if (favourite != null)
             {

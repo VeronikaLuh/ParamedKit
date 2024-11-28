@@ -1,10 +1,12 @@
-"use client";
+'use client'
 
-import { imageUrl } from "@/utils/constants";
+import {imageUrl} from "@/utils/constants";
 import InfoItem from "@/components/InfoItem";
 import React, { useState } from "react";
 import { useSwipeable } from "react-swipeable";
+import {useRouter} from "next/navigation";
 import Carousel from "../components/homepage/Caurosel";
+import {Routes} from "@/types/routes";
 
 export default function Home() {
   const data = [
@@ -13,7 +15,9 @@ export default function Home() {
       description:
         "Quick way to choose where you must go today. Delicious and beautiful places await you",
       enableButton: true,
+
       buttonText: "Register",
+      url: Routes.SIGN_UP
     },
     {
       title: "Choose preferences",
@@ -21,6 +25,7 @@ export default function Home() {
         "Quick way to choose where you must go today. Delicious and beautiful places await you",
       enableButton: true,
       buttonText: "Make choice",
+      url: Routes.HOME
     },
     {
       title: "Like or pass",
@@ -28,13 +33,17 @@ export default function Home() {
         "Quick way to choose where you must go today. Delicious and beautiful places await you",
       enableButton: true,
       buttonText: "Let's match",
+      url: Routes.HOME  
+
     },
     {
       title: "Don`t like swipe?",
       description:
         "Quick way to choose where you must go today. Delicious and beautiful places await you",
       enableButton: true,
+
       buttonText: "Search",
+      url: Routes.SEARCH
     },
   ];
 
@@ -58,6 +67,11 @@ export default function Home() {
     preventScrollOnSwipe: true,
     trackMouse: true,
   });
+
+  const router = useRouter();
+  const handleRoute = (url: Routes) => {
+    router.push(url)
+  }
 
   return (
     <main>
@@ -96,6 +110,7 @@ export default function Home() {
               title={item.title}
               description={item.description}
               buttonText={item.buttonText}
+              onClickHandle={() => handleRoute(item.url)}
             />
           ))}
         </div>

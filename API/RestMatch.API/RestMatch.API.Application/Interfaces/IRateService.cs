@@ -1,4 +1,5 @@
 ﻿using RestMatch.API.Application.Dtos;
+using RestMatch.API.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,8 @@ namespace RestMatch.API.Application.Interfaces
 {
     public interface IRateService
     {
-        Task CreateReviewRerate(CreateReviewDto model);
+        Task<IEnumerable<ReviewDto>> GetAllReviews(int restaurantId);
+        Task CreateReviewRerate(ReviewDto model);
+        Task DeleteReview(int reviewId, int userId);
     }
 }
