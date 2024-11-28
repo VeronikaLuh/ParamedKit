@@ -10,5 +10,7 @@ namespace RestMatch.API.Domain.Interfaces
     public interface IUserSelectedCriteriasRepository
     {
         Task<List<int>> GetUserSelectedCriterias(int userId);
+        Task AddNewCriteria(UserSelectedCriteria userSelectedCriteria);
+        Task UpdateNewCriteria(UserSelectedCriteria userSelectedCriteria, int userId);
     }
 }
