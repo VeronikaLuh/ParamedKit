@@ -19,6 +19,7 @@ namespace RestMatch.API.Infrastructure.Extensions
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IFavouritesService, FavouritesService>();
             services.AddSingleton<IAzureStorage, AzureStorage>();
+            services.AddScoped<IUserSelectedCriteriaService, UserSelectedCriteriaService>();
         }
     }
 }

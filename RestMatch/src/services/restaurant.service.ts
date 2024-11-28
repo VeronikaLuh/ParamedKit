@@ -2,6 +2,13 @@ import ApiService from "@/services/api.service";
 import {HttpMethods} from "@/types/enum";
 import {Restaurant} from "@/models/Restaurant";
 
+const getRecommendations = async (pageNumber: number, pageSize: number, faceUserId: string) => {
+  return await ApiService.makeAuthApiRequest({
+    url: `/api/restaurant/recommendations/${faceUserId}?pageNumber=${pageNumber}&pageSize=${pageSize}`,
+    method: HttpMethods.GET
+  });
+}
+
 const getRestaurants = async () => {
   return await ApiService.makeApiRequest({
     url: '/api/restaurant',
@@ -53,6 +60,7 @@ const restaurantService = {
   addRestaurant,
   updateRestaurant,
   deleteRestaurant,
+  getRecommendations
 }
 
 export default restaurantService;

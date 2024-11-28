@@ -734,6 +734,106 @@ export class RestaurantsClient extends ApiBase {
     }
 }
 
+export class UserSelectedCriteriaClient extends ApiBase {
+    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
+        this.http = http ? http : window as any;
+        this.baseUrl = baseUrl ?? "";
+    }
+
+    addUserCriteias(userSelectedCriteiaDto: UserSelectedCriteiaDto): Promise<FileResponse> {
+        let url_ = this.baseUrl + "/api/UserSelectedCriteria";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(userSelectedCriteiaDto);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processAddUserCriteias(_response);
+        });
+    }
+
+    protected processAddUserCriteias(response: Response): Promise<FileResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            let fileNameMatch = contentDisposition ? /filename\*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/g.exec(contentDisposition) : undefined;
+            let fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[3] || fileNameMatch[2] : undefined;
+            if (fileName) {
+                fileName = decodeURIComponent(fileName);
+            } else {
+                fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+                fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            }
+            return response.blob().then(blob => { return { fileName: fileName, data: blob, status: status, headers: _headers }; });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<FileResponse>(null as any);
+    }
+
+    updateUserCriteias(userSelectedCriteiaDto: UserSelectedCriteiaDto): Promise<FileResponse> {
+        let url_ = this.baseUrl + "/api/UserSelectedCriteria";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(userSelectedCriteiaDto);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            }
+        };
+
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
+            return this.processUpdateUserCriteias(_response);
+        });
+    }
+
+    protected processUpdateUserCriteias(response: Response): Promise<FileResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            let fileNameMatch = contentDisposition ? /filename\*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/g.exec(contentDisposition) : undefined;
+            let fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[3] || fileNameMatch[2] : undefined;
+            if (fileName) {
+                fileName = decodeURIComponent(fileName);
+            } else {
+                fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+                fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            }
+            return response.blob().then(blob => { return { fileName: fileName, data: blob, status: status, headers: _headers }; });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<FileResponse>(null as any);
+    }
+}
+
 export interface LoginDto {
     nickname?: string;
     password?: string;
@@ -926,6 +1026,29 @@ export interface AddRestaurantDto {
 export interface ImageDto {
     url?: string | null;
     imageBase64?: string | null;
+}
+
+export interface PutRestaurantRequestDto extends RestaurantDtoBase {
+}
+
+export interface PutRestaurantImageUrlRequestDto extends RestaurantImageUrlDtoBase {
+}
+
+export interface PostRestaurantRequestDto extends RestaurantDtoBase {
+}
+
+export interface PostRestaurantImageUrlRequestDto extends RestaurantImageUrlDtoBase {
+}
+
+export interface PostRestaurantCuisineRequestDto extends RestaurantCuisineDtoBase {
+}
+
+export interface UserSelectedCriteiaDto {
+    id?: number | null;
+    cuisineId?: number;
+    lowestPrice?: number;
+    highestPrice?: number;
+    location?: string;
 }
 
 export interface FileResponse {

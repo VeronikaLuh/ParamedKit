@@ -1,4 +1,5 @@
 export enum Routes {
+  FAQS = '/faqs',
   ADMIN = '/admin',
   ABOUT_US = '/about-us',
   HOME = '/',
@@ -6,6 +7,7 @@ export enum Routes {
   SEARCH = '/search',
   MATCH = '/match',
   PREFERENCES = '/preferences',
-  PROFILE = '/profile',
+  PROFILE = '/user-page',
   LOGIN = '/login',
+  SIGN_UP = '/signup'
 }
