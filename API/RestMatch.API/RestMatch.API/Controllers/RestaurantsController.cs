@@ -57,8 +57,11 @@ namespace RestMatch.API.Controllers
             [FromQuery] int pageSize)
         {
             var restaurants = await _service.GetRestaurants(location, cuisine, lowestPrice, highestPrice, sortOrder, pageNumber, pageSize);
+            
             if (restaurants.Entities.Count == 0)
+            {
                 return NoContent();
+            }
 
             return Ok(restaurants);
         }
@@ -69,8 +72,11 @@ namespace RestMatch.API.Controllers
         public async Task<ActionResult<RestaurantDto>> GetRestaurant(int id)
         {
             var restaurant = await _service.GetRestaurant(id);
+
             if (restaurant == null)
+            {
                 return NotFound($"{nameof(Restaurant)} wasn't found");
+            }
 
             return Ok(restaurant);
         }
@@ -79,10 +85,12 @@ namespace RestMatch.API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> PutRestaurant(int id, RestaurantDto dto)
+        public async Task<IActionResult> PutRestaurant(int id, AddRestaurantDto dto)
         {
             if (!await _service.UpdateRestaurant(id, dto))
+            {
                 return NotFound($"{nameof(Restaurant)} wasn't found");
+            }
 
             return NoContent();
         }
@@ -90,9 +98,10 @@ namespace RestMatch.API.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(RestaurantDto), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<RestaurantDto>> PostRestaurant(RestaurantDto dto)
+        public async Task<ActionResult<RestaurantDto>> PostRestaurant(AddRestaurantDto dto)
         {
             var restaurant = await _service.AddRestaurant(dto);
+
             return CreatedAtAction(nameof(GetRestaurant), new { id = restaurant.Id }, restaurant);
         }
 

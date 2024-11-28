@@ -17,8 +17,8 @@ namespace RestMatch.API.Application.Interfaces
             int pageNumber,
             int pageSize);
         Task<RestaurantDto?> GetRestaurant(int id);
-        Task<bool> UpdateRestaurant(int id, RestaurantDto dto);
-        Task<RestaurantDto> AddRestaurant(RestaurantDto dto);
+        Task<bool> UpdateRestaurant(int id, AddRestaurantDto dto);
+        Task<RestaurantDto> AddRestaurant(AddRestaurantDto dto);
         Task<bool> DeleteRestaurant(int id);
     }
 }

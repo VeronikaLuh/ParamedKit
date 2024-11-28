@@ -552,7 +552,7 @@ export class RestaurantsClient extends ApiBase {
         return Promise.resolve<PagedEntitiesOfRestaurantDto>(null as any);
     }
 
-    postRestaurant(dto: RestaurantDto): Promise<RestaurantDto> {
+    postRestaurant(dto: AddRestaurantDto): Promise<RestaurantDto> {
         let url_ = this.baseUrl + "/api/Restaurants";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -641,7 +641,7 @@ export class RestaurantsClient extends ApiBase {
         return Promise.resolve<RestaurantDto>(null as any);
     }
 
-    putRestaurant(id: number, dto: RestaurantDto): Promise<void> {
+    putRestaurant(id: number, dto: AddRestaurantDto): Promise<void> {
         let url_ = this.baseUrl + "/api/Restaurants/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -884,7 +884,7 @@ export interface RestaurantDto {
     aboutText?: string;
     menuUrl?: string;
     cuisines?: RestaurantCuisineDto[];
-    images?: ImageUrlDto[];
+    imageUrls?: ImageUrlDto[];
 }
 
 export interface RestaurantCuisineDto {
@@ -903,6 +903,29 @@ export interface ProblemDetails {
     instance?: string | null;
 
     [key: string]: any;
+}
+
+export interface AddRestaurantDto {
+    id?: number | null;
+    name?: string;
+    country?: string;
+    city?: string;
+    address?: string;
+    rating?: number;
+    lowerPrice?: number;
+    upperPrice?: number;
+    openingTime?: string;
+    closingTime?: string;
+    phoneNumber?: string;
+    aboutText?: string;
+    menuUrl?: string;
+    cuisines?: RestaurantCuisineDto[];
+    images?: ImageDto[];
+}
+
+export interface ImageDto {
+    url?: string | null;
+    imageBase64?: string | null;
 }
 
 export interface FileResponse {

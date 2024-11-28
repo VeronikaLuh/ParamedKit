@@ -21,6 +21,6 @@ namespace RestMatch.API.Application.Dtos
         public string MenuUrl { get; set; } = string.Empty;
 
         public IEnumerable<RestaurantCuisineDto> Cuisines { get; set; } = null!;
-        public IEnumerable<ImageUrlDto> Images { get; set; } = null!;
+        public IEnumerable<ImageUrlDto> ImageUrls { get; set; } = null!;
     }
 }

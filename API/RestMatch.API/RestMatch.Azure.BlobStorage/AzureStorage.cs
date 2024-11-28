@@ -16,7 +16,7 @@ namespace RestMatch.Azure.BlobStorage
         {
             _storageConnectionString = configuration["BlobConnectionString"]!.ToString();
             _storageUserImagesContainerName = configuration["BlobUserImagesContainerName"]!.ToString();
-            _storageRestaurantContainerName = configuration["BlobRestaurantContainerName"]!.ToString();
+            _storageRestaurantContainerName = configuration["BlobRestaurantImagesContainerName"]!.ToString();
         }
 
         public async Task<BlobResponseDto> UploadAsync(byte[] blob, string fileName, ContainerEnum containerType)
