@@ -6,6 +6,7 @@ import { Eye, EyeOff } from "lucide-react";
 import {Routes} from "@/types/routes";
 import authService from "@/services/auth.service";
 import {AuthUserRegistration} from "@/models/AuthUser";
+import {useRouter} from "next/navigation";
 
 interface FormData {
   name: string;
@@ -24,6 +25,8 @@ const SignUp = () => {
 
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [showPassword, setShowPassword] = useState(false);
+
+    const router = useRouter();
 
     const validate = () => {
       const newErrors: Record<string, string> = {};
@@ -60,17 +63,19 @@ const SignUp = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       if (validate()) {
-        console.log("Form data submitted:", formData);
         const firstAndLastName = formData.name.split(' ');
+
         const payload: AuthUserRegistration = {
           firstName: firstAndLastName[0],
           lastName: firstAndLastName[1],
           nickname: formData.nickname,
           email: formData.email,
-          password: formData.password
+          password: formData.password,
+          roles: [1]
         }
-        const response = await authService.login(payload);
-        console.log(response)
+        const response = await authService.signUp(payload);
+        authService.setToken(response.data);
+        router.push(Routes.HOME);
       }
     };
 

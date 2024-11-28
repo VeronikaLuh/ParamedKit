@@ -4,10 +4,13 @@ import React, {useState} from "react";
 import {Routes} from "@/types/routes";
 import authService from "@/services/auth.service";
 import {AuthUser} from "@/models/AuthUser";
+import {useRouter} from "next/navigation";
 
 const Login = () => {
   const [nickname, setNickname] = useState('');
   const [password, setPassword] = useState('');
+
+  const router = useRouter();
 
   const handleLogin = async () => {
     const payload: AuthUser = {
@@ -16,7 +19,8 @@ const Login = () => {
     }
 
     const response = await authService.login(payload);
-    console.log(response)
+    authService.setToken(response.data);
+    router.push(Routes.HOME);
   }
 
   return (

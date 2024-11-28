@@ -3,7 +3,8 @@ export interface AuthUserRegistration {
   "lastName": string,
   "nickname": string,
   "email": string,
-  "password": string
+  "password": string,
+  roles: number[]
 }
 
 export interface AuthUser {

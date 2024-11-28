@@ -18,9 +18,19 @@ const signUp = async (user: AuthUserRegistration) => {
   });
 }
 
+const getToken = () => {
+  return localStorage.getItem('token');
+}
+
+const setToken = (token: string) => {
+  localStorage.setItem('token', token);
+}
+
 const authService = {
   login,
-  signUp
+  signUp,
+  getToken,
+  setToken
 }
 
 export default authService;
