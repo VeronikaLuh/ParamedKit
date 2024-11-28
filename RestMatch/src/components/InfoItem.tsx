@@ -10,7 +10,7 @@ interface InfoItemProps {
 const InfoItem = (props: InfoItemProps) => {
   const {title, description, buttonText, onClickHandle} = props;
   return (
-    <div className='bg-cyan-500 px-8 py-3 pb-10'
+    <div className='bg-cyan-500 px-[34px] py-[26px]'
          style={{
            backgroundImage: 'url(assets/images/homepage/item-background.png)',
          }}>
