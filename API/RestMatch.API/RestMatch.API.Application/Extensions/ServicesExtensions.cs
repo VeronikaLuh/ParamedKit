@@ -17,6 +17,7 @@ namespace RestMatch.API.Infrastructure.Extensions
             services.AddScoped<ICuisineTypeService, CuisineTypeService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IFavouritesService, FavouritesService>();
+            services.AddScoped<IUserSelectedCriteriaService, UserSelectedCriteriaService>();
         }
     }
 }
