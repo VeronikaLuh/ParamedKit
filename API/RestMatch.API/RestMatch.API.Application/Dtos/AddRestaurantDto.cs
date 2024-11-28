@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace RestMatch.API.Application.Dtos
 {
-    public class RestaurantDto
+    public class AddRestaurantDto
     {
         public int? Id { get; set; }
 
@@ -21,6 +21,6 @@ namespace RestMatch.API.Application.Dtos
         public string MenuUrl { get; set; } = string.Empty;
 
         public IEnumerable<RestaurantCuisineDto> Cuisines { get; set; } = null!;
-        public IEnumerable<ImageUrlDto> Images { get; set; } = null!;
+        public IEnumerable<ImageDto> Images { get; set; } = null!;
     }
 }

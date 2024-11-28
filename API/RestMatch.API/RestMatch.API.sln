@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestMatch.API", "RestMatch.API\RestMatch.API.csproj", "{80DD2726-C885-4B8E-85B3-41CFB2469600}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestMatch.API", "RestMatch.API\RestMatch.API.csproj", "{80DD2726-C885-4B8E-85B3-41CFB2469600}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestMatch.API.Infrastructure", "RestMatch.API.Infrastructure\RestMatch.API.Infrastructure.csproj", "{4E04763C-F2EC-452B-8C19-7BA62855AF85}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestMatch.API.Infrastructure", "RestMatch.API.Infrastructure\RestMatch.API.Infrastructure.csproj", "{4E04763C-F2EC-452B-8C19-7BA62855AF85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestMatch.API.Domain", "RestMatch.API.Domain\RestMatch.API.Domain.csproj", "{C0EE4B2B-6A07-4180-9323-B8DF125C3F72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestMatch.API.Domain", "RestMatch.API.Domain\RestMatch.API.Domain.csproj", "{C0EE4B2B-6A07-4180-9323-B8DF125C3F72}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestMatch.API.Application", "RestMatch.API.Application\RestMatch.API.Application.csproj", "{B2D90F3B-D1EE-40C5-B08F-8C843C625079}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestMatch.API.Application", "RestMatch.API.Application\RestMatch.API.Application.csproj", "{B2D90F3B-D1EE-40C5-B08F-8C843C625079}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestMatch.Azure.BlobStorage", "RestMatch.Azure.BlobStorage\RestMatch.Azure.BlobStorage.csproj", "{8B022938-423F-4CF4-B929-C44990605BAA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{B2D90F3B-D1EE-40C5-B08F-8C843C625079}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2D90F3B-D1EE-40C5-B08F-8C843C625079}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2D90F3B-D1EE-40C5-B08F-8C843C625079}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B022938-423F-4CF4-B929-C44990605BAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B022938-423F-4CF4-B929-C44990605BAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B022938-423F-4CF4-B929-C44990605BAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B022938-423F-4CF4-B929-C44990605BAA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
