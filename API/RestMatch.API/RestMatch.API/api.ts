@@ -884,14 +884,14 @@ export interface RestaurantDto {
     aboutText?: string;
     menuUrl?: string;
     cuisines?: RestaurantCuisineDto[];
-    imageUrls?: RestaurantImageUrlDto[];
+    images?: ImageUrlDto[];
 }
 
 export interface RestaurantCuisineDto {
     typeId?: number;
 }
 
-export interface RestaurantImageUrlDto {
+export interface ImageUrlDto {
     url?: string;
 }
 

@@ -10,7 +10,7 @@ namespace RestMatch.API.Application.Helper
         public MappingProfile()
         {
             CreateMap<Restaurant, RestaurantDto>().ReverseMap();
-            CreateMap<RestaurantImageUrl, RestaurantImageUrlDto>().ReverseMap();
+            CreateMap<RestaurantImageUrl, ImageUrlDto>().ReverseMap();
             CreateMap<RestaurantCuisine, RestaurantCuisineDto>().ReverseMap();
             CreateMap<CuisineType, CuisineTypeDto>().ReverseMap();
         }
