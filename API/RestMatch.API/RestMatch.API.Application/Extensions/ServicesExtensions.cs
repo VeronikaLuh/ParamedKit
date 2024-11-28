@@ -2,6 +2,7 @@ using System;
 using Microsoft.Extensions.DependencyInjection;
 using RestMatch.API.Application.Interfaces;
 using RestMatch.API.Application.Services;
+using RestMatch.Azure.BlobStorage;
 
 namespace RestMatch.API.Infrastructure.Extensions
 {
@@ -17,6 +18,7 @@ namespace RestMatch.API.Infrastructure.Extensions
             services.AddScoped<ICuisineTypeService, CuisineTypeService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IFavouritesService, FavouritesService>();
+            services.AddSingleton<IAzureStorage, AzureStorage>();
             services.AddScoped<IUserSelectedCriteriaService, UserSelectedCriteriaService>();
         }
     }

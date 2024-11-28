@@ -5,6 +5,15 @@ namespace RestMatch.API.Domain.Models
 {
     public class RestaurantImageUrl : BaseEntity
     {
+        public RestaurantImageUrl(string imageUrl)
+        {
+            Url = imageUrl;
+        }
+
+        public RestaurantImageUrl()
+        {
+        }
+
         [Key]
         public int Id { get; set; }
 
