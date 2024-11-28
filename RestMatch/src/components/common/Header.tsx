@@ -15,7 +15,7 @@ const Header = () => {
     {route: Routes.HOME, name: 'Home page'},
     {route: Routes.MATCH, name: 'Let\'s match'},
     {route: Routes.SEARCH, name: 'Research'},
-    {route: Routes.ABOUT_US, name: 'About us'},
+    // {route: Routes.ABOUT_US, name: 'About us'},
   ]
 
   const handleRouteChange = async (url: Routes) => {

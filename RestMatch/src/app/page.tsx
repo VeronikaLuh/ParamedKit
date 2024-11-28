@@ -1,6 +1,10 @@
+'use client'
+
 import {imageUrl} from "@/utils/constants";
 import InfoItem from "@/components/InfoItem";
 import React from "react";
+import {useRouter} from "next/navigation";
+import {Routes} from "@/types/routes";
 
 export default function Home() {
   const data = [
@@ -8,25 +12,36 @@ export default function Home() {
       title: 'Register or login',
       description: 'fvfkssvkpokvspkopv sflvsvofsvk mvsvsvmf mcs skcmkdmsk ckmmcdk kcsmkcsd j jdcjds mksmc',
       enableButton: true,
-      buttonText: 'Register'
+      buttonText: 'Register',
+      url: Routes.LOGIN
     },
     {
       title: 'Choose preferences',
       description: 'Quick way to choose where you must go today. Delicious and beautiful places await you',
       enableButton: false,
+      buttonText: '',
+      url: Routes.HOME
     },
     {
       title: 'Like or pass',
       description: 'Quick way to choose where you must go today. Delicious and beautiful places await you',
       enableButton: false,
+      buttonText: '',
+      url: Routes.HOME
     },
     {
       title: 'Don`t like swipe?',
       description: 'Quick way to choose where you must go today. Delicious and beautiful places await you',
       enableButton: true,
-      buttonText: 'Search'
+      buttonText: 'Search',
+      url: Routes.SEARCH
     }
   ]
+
+  const router = useRouter();
+  const handleRoute = (url: Routes) => {
+    router.push(url)
+  }
 
   return (
     <main>
@@ -42,7 +57,12 @@ export default function Home() {
         <hr/>
         <div className='grid gap-2 mt-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
           {data.map((item, index) => (
-            <InfoItem title={item.title} description={item.description} buttonText={item.buttonText} />
+            <InfoItem
+              title={item.title}
+              description={item.description}
+              buttonText={item.buttonText}
+              onClickHandle={() => handleRoute(item.url)}
+            />
           ))}
         </div>
       </div>
