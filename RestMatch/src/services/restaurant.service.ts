@@ -3,7 +3,7 @@ import {HttpMethods} from "@/types/enum";
 import {Restaurant} from "@/models/Restaurant";
 
 const getRecommendations = async (pageNumber: number, pageSize: number, faceUserId: string) => {
-  return await ApiService.makeApiRequest({
+  return await ApiService.makeAuthApiRequest({
     url: `/api/restaurant/recommendations/${faceUserId}?pageNumber=${pageNumber}&pageSize=${pageSize}`,
     method: HttpMethods.GET
   });

@@ -3,6 +3,12 @@ import ApiErrorHandler from "../errorHandler/ApiErrorHandler";
 import {HttpMethods} from "@/types/enum";
 import axios from "axios";
 import {ApiRequestOptions, HttpsRequestOptions} from "@/types/api";
+import authService from "@/services/auth.service";
+
+const makeAuthApiRequest = async (options: ApiRequestOptions) => {
+  const token = authService.getToken();
+  return await makeApiRequest(options, token ? token : '');
+}
 
 const makeApiRequest = async (options: ApiRequestOptions, token?: string) => {
   const limiter = new Bottleneck({
@@ -63,12 +69,18 @@ const makeHttpsRequest = async (options: HttpsRequestOptions) => {
     'Accept': '*/*'
   };
 
-  const authHeader = req.headers.authorization;
+  const authHeader = req.headers.get('Authorization');
   if (authHeader) {
     headersParams['Authorization'] = `${authHeader}`;
   }
 
-  const body = await req.json();
+  let body: any;
+  try {
+    body = await req.json();
+  }
+  catch (error) {
+    body = null
+  }
 
   try {
     const response = await axios({
@@ -106,7 +118,8 @@ const makeHttpsRequest = async (options: HttpsRequestOptions) => {
 
 const apiService = {
   makeHttpsRequest,
-  makeApiRequest
+  makeApiRequest,
+  makeAuthApiRequest
 }
 
 
