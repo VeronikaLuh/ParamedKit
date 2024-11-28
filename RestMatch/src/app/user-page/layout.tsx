@@ -21,7 +21,7 @@ const UserLayout = ({
   }
 
   return (
-    <div className="flex min-h-[calc(100vh-67px)]">
+    <div className="hidden md:flex min-h-[calc(100vh-67px)]">
       <div className="bg-[#A98660] min-w-[441px] pt-12 flex flex-col items-center shadow-lg shadow-gray-500/50">
         <img
           src={`${imageUrl}/userpage/default-user-profile-image.png`}
@@ -38,7 +38,7 @@ const UserLayout = ({
               className={`${classes["selected-page-button"]} ${
                 noPadding === 1 && classes["no-padding"]
               } ${noPadding === 1 && classes.active} h-12 w-full text-left border-b-2`}
-              onClick={() => changePage("/user-page/", 1)}
+              onClick={() => changePage("/user-page/profile", 1)}
             >
               Profile
             </button>
