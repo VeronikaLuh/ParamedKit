@@ -16,6 +16,18 @@ $border-width: 2px;
   border-color: $idle-color;
   border-width: $border-width;
 
+  @media (max-width: 640px) {
+      background-color: $idle-color;
+        border-radius: 27px;
+        font-size: 1rem;
+        color: white;
+        padding: 0.5rem calc(1rem - $border-width);
+        font-weight: bold;
+        border-style: solid;
+        border-color: $idle-color;
+        border-width: $border-width;
+    }
+
   &:hover {
     background-color: $hover-color;
     border-color: $hover-color;
