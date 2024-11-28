@@ -9,7 +9,6 @@ export async function GET(req: Request) {
     req: req
   });
 
-
   return NextResponse.json({data: response});
 }
 
