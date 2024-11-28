@@ -4,6 +4,7 @@ import Image from "next/image";
 import styles from "./header.module.scss";
 import {usePathname, useRouter} from "next/navigation";
 import {Routes} from "@/types/routes";
+import authService from "@/services/auth.service";
 
 const Header = () => {
   const router = useRouter();
@@ -43,10 +44,20 @@ const Header = () => {
         />
         <div className="flex gap-[27px]">
           {basicPages.map((page, index) => (
-            <button key={index} onClick={() => handleRouteChange(page.route)} className={`${styles.headerButton} ${isSelected(page.route)}`}>{page.name}</button>
+            <button key={index} onClick={() => handleRouteChange(page.route)}
+                    className={`${styles.headerButton} ${isSelected(page.route)}`}>{page.name}</button>
           ))}
         </div>
-        <button onClick={() => handleRouteChange(Routes.SIGN_UP)} className={`${styles.headerButton} ${isSelected(Routes.LOGIN)}`}>Register</button>
+        {authService.isAuth() ? (
+          <button onClick={() => handleRouteChange(Routes.PROFILE)}
+                  className={`${styles.headerButton} ${isSelected(Routes.PROFILE)}`}>Profile
+          </button>
+        ) : (
+          <button onClick={() => handleRouteChange(Routes.SIGN_UP)}
+                  className={`${styles.headerButton} ${isSelected(Routes.LOGIN)}`}>Register
+          </button>
+        )
+        }
       </div>
     </header>
   );

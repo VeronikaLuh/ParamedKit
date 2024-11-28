@@ -26,11 +26,16 @@ const setToken = (token: string) => {
   localStorage.setItem('token', token);
 }
 
+const isAuth = () => {
+  return !!getToken();
+}
+
 const authService = {
   login,
   signUp,
   getToken,
-  setToken
+  setToken,
+  isAuth
 }
 
 export default authService;
