@@ -22,7 +22,7 @@ namespace RestMatch.API.Controllers
         }
 
         [HttpGet]
-        [Route("hello/{faceUserId:int}")]
+        [Route("hello")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult<PagedEntities<Restaurant>>> GetUserRecommendations([FromQuery] int pageNumber, [FromQuery] int pageSize)
         {
