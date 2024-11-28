@@ -46,7 +46,7 @@ const Header = () => {
             <button key={index} onClick={() => handleRouteChange(page.route)} className={`${styles.headerButton} ${isSelected(page.route)}`}>{page.name}</button>
           ))}
         </div>
-        <button onClick={() => handleRouteChange(Routes.LOGIN)} className={`${styles.headerButton} ${isSelected(Routes.LOGIN)}`}>Register</button>
+        <button onClick={() => handleRouteChange(Routes.SIGN_UP)} className={`${styles.headerButton} ${isSelected(Routes.LOGIN)}`}>Register</button>
       </div>
     </header>
   );

@@ -13,7 +13,7 @@ export default function Home() {
       description: 'fvfkssvkpokvspkopv sflvsvofsvk mvsvsvmf mcs skcmkdmsk ckmmcdk kcsmkcsd j jdcjds mksmc',
       enableButton: true,
       buttonText: 'Register',
-      url: Routes.LOGIN
+      url: Routes.SIGN_UP
     },
     {
       title: 'Choose preferences',

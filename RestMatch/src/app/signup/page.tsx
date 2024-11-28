@@ -1,10 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import React from "react";
-import imageLogin from "../../../public/assets/images/login/login.jpg";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import {Routes} from "@/types/routes";
+import authService from "@/services/auth.service";
+import {AuthUserRegistration} from "@/models/AuthUser";
 
 interface FormData {
   name: string;
@@ -14,13 +15,13 @@ interface FormData {
 }
 
 const SignUp = () => {
-
     const [formData, setFormData] = useState<FormData>({
       name: "",
       nickname: "",
       email: "",
       password: "",
     });
+
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [showPassword, setShowPassword] = useState(false);
 
@@ -56,11 +57,20 @@ const SignUp = () => {
       return Object.keys(newErrors).length === 0; // Якщо помилок немає
     };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       if (validate()) {
         console.log("Form data submitted:", formData);
-        // Додайте ваш код для обробки даних
+        const firstAndLastName = formData.name.split(' ');
+        const payload: AuthUserRegistration = {
+          firstName: firstAndLastName[0],
+          lastName: firstAndLastName[1],
+          nickname: formData.nickname,
+          email: formData.email,
+          password: formData.password
+        }
+        const response = await authService.login(payload);
+        console.log(response)
       }
     };
 
@@ -81,7 +91,7 @@ const SignUp = () => {
               Create your account
             </p>
             <div className="text-center p-2">
-              <a href="login" className="text-[16px] text-gray-300 ">
+              <a href={Routes.LOGIN} className="text-[16px] text-gray-300 ">
                 Already have an account?{" "}
                 <span className="text-white font-bold underline">Log in</span>
               </a>
