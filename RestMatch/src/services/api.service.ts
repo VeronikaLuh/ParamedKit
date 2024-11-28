@@ -68,12 +68,14 @@ const makeHttpsRequest = async (options: HttpsRequestOptions) => {
     headersParams['Authorization'] = `${authHeader}`;
   }
 
+  const body = await req.json();
+
   try {
     const response = await axios({
       method: method,
       url: url,
       headers: headersParams,
-      ...(req.body && { data: req.body }),
+      ...(body && { data: body }),
       maxRedirects: 0,
     });
 
