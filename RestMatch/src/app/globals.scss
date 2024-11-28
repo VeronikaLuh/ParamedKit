@@ -29,10 +29,20 @@ h1 {
 
 h2 {
   @include h2;
+
+  @media (max-width: 640px) {
+      font-size: 1.7rem;
+      line-height: 2.5rem;
+  }
 }
 
 h3 {
   @include h3;
+
+  @media (max-width: 640px) {
+      font-size: 1.7rem;
+      line-height: 2.5rem;
+    }
 }
 
 h4 {
