@@ -15,7 +15,6 @@ export default function Home() {
       description:
         "Quick way to choose where you must go today. Delicious and beautiful places await you",
       enableButton: true,
-
       buttonText: "Register",
       url: Routes.SIGN_UP
     },
@@ -25,7 +24,7 @@ export default function Home() {
         "Quick way to choose where you must go today. Delicious and beautiful places await you",
       enableButton: true,
       buttonText: "Make choice",
-      url: Routes.HOME
+      url: Routes.PREFERENCES
     },
     {
       title: "Like or pass",
@@ -33,7 +32,7 @@ export default function Home() {
         "Quick way to choose where you must go today. Delicious and beautiful places await you",
       enableButton: true,
       buttonText: "Let's match",
-      url: Routes.HOME  
+      url: Routes.MATCH
 
     },
     {
@@ -41,7 +40,6 @@ export default function Home() {
       description:
         "Quick way to choose where you must go today. Delicious and beautiful places await you",
       enableButton: true,
-
       buttonText: "Search",
       url: Routes.SEARCH
     },
@@ -107,6 +105,7 @@ export default function Home() {
         <div className="hidden md:grid gap-2 mt-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {data.map((item, index) => (
             <InfoItem
+              key={index}
               title={item.title}
               description={item.description}
               buttonText={item.buttonText}
@@ -133,15 +132,17 @@ export default function Home() {
             <div
               key={index}
               style={{
-                flexBasis: "100%", // Забезпечує, що кожен слайд займає 100% ширини
+                flexBasis: "100%",
               }}
               className={`flex-none w-full h-[400px]carousel-item transition-transform duration-500 ease-in-out transform `}
             >
               <div className="grid gap-4 mt-6 grid-cols-1">
                 <InfoItem
+                  key={index}
                   title={item.title}
                   description={item.description}
                   buttonText={item.buttonText}
+                  onClickHandle={() => handleRoute(item.url)}
                 />
               </div>
             </div>
