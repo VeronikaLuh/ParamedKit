@@ -33,7 +33,7 @@ const SearchPage = () => {
       lowestPrice: lowerPrice || undefined,
       cuisine: cuisineType || undefined,
     })
-    setData(response)
+    setData(response.data.entities)
   }
 
   useEffect(() => {
@@ -72,9 +72,9 @@ const SearchPage = () => {
             <input onChange={(e) => setUpperPrice(e.target.value)}  className="border-2 border-gray-300 rounded-3xl min-w-2 h-full text-black px-4"/>
           </div>
           <div className={`${classes["custom-select"]} col-span-2`}>
-            <select>
+            <select onChange={(e) => setCuisineType(e.target.value)}>
               {cuisinesTypes.length > 0 && cuisinesTypes.map((cuisine) => (
-                <option key={cuisine.id} onClick={() => setCuisineType(cuisine.id.toString())}>{cuisine.name}</option>
+                <option key={cuisine.id} value={cuisine.id}>{cuisine.name}</option>
               ))}
             </select>
           </div>
@@ -85,11 +85,11 @@ const SearchPage = () => {
       </div>
       <div>
         <h3 className="text-[25px] font-medium mb-1">
-          Number of results: ({data.length})
+          Number of results: ({data && data.length})
         </h3>
-        <h4 className="text-[20px] mb-7">1 to 5 of {data.length}:</h4>
+        <h4 className="text-[20px] mb-7">1 to 5 of {data && data.length}:</h4>
       </div>
-      {data.length > 0 && data.map((restaurant, index) => (
+      {data && data.length > 0 && data.map((restaurant, index) => (
         <RestaurantCard
           key={index}
           id={restaurant.id}
