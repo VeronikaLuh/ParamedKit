@@ -14,7 +14,7 @@ const SearchPage = () => {
 
   const fetchRestaurants = useCallback(async () => {
     const response = await restaurantService.getRestaurants();
-    setData(response.data);
+    setData(response.data.entities);
   }, []);
 
   const fetchCuisines = useCallback(async () => {
@@ -29,7 +29,7 @@ const SearchPage = () => {
 
 
   return (
-    <div className="bg-[#9F784E] flex flex-col w-full min-w-[55.9rem] max-w-[100rem] mx-auto">
+    <div className="bg-[#9F784E] flex flex-col w-full min-w-[55.9rem] max-w-[100rem] mx-auto px-4">
       <div
         className="flex items-center bg-white rounded-[10px] gap-3 p-4 justify-between my-8 drop-shadow-lg min-w-[55.9rem]">
         <img

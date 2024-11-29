@@ -21,7 +21,7 @@ const Footer = () => {
         <div className="w-full h-1 shadow-[0px_4px_4px_rgba(0,0,0,0.25)] mb-10"></div>
       </div>
       <div className="px-7 mb-4">
-        <div className="flex justify-between max-w-[50rem] mb-10 mx-auto text-[1.75rem]">
+        <div className="flex flex-row justify-between max-custom:flex-col max-w-[50rem] mb-10 mx-auto text-[1.75rem]">
         {basicPages.map((page, index) => (
             <button key={index} onClick={() => handleRouteChange(page.route)}>{page.name}</button>
           ))}

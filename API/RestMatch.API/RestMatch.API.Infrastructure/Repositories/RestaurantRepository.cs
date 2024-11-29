@@ -29,8 +29,8 @@ namespace RestMatch.API.Infrastructure.Repositories
             int? lowestPrice,
             int? highestPrice,
             string? sortOrder,
-            int pageNumber,
-            int pageSize)
+            int? pageNumber,
+            int? pageSize)
         {
             var query = _context.Restaurants.Select(x => x);
 
@@ -50,6 +50,15 @@ namespace RestMatch.API.Infrastructure.Repositories
                 query = FilterCuisines(query, cuisines);
             }
 
+            if (pageNumber == null || pageSize == null)
+            {
+                return new PagedEntities<Restaurant>()
+                {
+                    TotalPages = 1,
+                    Entities = await query.Include(r => r.ImageUrls).ToListAsync()
+                };
+            }
+
             query = sortOrder switch
             {
                 "name_asc" => query.OrderBy(p => p.Name),
@@ -66,7 +75,7 @@ namespace RestMatch.API.Infrastructure.Repositories
             int totalCount = await query.CountAsync();
             var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
             var restaurants = await query
-                .Skip((pageNumber - 1) * pageSize).Take(pageSize)
+                .Skip((pageNumber.Value - 1) * pageSize.Value).Take(pageSize.Value)
                 .Include(r => r.ImageUrls).ToListAsync();
             return new PagedEntities<Restaurant>()
             {
@@ -214,7 +223,7 @@ namespace RestMatch.API.Infrastructure.Repositories
 
             var restaurantsIds = restaurantsAndRates.Entities.Select(x => (int)x.RestaurantId);
 
-            var unsortedRecomendedRestaurants = await _context.Restaurants.Select(x => x).Where(r => restaurantsIds.Contains(r.Id)).ToListAsync();
+            var unsortedRecomendedRestaurants = await _context.Restaurants.Select(x => x).Where(r => restaurantsIds.Contains(r.Id)).Include(x => x.Cuisines).Include(x => x.ImageUrls).ToListAsync();
 
             var recomendedRestaurants = restaurantsAndRates.Entities.Select(x => unsortedRecomendedRestaurants.FirstOrDefault(e => e.Id == (int)x.RestaurantId)).ToList();
             foreach (var item in restaurantsAndRates.Entities)

@@ -17,7 +17,9 @@ builder.Services.AddCors(policy =>
     });
 });
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+); ;
 
 builder.Services.ConfigureAutoMapper();
 builder.Services.ConfigureServices();
