@@ -1,13 +1,13 @@
 import ApiService from "@/services/api.service";
-import {HttpMethods} from "@/types/enum";
-import {Restaurant} from "@/models/Restaurant";
+import { HttpMethods } from "@/types/enum";
+import { Restaurant } from "@/models/Restaurant";
 
 const getRecommendations = async (pageNumber: number, pageSize: number) => {
   return await ApiService.makeAuthApiRequest({
     url: `/api/restaurant/recommendations?pageNumber=${pageNumber}&pageSize=${pageSize}`,
-    method: HttpMethods.GET
+    method: HttpMethods.GET,
   });
-}
+};
 
 interface RestaurantQueryParams {
   location?: string;
@@ -15,6 +15,7 @@ interface RestaurantQueryParams {
   highestPrice?: string;
   sortOrder?: string;
   pageNumber?: string;
+  cuisine?: string;
 }
 
 const getRestaurants = async (params: RestaurantQueryParams = {}) => {
@@ -26,50 +27,52 @@ const getRestaurants = async (params: RestaurantQueryParams = {}) => {
     }
   });
 
-  const url = `/api/restaurant${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+  const url = `/api/restaurant${
+    queryParams.toString() ? `?${queryParams.toString()}` : ""
+  }`;
 
   return await ApiService.makeApiRequest({
     url,
-    method: HttpMethods.GET
+    method: HttpMethods.GET,
   });
-}
+};
 
 const getRestaurant = async (id: string) => {
   return await ApiService.makeApiRequest({
     url: `/api/restaurant/${id}`,
-    method: HttpMethods.GET
+    method: HttpMethods.GET,
   });
-}
+};
 
 const getCuisines = async () => {
   return await ApiService.makeApiRequest({
-    url: '/api/cuisines',
-    method: HttpMethods.GET
+    url: "/api/cuisines",
+    method: HttpMethods.GET,
   });
-}
+};
 
 const addRestaurant = async (restaurant: Restaurant) => {
   return await ApiService.makeApiRequest({
-    url: '/api/restaurant',
+    url: "/api/restaurant",
     method: HttpMethods.POST,
-    body: restaurant
+    body: restaurant,
   });
-}
+};
 
 const updateRestaurant = async (restaurant: Restaurant, id: number) => {
   return await ApiService.makeApiRequest({
     url: `/api/restaurant/${id}`,
     method: HttpMethods.PUT,
-    body: restaurant
+    body: restaurant,
   });
-}
+};
 
 const deleteRestaurant = async (id: number) => {
   return await ApiService.makeApiRequest({
     url: `/api/restaurant/${id}`,
-    method: HttpMethods.DELETE
+    method: HttpMethods.DELETE,
   });
-}
+};
 
 const restaurantService = {
   getRestaurants,
@@ -78,7 +81,7 @@ const restaurantService = {
   addRestaurant,
   updateRestaurant,
   deleteRestaurant,
-  getRecommendations
-}
+  getRecommendations,
+};
 
 export default restaurantService;

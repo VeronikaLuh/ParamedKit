@@ -8,7 +8,7 @@ export async function GET(req: Request) {
 
     const queryParams = new URLSearchParams();
 
-    const paramsToInclude = ["location", "lowestPrice", "highestPrice", "sortOrder", "pageNumber"];
+    const paramsToInclude = ["cuisine", "location", "lowestPrice", "highestPrice", "sortOrder", "pageNumber"];
     paramsToInclude.forEach((param) => {
       const value = searchParams.get(param);
       if (value) queryParams.append(param, value);
