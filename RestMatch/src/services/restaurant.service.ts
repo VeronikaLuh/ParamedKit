@@ -9,9 +9,27 @@ const getRecommendations = async (pageNumber: number, pageSize: number) => {
   });
 }
 
-const getRestaurants = async () => {
+interface RestaurantQueryParams {
+  location?: string;
+  lowestPrice?: string;
+  highestPrice?: string;
+  sortOrder?: string;
+  pageNumber?: string;
+}
+
+const getRestaurants = async (params: RestaurantQueryParams = {}) => {
+  const queryParams = new URLSearchParams();
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null) {
+      queryParams.append(key, value);
+    }
+  });
+
+  const url = `/api/restaurant${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+
   return await ApiService.makeApiRequest({
-    url: '/api/restaurant',
+    url,
     method: HttpMethods.GET
   });
 }
