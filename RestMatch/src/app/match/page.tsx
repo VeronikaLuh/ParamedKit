@@ -6,8 +6,10 @@ import editIcon from "../../../public/assets/images/match/icon-edit.svg";
 import arrowIcon from "../../../public/assets/images/match/icon-back.svg";
 import imageArrowIcon from "../../../public/assets/images/match/icon-forward.svg";
 import Stat from "@/components/info/Stat";
-import { useState } from "react";
+import {useCallback, useEffect, useState} from "react";
 import { iconUrl } from "@/utils/constants";
+import restaurantService from "@/services/restaurant.service";
+import {Restaurant} from "@/models/Restaurant";
 
 export default function Match() {
   return (
@@ -19,11 +21,29 @@ export default function Match() {
 
 function Card() {
   const countOfPhoto = 3;
-  const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
+
+  const [recommendations, setRecommendations] = useState<Restaurant[]>([]);
+  const [currRecommendation, setCurrRecommendation] = useState(0);
+
+  const fetchRecommendations = useCallback(async () => {
+    const response = await restaurantService.getRecommendations(1, 10);
+    setRecommendations(response.data.entities);
+  }, []);
+
+  useEffect(() => {
+    fetchRecommendations();
+  }, [fetchRecommendations]);
+
+  const getRecommendation = () => {
+    if (recommendations.length === 0) {
+      return null;
+    }
+    return recommendations[currRecommendation]
+  }
 
   return (
-    <div className="flex flex-col w-4/5 justify-center text-white border border-0 rounded-b-2xl bg-[#947654] rounded-t-3xl drop-shadow-2xl">
-      <div className="border border-[5px] border-black rounded-3xl relative inline-block drop-shadow-2xl">
+    <div className="flex flex-col w-4/5 justify-center text-white border-0 rounded-b-2xl bg-[#947654] rounded-t-3xl drop-shadow-2xl">
+      <div className="border-[5px] border-black rounded-3xl relative inline-block drop-shadow-2xl">
         <Image
           src="/assets/images/homepage/background.png"
           alt="Restourant image"
@@ -91,13 +111,13 @@ function Card() {
           style={{
             top: "40%",
             right: 10,
-            display: currentPhotoIndex === countOfPhoto - 1 ? "none" : "block",
+            display: currRecommendation === countOfPhoto - 1 ? "none" : "block",
           }}
           onClick={() => {
-            const newIndex = currentPhotoIndex + 1;
+            const newIndex = currRecommendation + 1;
 
             if (newIndex < countOfPhoto) {
-              setCurrentPhotoIndex(newIndex);
+              setCurrRecommendation(newIndex);
             }
           }}
         >
@@ -110,13 +130,13 @@ function Card() {
           style={{
             top: "40%",
             left: 10,
-            display: currentPhotoIndex === 0 ? "none" : "block",
+            display: currRecommendation === 0 ? "none" : "block",
           }}
           onClick={() => {
-            const newIndex = currentPhotoIndex - 1;
+            const newIndex = currRecommendation - 1;
 
             if (newIndex >= 0) {
-              setCurrentPhotoIndex(newIndex);
+              setCurrRecommendation(newIndex);
             }
           }}
         >
@@ -144,8 +164,8 @@ function Card() {
                   className="rounded-full w-[14px] h-[14px]"
                   style={{
                     backgroundColor:
-                      index === currentPhotoIndex ? "#FFF" : "#000",
-                    opacity: index === currentPhotoIndex ? "100%" : "50%",
+                      index === currRecommendation ? "#FFF" : "#000",
+                    opacity: index === currRecommendation ? "100%" : "50%",
                   }}
                 ></div>
               );
@@ -155,33 +175,25 @@ function Card() {
       </div>
 
       <div id="card_content" className="pt-20 pl-8 pr-8">
-        <h1 className="text-5xl ml-8">Restaurant title</h1>
+        <h1 className="text-5xl ml-8">{recommendations[currRecommendation]?.name}</h1>
         <div className="flex flex-row mt-6 text-[36px] leading-[48px] font-semibold">
           <div className="inline-block w-1/2">
-            <Stat icon="point" content="Lviv, st. Krakivska, 7" styles="mb-5" />
+            <Stat icon="point" content={getRecommendation()?.address} styles="mb-5" />
             <Stat icon="clock" content="10:00 — 22:00" styles="mb-5" />
-            <Stat icon="coin" content="150-360 ₴" />
+            <Stat icon="coin" content={`${getRecommendation()?.lowerPrice}-${getRecommendation()?.upperPrice} ₴`} />
           </div>
           <div className="inline-block w-1/2">
             <Stat icon="cutlery" content="Italic food" styles="mb-5" />
-            <Stat icon="telephone" content="0963406073" styles="mb-5" />
+            <Stat icon="telephone" content={getRecommendation()?.phoneNumber} styles="mb-5" />
             <Stat icon="menu" content="Menu" />
           </div>
         </div>
         <div className="mt-6 text-[25px] font-semibold leading-[34px]">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi eget
-          faucibus tortor. Vivamus blandit eros in enim mollis, vel lobortis
-          neque eleifend. Sed a consectetur tellus, ut sodales nibh. Lorem ipsum
-          dolor sit amet, consectetur adipiscing elit. Nullam ut nulla urna.
-          Aliquam dolor nisl, convallis sit amet diam ut, tempor euismod massa.
-          Etiam commodo placerat libero, ut placerat elit sagittis vel. Aenean
-          dignissim suscipit metus nec ornare. Phasellus sed risus quis metus
-          vulputate mollis. Maecenas et justo at augue semper sagittis nec quis
-          purus. Aenean auctor eros neque, vel mollis tortor lobortis vitae.
+          {getRecommendation()?.aboutText}
         </div>
       </div>
       <div className="pt-6 pl-8 pr-8 pb-10">
-        <h1 className="text-5xl ml-8 mb-4">Client's Review</h1>
+        <h1 className="text-5xl ml-8 mb-4">Client&#39;s Review</h1>
         <hr className="pb-7" />
         <div className="flex   gap-8">
           <div className="bg-[#5D462D] rounded-full py-6 px-5 shrink-0 h-fit">
