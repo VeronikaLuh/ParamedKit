@@ -15,7 +15,6 @@
     "next": "15.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-swipeable": "^7.0.2",
     "react-toastify": "^10.0.6",
     "tw-elements-react": "^1.0.0-alpha-end",
     "zustand": "^5.0.0"
