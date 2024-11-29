@@ -37,13 +37,13 @@ const RestaurantCard: React.FC<RestaurantCardProps> = (
 
   return (
     <div
-      className="bg-[#8d6539] rounded-[10px] flex items-center justify-between mb-14 px-[31px] pt-[34px] pb-[24px] gap-4 drop-shadow-2xl min-w-[55.9rem]">
+      className="bg-[#8d6539] rounded-[10px] flex items-center mb-14 px-[31px] pt-[34px] pb-[24px] gap-4 drop-shadow-2xl min-w-[55.9rem]">
       <img
         className="rounded-lg w-[316px] h-[239px]"
         src={`${imageUrl}/searchpage/restourant-icon.jpg`}
         alt="Description of image"
       />
-      <div className="flex flex-col self-start gap-1 text-white max-h-[239px]">
+      <div className="flex flex-col self-start gap-1 text-white max-h-[239px] ml-4">
         <h3 className="leading-none text-[36px] font-normal">
           {name}
         </h3>
@@ -52,8 +52,11 @@ const RestaurantCard: React.FC<RestaurantCardProps> = (
           {description}
         </p>
       </div>
-      <div>
-        <button className="px-14 py-2 text-[25px] text-nowrap rounded-[30px] bg-[#CF914E] text-white font-bold" onClick={handleClick}>
+      <div className='ml-auto'>
+        <button
+          className="px-14 py-2 text-[25px] text-nowrap rounded-[30px] bg-[#CF914E] text-white font-bold"
+
+          onClick={handleClick}>
           VIEW MORE
         </button>
       </div>
