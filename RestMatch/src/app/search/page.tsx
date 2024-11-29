@@ -15,7 +15,7 @@ const SearchPage = () => {
   const [location, setLocation] = useState<string>();
   const [lowerPrice, setLowerPrice] = useState<string>();
   const [upperPrice, setUpperPrice] = useState<string>();
-  const [cuisineType, setCuisineType] = useState<number>();
+  const [cuisineType, setCuisineType] = useState<string>();
 
   const fetchRestaurants = useCallback(async () => {
     const response = await restaurantService.getRestaurants();
@@ -31,6 +31,7 @@ const SearchPage = () => {
     await restaurantService.getRestaurants({
       highestPrice: upperPrice || undefined,
       lowestPrice: lowerPrice || undefined,
+      cuisine: cuisineType || undefined,
     })
   }
 
@@ -72,7 +73,7 @@ const SearchPage = () => {
           <div className={`${classes["custom-select"]} col-span-2`}>
             <select>
               {cuisinesTypes.length > 0 && cuisinesTypes.map((cuisine) => (
-                <option key={cuisine.id} onClick={() => setCuisineType(cuisine.id)}>{cuisine.name}</option>
+                <option key={cuisine.id} onClick={() => setCuisineType(cuisine.id.toString())}>{cuisine.name}</option>
               ))}
             </select>
           </div>
