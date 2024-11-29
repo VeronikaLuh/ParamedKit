@@ -7,14 +7,15 @@ import arrowIcon from "../../../public/assets/images/match/icon-back.svg";
 import imageArrowIcon from "../../../public/assets/images/match/icon-forward.svg";
 import Stat from "@/components/info/Stat";
 import {useCallback, useEffect, useState} from "react";
-import { iconUrl } from "@/utils/constants";
+import {iconUrl} from "@/utils/constants";
 import restaurantService from "@/services/restaurant.service";
 import {Restaurant} from "@/models/Restaurant";
+import {useSwipeable} from "react-swipeable";
 
 export default function Match() {
   return (
     <div className="flex justify-center pt-5 pb-5 bg-[#9F784E]">
-      <Card />
+      <Card/>
     </div>
   );
 }
@@ -24,6 +25,8 @@ function Card() {
 
   const [recommendations, setRecommendations] = useState<Restaurant[]>([]);
   const [currRecommendation, setCurrRecommendation] = useState(0);
+  const [currImageIdx, setCurrImageIdx] = useState(0);
+  const [swipeDirection, setSwipeDirection] = useState<"left" | "right" | null>(null);
 
   const fetchRecommendations = useCallback(async () => {
     const response = await restaurantService.getRecommendations(1, 10);
@@ -34,6 +37,14 @@ function Card() {
     fetchRecommendations();
   }, [fetchRecommendations]);
 
+  const handleArrowClick = (direction: "left" | "right") => {
+    if (direction === 'left') {
+      onSwipe({dir: "Left"});
+    } else {
+      onSwipe({dir: "Right"});
+    }
+  }
+
   const getRecommendation = () => {
     if (recommendations.length === 0) {
       return null;
@@ -41,35 +52,63 @@ function Card() {
     return recommendations[currRecommendation]
   }
 
+  const onSwipe = (eventData: any) => {
+    if (eventData.dir === "Left") {
+      setSwipeDirection("left");
+    } else if (eventData.dir === "Right") {
+      setSwipeDirection("right");
+    }
+    setTimeout(() => {
+      setSwipeDirection(null);
+      setCurrRecommendation((prev) => {
+        return prev + 1;
+      });
+    }, 300); // Duration of the animation
+  }
+
+  const handlers = useSwipeable({
+    onSwiped: (eventData) => onSwipe(eventData),
+    trackMouse: true,
+    delta: 5,
+    preventScrollOnSwipe: true,
+  });
+
   return (
-    <div className="flex flex-col w-4/5 justify-center text-white border-0 rounded-b-2xl bg-[#947654] rounded-t-3xl drop-shadow-2xl">
-      <div className="border-[5px] border-black rounded-3xl relative inline-block drop-shadow-2xl">
+    <div
+      className={`flex flex-col w-4/5 justify-center text-white border-0 rounded-b-2xl bg-[#947654] rounded-t-3xl drop-shadow-2xl ${swipeDirection ? `swipe-${swipeDirection}` : ''}`}>
+      <div
+        className={`border-[5px] border-black rounded-3xl relative inline-block drop-shadow-2xl`}
+        {...handlers}
+      >
         <Image
           src="/assets/images/homepage/background.png"
           alt="Restourant image"
           width={0}
           height={0}
           sizes="100vw"
-          className="rounded-2xl overflow-hidden object-cover height-[600px] w-full"
+          className="rounded-2xl overflow-hidden object-cover height-[600px] w-full swiper"
         />
-        <div className="absolute bottom-0 left-0 bg-opacity-50 bg-black rounded-2xl z-[100] w-[420px] h-[240px]">
-          <div className="flex flex-col justify-center items-center w-full h-full text-[32px] leading-[42px] font-medium">
+        <div className="swiper absolute bottom-0 left-0 bg-opacity-50 bg-black rounded-2xl z-[100] w-[420px] h-[240px]">
+          <div
+            className="flex flex-col justify-center items-center w-full h-full text-[32px] leading-[42px] font-medium">
             <span>Bibliotekа resto•Bar</span>
             <span>Lviv • 150 ₴ • Italic</span>
           </div>
         </div>
         <div
-          className="absolute rounded-full bg-[#5D462D] w-[130px] h-[130px] z-[101]"
+          className="swiper absolute rounded-full bg-[#5D462D] w-[130px] h-[130px] z-[101]"
           style={{
             bottom: -60,
             left: 35,
           }}
         >
-          <div className="w-full h-full flex justify-center items-center">
+          <div
+            className="swiper w-full h-full flex justify-center items-center cursor-pointer"
+            onClick={() => handleArrowClick("left")}>
             <Image
               src={arrowIcon}
               alt="forward icon"
-              style={{ transform: "rotate(3.142rad)" }}
+              style={{transform: "rotate(3.142rad)"}}
             />
           </div>
         </div>
@@ -81,7 +120,7 @@ function Card() {
           }}
         >
           <div className="w-full h-full flex justify-center items-center">
-            <Image src={editIcon} alt="add review icon" />
+            <Image src={editIcon} alt="add review icon"/>
           </div>
         </div>
         <div
@@ -91,8 +130,13 @@ function Card() {
             right: 35,
           }}
         >
-          <div className="w-full h-full flex justify-center items-center">
-            <Image src={arrowIcon} alt="forward icon" />
+          <div
+            className="w-full h-full flex justify-center items-center cursor-pointer"
+            onClick={() => handleArrowClick("right")}>
+            <Image
+              src={arrowIcon}
+              alt="forward icon"
+            />
           </div>
         </div>
         <div
@@ -103,7 +147,7 @@ function Card() {
           }}
         >
           <div className="w-full h-full flex justify-center items-center">
-            <Image src={heartIcon} alt="heart icon" />
+            <Image src={heartIcon} alt="heart icon"/>
           </div>
         </div>
         <div
@@ -111,18 +155,18 @@ function Card() {
           style={{
             top: "40%",
             right: 10,
-            display: currRecommendation === countOfPhoto - 1 ? "none" : "block",
+            display: currImageIdx === countOfPhoto - 1 ? "none" : "block",
           }}
           onClick={() => {
-            const newIndex = currRecommendation + 1;
+            const newIndex = currImageIdx + 1;
 
             if (newIndex < countOfPhoto) {
-              setCurrRecommendation(newIndex);
+              setCurrImageIdx(newIndex);
             }
           }}
         >
           <div className="flex justify-center items-center w-full h-full">
-            <Image src={imageArrowIcon} alt="arrow icon" />
+            <Image src={imageArrowIcon} alt="arrow icon"/>
           </div>
         </div>
         <div
@@ -130,13 +174,13 @@ function Card() {
           style={{
             top: "40%",
             left: 10,
-            display: currRecommendation === 0 ? "none" : "block",
+            display: currImageIdx === 0 ? "none" : "block",
           }}
           onClick={() => {
-            const newIndex = currRecommendation - 1;
+            const newIndex = currImageIdx - 1;
 
             if (newIndex >= 0) {
-              setCurrRecommendation(newIndex);
+              setCurrImageIdx(newIndex);
             }
           }}
         >
@@ -146,7 +190,7 @@ function Card() {
               transform: "rotate(3.142rad)",
             }}
           >
-            <Image src={imageArrowIcon} alt="arrow icon" />
+            <Image src={imageArrowIcon} alt="arrow icon"/>
           </div>
         </div>
         <div
@@ -164,8 +208,8 @@ function Card() {
                   className="rounded-full w-[14px] h-[14px]"
                   style={{
                     backgroundColor:
-                      index === currRecommendation ? "#FFF" : "#000",
-                    opacity: index === currRecommendation ? "100%" : "50%",
+                      index === currImageIdx ? "#FFF" : "#000",
+                    opacity: index === currImageIdx ? "100%" : "50%",
                   }}
                 ></div>
               );
@@ -175,17 +219,17 @@ function Card() {
       </div>
 
       <div id="card_content" className="pt-20 pl-8 pr-8">
-        <h1 className="text-5xl ml-8">{recommendations[currRecommendation]?.name}</h1>
+        <h1 className="text-5xl ml-8">{getRecommendation()?.name}</h1>
         <div className="flex flex-row mt-6 text-[36px] leading-[48px] font-semibold">
           <div className="inline-block w-1/2">
-            <Stat icon="point" content={getRecommendation()?.address} styles="mb-5" />
-            <Stat icon="clock" content="10:00 — 22:00" styles="mb-5" />
-            <Stat icon="coin" content={`${getRecommendation()?.lowerPrice}-${getRecommendation()?.upperPrice} ₴`} />
+            <Stat icon="point" content={getRecommendation()?.address} styles="mb-5"/>
+            <Stat icon="clock" content="10:00 — 22:00" styles="mb-5"/>
+            <Stat icon="coin" content={`${getRecommendation()?.lowerPrice}-${getRecommendation()?.upperPrice} ₴`}/>
           </div>
           <div className="inline-block w-1/2">
-            <Stat icon="cutlery" content="Italic food" styles="mb-5" />
-            <Stat icon="telephone" content={getRecommendation()?.phoneNumber} styles="mb-5" />
-            <Stat icon="menu" content="Menu" />
+            <Stat icon="cutlery" content="Italic food" styles="mb-5"/>
+            <Stat icon="telephone" content={getRecommendation()?.phoneNumber} styles="mb-5"/>
+            <Stat icon="menu" content="Menu"/>
           </div>
         </div>
         <div className="mt-6 text-[25px] font-semibold leading-[34px]">
@@ -194,14 +238,14 @@ function Card() {
       </div>
       <div className="pt-6 pl-8 pr-8 pb-10">
         <h1 className="text-5xl ml-8 mb-4">Client&#39;s Review</h1>
-        <hr className="pb-7" />
+        <hr className="pb-7"/>
         <div className="flex   gap-8">
           <div className="bg-[#5D462D] rounded-full py-6 px-5 shrink-0 h-fit">
-            <img src={`${iconUrl}/cake.svg`} alt="cake" />
+            <img src={`${iconUrl}/cake.svg`} alt="cake"/>
           </div>
           <div className="flex flex-col gap-3">
             <span className="text-4xl font-medium">Sweet Cake</span>
-            <img className="w-fit" src={`${iconUrl}/hearts.svg`} alt="rating" />
+            <img className="w-fit" src={`${iconUrl}/hearts.svg`} alt="rating"/>
             <span className="text-2xl">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
               eget faucibus tortor. Vivamus blandit eros in enim mollis, vel
@@ -214,6 +258,25 @@ function Card() {
           </div>
         </div>
       </div>
+      <style jsx>{`
+        .swiper {
+          user-select: none;
+          -moz-user-select: none;
+          -khtml-user-select: none;
+          -webkit-user-select: none;
+          -o-user-select: none;
+        }
+
+        .swipe-left {
+          transition: transform 0.3s ease-in-out;
+          transform: translateX(-100%);
+        }
+
+        .swipe-right {
+          transition: transform 0.3s ease-in-out;
+          transform: translateX(100%);
+        }
+      `}</style>
     </div>
   );
 }
