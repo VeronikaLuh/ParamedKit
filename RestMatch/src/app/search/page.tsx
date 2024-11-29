@@ -12,6 +12,11 @@ const SearchPage = () => {
   const [data, setData] = useState<Restaurant[]>([]);
   const [cuisinesTypes, setCuisinesTypes] = useState<Cuisine[]>([]);
 
+  const [location, setLocation] = useState<string>();
+  const [lowerPrice, setLowerPrice] = useState<string>();
+  const [upperPrice, setUpperPrice] = useState<string>();
+  const [cuisineType, setCuisineType] = useState<number>();
+
   const fetchRestaurants = useCallback(async () => {
     const response = await restaurantService.getRestaurants();
     setData(response.data.entities);
@@ -21,6 +26,13 @@ const SearchPage = () => {
     const response = await restaurantService.getCuisines();
     setCuisinesTypes(response.data);
   }, []);
+
+  const onSearchClick = async () => {
+    await restaurantService.getRestaurants({
+      highestPrice: upperPrice || undefined,
+      lowestPrice: lowerPrice || undefined,
+    })
+  }
 
   useEffect(() => {
     fetchRestaurants();
@@ -53,19 +65,19 @@ const SearchPage = () => {
           </div>
           <div className="flex items-center gap-4 col-span-3 text-center h-[3.625rem]">
             <h4>Price from</h4>
-            <input className="border-2 border-gray-300 rounded-3xl min-w-2 h-full text-black px-4"/>
+            <input onChange={(e) => setLowerPrice(e.target.value)} className="border-2 border-gray-300 rounded-3xl min-w-2 h-full text-black px-4"/>
             <h4>Price to</h4>
-            <input className="border-2 border-gray-300 rounded-3xl min-w-2 h-full text-black px-4"/>
+            <input onChange={(e) => setUpperPrice(e.target.value)}  className="border-2 border-gray-300 rounded-3xl min-w-2 h-full text-black px-4"/>
           </div>
           <div className={`${classes["custom-select"]} col-span-2`}>
             <select>
               {cuisinesTypes.length > 0 && cuisinesTypes.map((cuisine) => (
-                <option key={cuisine.id}>{cuisine.name}</option>
+                <option key={cuisine.id} onClick={() => setCuisineType(cuisine.id)}>{cuisine.name}</option>
               ))}
             </select>
           </div>
         </div>
-        <button className="bg-[#967149] h-[3.625rem] text-[2.25rem] font-bold text-white text-5xl px-20 rounded-[30px]">
+        <button onClick={() => onSearchClick()} className="bg-[#967149] h-[3.625rem] text-[2.25rem] font-bold text-white text-5xl px-20 rounded-[30px]">
           Search
         </button>
       </div>
