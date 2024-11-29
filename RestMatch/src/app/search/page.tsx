@@ -60,15 +60,10 @@ const SearchPage = () => {
       </div>
       <div className="flex justify-between mb-10 min-w-[55.9rem]">
         <div className="grid lg:grid-cols-8 gap-6 grid-cols-1">
-          <div className={`${classes["custom-select"]} col-span-2`}>
-            <select>
-              <option>Location</option>
-            </select>
-          </div>
           <div className="flex items-center gap-4 col-span-3 text-center h-[3.625rem]">
-            <h4>Price from</h4>
+            <h4 className='whitespace-nowrap'>Price from</h4>
             <input onChange={(e) => setLowerPrice(e.target.value)} className="border-2 border-gray-300 rounded-3xl min-w-2 h-full text-black px-4"/>
-            <h4>Price to</h4>
+            <h4 className='whitespace-nowrap'>Price to</h4>
             <input onChange={(e) => setUpperPrice(e.target.value)}  className="border-2 border-gray-300 rounded-3xl min-w-2 h-full text-black px-4"/>
           </div>
           <div className={`${classes["custom-select"]} col-span-2`}>
