@@ -28,11 +28,12 @@ const SearchPage = () => {
   }, []);
 
   const onSearchClick = async () => {
-    await restaurantService.getRestaurants({
+    const response = await restaurantService.getRestaurants({
       highestPrice: upperPrice || undefined,
       lowestPrice: lowerPrice || undefined,
       cuisine: cuisineType || undefined,
     })
+    setData(response)
   }
 
   useEffect(() => {
