@@ -223,7 +223,7 @@ namespace RestMatch.API.Infrastructure.Repositories
 
             var restaurantsIds = restaurantsAndRates.Entities.Select(x => (int)x.RestaurantId);
 
-            var unsortedRecomendedRestaurants = await _context.Restaurants.Select(x => x).Where(r => restaurantsIds.Contains(r.Id)).ToListAsync();
+            var unsortedRecomendedRestaurants = await _context.Restaurants.Select(x => x).Where(r => restaurantsIds.Contains(r.Id)).Include(x => x.Cuisines).Include(x => x.ImageUrls).ToListAsync();
 
             var recomendedRestaurants = restaurantsAndRates.Entities.Select(x => unsortedRecomendedRestaurants.FirstOrDefault(e => e.Id == (int)x.RestaurantId)).ToList();
             foreach (var item in restaurantsAndRates.Entities)

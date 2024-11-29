@@ -994,6 +994,7 @@ export interface ProblemDetails {
     status?: number | null;
     detail?: string | null;
     instance?: string | null;
+    extensions?: { [key: string]: any; };
 
     [key: string]: any;
 }
