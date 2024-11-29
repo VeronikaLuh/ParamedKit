@@ -449,11 +449,8 @@ export class RestaurantsClient extends ApiBase {
         this.baseUrl = baseUrl ?? "";
     }
 
-    getUserRecommendations(pageNumber: number | undefined, pageSize: number | undefined, faceUserId: string): Promise<PagedEntitiesOfRestaurant> {
-        let url_ = this.baseUrl + "/api/Restaurants/hello/{faceUserId}?";
-        if (faceUserId === undefined || faceUserId === null)
-            throw new Error("The parameter 'faceUserId' must be defined.");
-        url_ = url_.replace("{faceUserId}", encodeURIComponent("" + faceUserId));
+    getUserRecommendations(pageNumber: number | undefined, pageSize: number | undefined): Promise<PagedEntitiesOfRestaurant> {
+        let url_ = this.baseUrl + "/api/Restaurants/hello?";
         if (pageNumber === null)
             throw new Error("The parameter 'pageNumber' cannot be null.");
         else if (pageNumber !== undefined)
@@ -495,7 +492,7 @@ export class RestaurantsClient extends ApiBase {
         return Promise.resolve<PagedEntitiesOfRestaurant>(null as any);
     }
 
-    getRestaurants(location: string | null | undefined, cuisine: number[] | null | undefined, lowestPrice: number | null | undefined, highestPrice: number | null | undefined, sortOrder: string | null | undefined, pageNumber: number | undefined, pageSize: number | undefined): Promise<PagedEntitiesOfRestaurantDto> {
+    getRestaurants(location: string | null | undefined, cuisine: number[] | null | undefined, lowestPrice: number | null | undefined, highestPrice: number | null | undefined, sortOrder: string | null | undefined, pageNumber: number | null | undefined, pageSize: number | null | undefined): Promise<PagedEntitiesOfRestaurantDto> {
         let url_ = this.baseUrl + "/api/Restaurants?";
         if (location !== undefined && location !== null)
             url_ += "location=" + encodeURIComponent("" + location) + "&";
@@ -507,13 +504,9 @@ export class RestaurantsClient extends ApiBase {
             url_ += "highestPrice=" + encodeURIComponent("" + highestPrice) + "&";
         if (sortOrder !== undefined && sortOrder !== null)
             url_ += "sortOrder=" + encodeURIComponent("" + sortOrder) + "&";
-        if (pageNumber === null)
-            throw new Error("The parameter 'pageNumber' cannot be null.");
-        else if (pageNumber !== undefined)
+        if (pageNumber !== undefined && pageNumber !== null)
             url_ += "pageNumber=" + encodeURIComponent("" + pageNumber) + "&";
-        if (pageSize === null)
-            throw new Error("The parameter 'pageSize' cannot be null.");
-        else if (pageSize !== undefined)
+        if (pageSize !== undefined && pageSize !== null)
             url_ += "pageSize=" + encodeURIComponent("" + pageSize) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1026,21 +1019,6 @@ export interface AddRestaurantDto {
 export interface ImageDto {
     url?: string | null;
     imageBase64?: string | null;
-}
-
-export interface PutRestaurantRequestDto extends RestaurantDtoBase {
-}
-
-export interface PutRestaurantImageUrlRequestDto extends RestaurantImageUrlDtoBase {
-}
-
-export interface PostRestaurantRequestDto extends RestaurantDtoBase {
-}
-
-export interface PostRestaurantImageUrlRequestDto extends RestaurantImageUrlDtoBase {
-}
-
-export interface PostRestaurantCuisineRequestDto extends RestaurantCuisineDtoBase {
 }
 
 export interface UserSelectedCriteiaDto {

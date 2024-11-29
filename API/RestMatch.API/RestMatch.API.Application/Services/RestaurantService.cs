@@ -31,8 +31,8 @@ namespace RestMatch.API.Application.Services
             int? lowestPrice,
             int? highestPrice,
             string? sortOrder,
-            int pageNumber,
-            int pageSize)
+            int? pageNumber,
+            int? pageSize)
         {
             var pagedRestaurants = await _repo.GetRestaurants(location, cuisine, lowestPrice, highestPrice, sortOrder, pageNumber, pageSize);
             return new PagedEntities<RestaurantDto>()
@@ -89,7 +89,7 @@ namespace RestMatch.API.Application.Services
                 .ToList();
 
             var restaurant = _mapper.Map<Restaurant>(dto);
-            
+
             restaurant.ImageUrls = updatedImageUrls;
 
             return await _repo.UpdateRestaurant(id, restaurant);
@@ -113,7 +113,7 @@ namespace RestMatch.API.Application.Services
             restaurant.ImageUrls = imageUrls;
 
             var newRestaurant = await _repo.AddRestaurant(restaurant);
-            
+
             return _mapper.Map<RestaurantDto>(newRestaurant);
         }
 

@@ -53,11 +53,11 @@ namespace RestMatch.API.Controllers
             [FromQuery] int? lowestPrice,
             [FromQuery] int? highestPrice,
             [FromQuery] string? sortOrder,
-            [FromQuery] int pageNumber,
-            [FromQuery] int pageSize)
+            [FromQuery] int? pageNumber,
+            [FromQuery] int? pageSize)
         {
             var restaurants = await _service.GetRestaurants(location, cuisine, lowestPrice, highestPrice, sortOrder, pageNumber, pageSize);
-            
+
             if (restaurants.Entities.Count == 0)
             {
                 return NoContent();
