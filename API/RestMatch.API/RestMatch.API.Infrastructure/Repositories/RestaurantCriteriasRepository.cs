@@ -27,7 +27,7 @@ namespace RestMatch.API.Infrastructure.Repositories
         {
             var cuisineNames = cuisinesIds.Select(x => ((Cuisine)x).ToString());
 
-            var userPriceAndLocation = _context.UserSelectedCriterias.FirstOrDefault(x => x.Id == userId);
+            var userPriceAndLocation = _context.UserSelectedCriterias.FirstOrDefault(x => x.UserId == userId);
 
             var orderedResult = _context.Restaurants
                 .Where(x => ((x.UpperPrice + x.LowerPrice) / 2) <= ((userPriceAndLocation.LowestPrice + userPriceAndLocation.HighestPrice) / 2) && x.City != userPriceAndLocation.Location)
@@ -36,7 +36,7 @@ namespace RestMatch.API.Infrastructure.Repositories
             var list = await _context.Set<RestaurantCriteria>()
                 .Select("new (RestaurantId, " + cuisineNames.Aggregate((current, next) => $"{current} + {next}") + " as Rate)")
                 .Where($"@0.Contains(RestaurantId)", orderedResult).OrderBy("Rate descending")
-                .Skip((pageNumber - 1) * pageSize).Take(pageSize).ToDynamicListAsync();
+                .ToDynamicListAsync();
 
             int firstCount = await orderedResult.CountAsync();
             var secondOrderedResult = _context.Restaurants
@@ -48,7 +48,7 @@ namespace RestMatch.API.Infrastructure.Repositories
                 var secondList = await _context.Set<RestaurantCriteria>()
                     .Select("new (RestaurantId, " + cuisineNames.Aggregate((current, next) => $"{current} + {next}") + " as Rate)")
                     .Where($"@0.Contains(RestaurantId)", secondOrderedResult).OrderBy("Rate descending")
-                    .Skip((pageNumber - 1) * pageNumber - firstCount).Take(count).ToDynamicListAsync();
+                    .ToDynamicListAsync();
                 list.AddRange(secondList);
             }
             int secondCount = await secondOrderedResult.CountAsync();

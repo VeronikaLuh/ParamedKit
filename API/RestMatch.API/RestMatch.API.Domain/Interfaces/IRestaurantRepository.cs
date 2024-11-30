@@ -14,8 +14,8 @@ namespace RestMatch.API.Domain.Interfaces
             int? lowestPrice,
             int? highestPrice,
             string? sortOrder,
-            int pageNumber,
-            int pageSize);
+            int? pageNumber,
+            int? pageSize);
         Task<Restaurant?> GetRestaurant(int id);
         Task<bool> UpdateRestaurant(int id, Restaurant restaurant);
         Task<Restaurant> AddRestaurant(Restaurant restaurant);

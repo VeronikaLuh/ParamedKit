@@ -64,15 +64,15 @@ const Info = () => {
           </div>
         </div>
         <div className="columns-2 md:hidden">
-          <Stat icon="point" content={data?.address}/>
-          <Stat icon="clock" content="10:00 — 22:00"/>
+          <Stat icon="point" content={data?.address} />
+          <Stat icon="clock" content="10:00 — 22:00" />
           <Stat
             icon="coin"
             content={`${data?.lowerPrice}-${data?.upperPrice} ₴`}
           />
-          <Stat icon="cutlery" content="Italic food"/>
-          <Stat icon="telephone" content={data?.phoneNumber}/>
-          <Stat icon="menu" content="Menu"/>
+          <Stat icon="cutlery" content="Italic food" />
+          <Stat icon="telephone" content={data?.phoneNumber} />
+          <Stat icon="menu" content="Menu" />
         </div>
       </div>
       <div className="mt-0 md:mt-11">

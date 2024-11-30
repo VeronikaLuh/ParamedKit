@@ -19,10 +19,12 @@ const signUp = async (user: AuthUserRegistration) => {
 }
 
 const getToken = () => {
+  if (typeof window === 'undefined') return null;
   return localStorage.getItem('token');
 }
 
 const setToken = (token: string) => {
+  if (typeof window === 'undefined') return null;
   localStorage.setItem('token', token);
 }
 

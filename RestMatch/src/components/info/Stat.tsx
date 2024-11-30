@@ -2,7 +2,7 @@ import React from 'react';
 import {imageUrl} from "@/utils/constants";
 
 interface StatProps {
-  icon?: string;
+  icon: string;
   content: any;
   styles?: string;
 }
@@ -15,7 +15,11 @@ const Stat = (props: StatProps) => {
         styles ? styles : ""
       } md:text-4xl`}
     >
-      <img className="scale-50 md:scale-100" src={`${imageUrl}/info/${icon}.png`} alt="info" />
+      <img
+        className="scale-50 md:scale-100"
+        src={`${imageUrl}/info/${icon}.png`}
+        alt="info"
+      />
       <span className="ml-2 md:ml-6 scale-100">{content}</span>
     </div>
   );

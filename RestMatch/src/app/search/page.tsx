@@ -12,15 +12,29 @@ const SearchPage = () => {
   const [data, setData] = useState<Restaurant[]>([]);
   const [cuisinesTypes, setCuisinesTypes] = useState<Cuisine[]>([]);
 
+  const [location, setLocation] = useState<string>();
+  const [lowerPrice, setLowerPrice] = useState<string>();
+  const [upperPrice, setUpperPrice] = useState<string>();
+  const [cuisineType, setCuisineType] = useState<string>();
+
   const fetchRestaurants = useCallback(async () => {
     const response = await restaurantService.getRestaurants();
-    setData(response.data);
+    setData(response.data.entities);
   }, []);
 
   const fetchCuisines = useCallback(async () => {
     const response = await restaurantService.getCuisines();
     setCuisinesTypes(response.data);
   }, []);
+
+  const onSearchClick = async () => {
+    const response = await restaurantService.getRestaurants({
+      highestPrice: upperPrice || undefined,
+      lowestPrice: lowerPrice || undefined,
+      cuisine: cuisineType || undefined,
+    })
+    setData(response.data.entities)
+  }
 
   useEffect(() => {
     fetchRestaurants();
@@ -29,7 +43,7 @@ const SearchPage = () => {
 
 
   return (
-    <div className="bg-[#9F784E] flex flex-col w-full min-w-[55.9rem] max-w-[100rem] mx-auto">
+    <div className="bg-[#9F784E] flex flex-col w-full min-w-[55.9rem] max-w-[100rem] mx-auto px-4">
       <div
         className="flex items-center bg-white rounded-[10px] gap-3 p-4 justify-between my-8 drop-shadow-lg min-w-[55.9rem]">
         <img
@@ -46,36 +60,31 @@ const SearchPage = () => {
       </div>
       <div className="flex justify-between mb-10 min-w-[55.9rem]">
         <div className="grid lg:grid-cols-8 gap-6 grid-cols-1">
-          <div className={`${classes["custom-select"]} col-span-2`}>
-            <select>
-              <option>Location</option>
-            </select>
-          </div>
           <div className="flex items-center gap-4 col-span-3 text-center h-[3.625rem]">
-            <h4>Price from</h4>
-            <input className="border-2 border-gray-300 rounded-3xl min-w-2 h-full text-black px-4"/>
-            <h4>Price to</h4>
-            <input className="border-2 border-gray-300 rounded-3xl min-w-2 h-full text-black px-4"/>
+            <h4 className='whitespace-nowrap'>Price from</h4>
+            <input onChange={(e) => setLowerPrice(e.target.value)} className="border-2 border-gray-300 rounded-3xl min-w-2 h-full text-black px-4"/>
+            <h4 className='whitespace-nowrap'>Price to</h4>
+            <input onChange={(e) => setUpperPrice(e.target.value)}  className="border-2 border-gray-300 rounded-3xl min-w-2 h-full text-black px-4"/>
           </div>
           <div className={`${classes["custom-select"]} col-span-2`}>
-            <select>
+            <select onChange={(e) => setCuisineType(e.target.value)}>
               {cuisinesTypes.length > 0 && cuisinesTypes.map((cuisine) => (
-                <option key={cuisine.id}>{cuisine.name}</option>
+                <option key={cuisine.id} value={cuisine.id}>{cuisine.name}</option>
               ))}
             </select>
           </div>
         </div>
-        <button className="bg-[#967149] h-[3.625rem] text-[2.25rem] font-bold text-white text-5xl px-20 rounded-[30px]">
+        <button onClick={() => onSearchClick()} className="bg-[#967149] h-[3.625rem] text-[2.25rem] font-bold text-white text-5xl px-20 rounded-[30px]">
           Search
         </button>
       </div>
       <div>
         <h3 className="text-[25px] font-medium mb-1">
-          Number of results: ({data.length})
+          Number of results: ({data && data.length})
         </h3>
-        <h4 className="text-[20px] mb-7">1 to 5 of {data.length}:</h4>
+        <h4 className="text-[20px] mb-7">1 to 5 of {data && data.length}:</h4>
       </div>
-      {data.length > 0 && data.map((restaurant, index) => (
+      {data && data.length > 0 && data.map((restaurant, index) => (
         <RestaurantCard
           key={index}
           id={restaurant.id}
