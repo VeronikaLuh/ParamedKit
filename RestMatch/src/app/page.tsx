@@ -36,7 +36,6 @@ export default function Home() {
       description: 'Quick way to choose where you must go today. Delicious and beautiful places await you',
       enableButton: true,
       buttonText: "Search",
-
       url: Routes.SEARCH
     }
   ]
@@ -71,16 +70,13 @@ export default function Home() {
         </div>
       </div>
       <div className=" md:hidden">
-        <Carousel data={data} />
       </div>
       <div
-        {...swipeHandlers}
         className="hidden relative w-full max-w-md mx-auto overflow-hidden"
       >
         <div
           className="flex transition-transform duration-500 ease-in-out"
           style={{
-            transform: `translateX(-${currentIndex * 100}%)`,
             width: `${data.length * 100}%`, // Робимо контейнер ширшим для всіх слайдів
           }}
         >
@@ -105,19 +101,7 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Управління */}
-        <button
-          className="absolute top-1/2 -translate-y-1/2 left-0 bg-white text-black p-2 rounded-full shadow-lg"
-          onClick={handlePrev}
-        >
-          ❮
-        </button>
-        <button
-          className="absolute top-1/2 -translate-y-1/2 right-0 bg-white text-black p-2 rounded-full shadow-lg"
-          onClick={handleNext}
-        >
-          ❯
-        </button>
+
       </div>
       <div className="pt-[80px] pb-[44px] pl-6 pr-6 lg:pr-0">
         <div className="flex relative">
