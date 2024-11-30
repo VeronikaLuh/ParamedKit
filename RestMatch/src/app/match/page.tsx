@@ -11,6 +11,7 @@ import {iconUrl} from "@/utils/constants";
 import restaurantService from "@/services/restaurant.service";
 import {Restaurant} from "@/models/Restaurant";
 import {useSwipeable} from "react-swipeable";
+import {favouritesService} from "@/services/favourites.service";
 
 export default function Match() {
   return (
@@ -52,7 +53,7 @@ function Card() {
     return recommendations[currRecommendation]
   }
 
-  const onSwipe = (eventData: any) => {
+  const onSwipe = async (eventData: any) => {
     if (eventData.dir === "Left") {
       setSwipeDirection("left");
     } else if (eventData.dir === "Right") {
@@ -60,6 +61,7 @@ function Card() {
     }
     setTimeout(() => {
       setSwipeDirection(null);
+      handleAddRate(getRecommendation()?.id.toString());
       setCurrRecommendation((prev) => {
         return prev + 1;
       });
@@ -72,6 +74,13 @@ function Card() {
     delta: 5,
     preventScrollOnSwipe: true,
   });
+
+  const handleAddRate = async (id: string | undefined) => {
+    if (!id) {
+      return;
+    }
+    await favouritesService.addFavourites(id);
+  }
 
   return (
     <div

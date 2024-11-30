@@ -6,9 +6,11 @@ import Stat from "@/components/info/Stat";
 import restaurantService from "@/services/restaurant.service";
 import {Restaurant} from "@/models/Restaurant";
 import {useParams} from "next/navigation";
+import {rateService} from "@/services/rate.service";
 
 const Info = () => {
   const [data, setData] = useState<Restaurant>();
+  const [reviews, setReviews] = useState([]);
 
   const params = useParams();
   const { id } = params as { id: string };
@@ -18,9 +20,15 @@ const Info = () => {
     setData(response.data);
   }, []);
 
+  const fetchReviews = useCallback(async (restaurantId: string) => {
+    const response = await rateService.getRates(restaurantId);
+    setReviews(response.data);
+  }, []);
+
   useEffect(() => {
     if (!id) return
     fetchRestaurant(id);
+    fetchReviews(id);
   }, [fetchRestaurant, id]);
 
   return (
@@ -74,7 +82,6 @@ const Info = () => {
           <Stat icon="telephone" content={data?.phoneNumber}/>
           <Stat icon="menu" content="Menu"/>
         </div>
-      </div>
       <div className="mt-0 md:mt-11">
         <h1>About</h1>
         <hr className="mb-6" />
@@ -103,6 +110,8 @@ const Info = () => {
               ut, tempor euismod massa. Etiam commodo placerat libero, ut
               placerat elit sagittis vel.
             </span>
+              </div>
+            </div>
           </div>
         </div>
         <div className="flex justify-end mt-3 pr-3 md:mt-5 pr-16 mb-14">
@@ -111,7 +120,6 @@ const Info = () => {
           </button>
         </div>
       </div>
-    </div>
   );
 };
 
