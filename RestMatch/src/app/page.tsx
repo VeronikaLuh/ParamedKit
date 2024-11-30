@@ -74,36 +74,17 @@ export default function Home() {
 
   return (
     <main>
-      <div className="flex px-6 h-[460px] md:h-[582.5px]">
-        <img
-          className="hidden md:block absolute w-full top-0 left-0 right-0 h-[582px]"
-          src={`${imageUrl}/homepage/home-background.png`}
-          alt="coffee"
-        />
-        <img
-          className="absolute w-full top-0 left-0 right-0 h-[520px] rounded-b-[50px] md:hidden "
-          src={`${imageUrl}/homepage/main_sm3.jpg`}
-          alt="coffee"
-        />
-        <div className="z-10 mt-7 flex justify-between w-full font-medium md:mt-[80px]">
-          <h2 className="hidden md:block max-w-[521px] text-left">
-            Find the best place to hangout with friends or celebrate important
-            event
-          </h2>
-          <h2 className="hidden md:block max-w-[500px] text-right">
-            Quick way to choose where you must go today. Delicious and beautiful
-            places await you
-          </h2>
-          <h2 className="max-w-[180px] md:hidden">
-            Quick way to choose where you must go today. Delicious and beautiful
-            places await you
-          </h2>
+      <div className='flex h-[582px] px-6'>
+        <img className='absolute w-full top-0 left-0 right-0 h-[582px] ' src={`${imageUrl}/homepage/home-background.png`} alt="coffee"/>
+        <div className='z-10 flex justify-between text-[40px] w-full mt-[80px] font-medium'>
+          <h2 className='text-left max-w-[521px]'>Find the best place to hangout with friends or celebrate important event</h2>
+          <h2 className='text-right max-w-[500px]'>Quick way to choose where you must go today. Delicious and beautiful places await you</h2>
         </div>
       </div>
-      <div className="sm: pt-[20px] px-6 lg:px-6">
-        <h2 className="font-bold">What you need?</h2>
-        <hr />
-        <div className="hidden md:grid gap-2 mt-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <div className='pt-[55px] px-6'>
+        <h2 className='font-bold'>What you need?</h2>
+        <hr/>
+        <div className='grid gap-2 mt-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
           {data.map((item, index) => (
             <InfoItem
               key={index}
@@ -156,12 +137,11 @@ export default function Home() {
               My saved
             </button>
           </div>
-          <div className="xl:flex-[1] hidden lg:flex justify-end ">
+          <div className='xl:flex-[1] hidden lg:flex justify-end '>
             <img
               src={`${imageUrl}/homepage/coffee-hand.png`}
-              className="h-[280px] w-[315px] xl:h-fit xl:w-auto"
-              alt="hand with coffe"
-            />
+              className='h-[280px] w-[315px] xl:h-fit xl:w-auto'
+              alt="hand with coffe"/>
           </div>
         </div>
       </div>
