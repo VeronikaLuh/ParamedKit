@@ -1,10 +1,13 @@
 import InfoItem from "@/components/InfoItem";
+import { Routes } from "@/types/routes";
+import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 
 interface CarouselItem {
   title: string;
   description: string;
   buttonText?: string;
+  url: Routes;
 }
 
 interface CarouselProps {
@@ -39,12 +42,16 @@ const Carousel: React.FC<CarouselProps> = ({
 
   const isVisible = (index: number): boolean => {
     const relativeIndex = (index - currentIndex + data.length) % data.length;
-    // Видимі тільки центральний, лівий і правий слайди
     return relativeIndex === 0 || relativeIndex === 1 || relativeIndex === data.length - 1;
   };
 
   const prevSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex - 1 + data.length) % data.length);
+  };
+
+  const router = useRouter();
+  const handleRoute = (url: Routes) => {
+    router.push(url);
   };
 
 
@@ -79,6 +86,7 @@ const Carousel: React.FC<CarouselProps> = ({
                   title={item.title}
                   description={item.description}
                   buttonText={item.buttonText}
+                  onClickHandle={() => handleRoute(item.url)}
                 />
               </div>
             </div>
