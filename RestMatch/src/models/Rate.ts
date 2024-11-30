@@ -1,7 +1,7 @@
 export interface Rate {
-  "id": number,
-  "restaurantId": number,
-  "user": {
+  "id"?: string,
+  "restaurantId": string,
+  "user"?: {
     "id": number,
     "nickName": string,
     "imageUrl": string

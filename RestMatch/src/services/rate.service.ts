@@ -10,7 +10,7 @@ const getRates = async (restaurantId: string) => {
 }
 
 const addRate = async (rate: Rate) => {
-  return await ApiService.makeApiRequest({
+  return await ApiService.makeAuthApiRequest({
     url: "/api/rate",
     method: HttpMethods.POST,
     body: rate,

@@ -1,6 +1,10 @@
+'use client'
+
 import PillButton from "@/components/common/PillButton";
 import { imageUrl } from "@/utils/constants";
 import classes from "./page.module.scss";
+import {useRouter} from "next/navigation";
+import {Routes} from "@/types/routes";
 
 const Preferences = () => {
   const foodOptions = [
@@ -19,7 +23,7 @@ const Preferences = () => {
   const costOptions = [50, 150, 300, 500, 800, 1000];
 
   const locationOptions = ["Lviv", "Kyiv", "Odesa"];
-
+  const router = useRouter();
   return (
     <div className="py-11">
       <img
@@ -78,7 +82,9 @@ const Preferences = () => {
           </div>
         </div>
         <div className="flex justify-end">
-          <button className="px-6 py-3 text-2xl font-bold rounded-lg bg-[#876542] hover:bg-[#805e3f] active:bg-[#755439]">
+          <button
+            onClick={() => router.push(Routes.MATCH)}
+            className="px-6 py-3 text-2xl font-bold rounded-lg bg-[#876542] hover:bg-[#805e3f] active:bg-[#755439]">
             Next
           </button>
         </div>

@@ -2,8 +2,7 @@
 
 import { imageUrl } from "@/utils/constants";
 import InfoItem from "@/components/InfoItem";
-import React, { useState } from "react";
-import { useSwipeable } from "react-swipeable";
+import React from "react";
 import { useRouter } from "next/navigation";
 import { Routes } from "@/types/routes";
 import "@splidejs/splide/css";
@@ -45,27 +44,6 @@ export default function Home() {
       url: Routes.SEARCH,
     },
   ];
-
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const handlePrev = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? data.length - 1 : prevIndex - 1
-    );
-  };
-
-  const handleNext = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === data.length - 1 ? 0 : prevIndex + 1
-    );
-  };
-
-  const swipeHandlers = useSwipeable({
-    onSwipedLeft: handleNext,
-    onSwipedRight: handlePrev,
-    preventScrollOnSwipe: true,
-    trackMouse: true,
-  });
 
   const router = useRouter();
   const handleRoute = (url: Routes) => {
@@ -146,13 +124,15 @@ export default function Home() {
               Want to see place that you liked earlier?
             </h2>
             <p className="leading-9 text-[1.6rem] md:text-[1.875rem]">
-              Found a restaurant you love? Save it to your "My Saved Places" tab
+              Found a restaurant you love? Save it to your &#34;My Saved Places&#34; tab
               with just a tap! This way, you can easily revisit your favorite
               spots or explore them later at your convenience. Never worry about
               forgetting the name of that perfect place again!
             </p>
 
-            <button className="mt-[41px] bg-[#5D462D] py-2 px-9 rounded-[40px] font-bold text-[1.5rem] w-left md:w-fit text-[2rem]">
+            <button
+              onClick={() => handleRoute(Routes.SAVED_PLACES)}
+              className="mt-[41px] bg-[#5D462D] py-2 px-9 rounded-[40px] font-bold w-left md:w-fit text-[2rem]">
               My saved
             </button>
           </div>
