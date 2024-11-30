@@ -1,10 +1,15 @@
-'use client'
+"use client";
 
-import {imageUrl} from "@/utils/constants";
+import { imageUrl } from "@/utils/constants";
 import InfoItem from "@/components/InfoItem";
-import React from "react";
-import {useRouter} from "next/navigation";
-import {Routes} from "@/types/routes";
+import React, { useState } from "react";
+import { useSwipeable } from "react-swipeable";
+import { useRouter } from "next/navigation";
+import Carousel from "../components/homepage/Caurosel";
+import { Routes } from "@/types/routes";
+import "@splidejs/splide/css";
+// @ts-ignore
+import { Splide, SplideSlide } from "@splidejs/react-splide";
 
 export default function Home() {
   const data = [
@@ -13,7 +18,7 @@ export default function Home() {
       description: 'fvfkssvkpokvspkopv sflvsvofsvk mvsvsvmf mcs skcmkdmsk ckmmcdk kcsmkcsd j jdcjds mksmc',
       enableButton: true,
       buttonText: "Register",
-      url: Routes.SIGN_UP
+      url: Routes.SIGN_UP,
     },
     {
       title: "Choose preferences",
@@ -21,7 +26,7 @@ export default function Home() {
         "Quick way to choose where you must go today. Delicious and beautiful places await you",
       enableButton: true,
       buttonText: "Make choice",
-      url: Routes.PREFERENCES
+      url: Routes.PREFERENCES,
     },
     {
       title: "Like or pass",
@@ -29,22 +34,42 @@ export default function Home() {
         "Quick way to choose where you must go today. Delicious and beautiful places await you",
       enableButton: true,
       buttonText: "Let's match",
-      url: Routes.MATCH
+      url: Routes.MATCH,
     },
     {
       title: 'Don`t like swipe?',
       description: 'Quick way to choose where you must go today. Delicious and beautiful places await you',
       enableButton: true,
       buttonText: "Search",
+      url: Routes.SEARCH,
+    },
+  ];
 
-      url: Routes.SEARCH
-    }
-  ]
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const handlePrev = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? data.length - 1 : prevIndex - 1
+    );
+  };
+
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === data.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const swipeHandlers = useSwipeable({
+    onSwipedLeft: handleNext,
+    onSwipedRight: handlePrev,
+    preventScrollOnSwipe: true,
+    trackMouse: true,
+  });
 
   const router = useRouter();
   const handleRoute = (url: Routes) => {
-    router.push(url)
-  }
+    router.push(url);
+  };
 
   return (
     <main>
@@ -70,54 +95,29 @@ export default function Home() {
           ))}
         </div>
       </div>
-      <div className=" md:hidden">
-        <Carousel data={data} />
-      </div>
-      <div
-        {...swipeHandlers}
-        className="hidden relative w-full max-w-md mx-auto overflow-hidden"
-      >
-        <div
-          className="flex transition-transform duration-500 ease-in-out"
-          style={{
-            transform: `translateX(-${currentIndex * 100}%)`,
-            width: `${data.length * 100}%`, // Робимо контейнер ширшим для всіх слайдів
+      <div className="pt-6 md:hidden md:pt-0">
+        <Splide
+          options={{
+            rewind: true,
+            gap: "1rem",
+            type: "loop",
+            padding: "2.3rem",
+            drag: "free",
+            snap: true,
           }}
+          aria-label="Dynamic Items Slider"
         >
           {data.map((item, index) => (
-            <div
-              key={index}
-              style={{
-                flexBasis: "100%",
-              }}
-              className={`flex-none w-full h-[400px]carousel-item transition-transform duration-500 ease-in-out transform `}
-            >
-              <div className="grid gap-4 mt-6 grid-cols-1">
-                <InfoItem
-                  key={index}
-                  title={item.title}
-                  description={item.description}
-                  buttonText={item.buttonText}
-                  onClickHandle={() => handleRoute(item.url)}
-                />
-              </div>
-            </div>
+            <SplideSlide key={index}>
+              <InfoItem
+                title={item.title}
+                description={item.description}
+                buttonText={item.buttonText}
+                onClickHandle={() => handleRoute(item.url)}
+              />
+            </SplideSlide>
           ))}
-        </div>
-
-        {/* Управління */}
-        <button
-          className="absolute top-1/2 -translate-y-1/2 left-0 bg-white text-black p-2 rounded-full shadow-lg"
-          onClick={handlePrev}
-        >
-          ❮
-        </button>
-        <button
-          className="absolute top-1/2 -translate-y-1/2 right-0 bg-white text-black p-2 rounded-full shadow-lg"
-          onClick={handleNext}
-        >
-          ❯
-        </button>
+        </Splide>
       </div>
       <div className="pt-[80px] pb-[44px] pl-6 pr-6 lg:pr-0">
         <div className="flex relative">

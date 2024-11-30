@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@fortawesome/free-solid-svg-icons": "^6.7.1",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "@splidejs/react-splide": "^0.7.12",
     "axios": "^1.7.7",
     "bottleneck": "^2.19.5",
     "lucide-react": "^0.460.0",
