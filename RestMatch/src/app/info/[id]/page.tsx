@@ -86,7 +86,7 @@ const Info = () => {
     <div className="px-2 md:mt-10 px-10">
       <div>
         <div className="flex">
-          <h1>Biblioteka resto•bar</h1>
+          <h1>{data?.name}</h1>
           <div className="bg-[#8A613599] size-8 rounded-full mt-6 p-1 ml-3 md:size-fit md:mt-4 md:ml-6 p-4">
             <img src={`${iconUrl}/bookmark.svg`} alt="bookmark" />
           </div>
