@@ -3,6 +3,7 @@ import "./globals.scss";
 import React from "react";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
+import HeaderM from "@/components/common/HeaderM";
 
 export default function RootLayout(
   {
