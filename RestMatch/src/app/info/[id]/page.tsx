@@ -6,9 +6,11 @@ import Stat from "@/components/info/Stat";
 import restaurantService from "@/services/restaurant.service";
 import {Restaurant} from "@/models/Restaurant";
 import {useParams} from "next/navigation";
+import {rateService} from "@/services/rate.service";
 
 const Info = () => {
   const [data, setData] = useState<Restaurant>();
+  const [reviews, setReviews] = useState([]);
 
   const params = useParams();
   const { id } = params as { id: string };
@@ -18,9 +20,15 @@ const Info = () => {
     setData(response.data);
   }, []);
 
+  const fetchReviews = useCallback(async (restaurantId: string) => {
+    const response = await rateService.getRates(restaurantId);
+    setReviews(response.data);
+  }, []);
+
   useEffect(() => {
     if (!id) return
     fetchRestaurant(id);
+    fetchReviews(id);
   }, [fetchRestaurant, id]);
 
   return (
@@ -53,23 +61,28 @@ const Info = () => {
         </span>
       </div>
       <div className='mt-11'>
-        <h1>Client`s review</h1>
-        <hr className='mb-7'/>
-        <div className='flex   gap-8'>
-          <div className='bg-[#5D462D] rounded-full py-6 px-5 shrink-0 h-fit'>
-            <img src={`${iconUrl}/cake.svg`} alt="cake"/>
-          </div>
-          <div className='flex flex-col gap-3'>
-            <span className='text-4xl font-medium'>Sweet Cake</span>
-            <img  className='w-fit' src={`${iconUrl}/hearts.svg`} alt="rating"/>
-            <span className='text-2xl'>
+        {reviews && reviews.map((review: any, index) => (
+          <div key={index} className='mb-10'>
+            <h1>Client`s review</h1>
+            <hr className='mb-7'/>
+            <div className='flex   gap-8'>
+              <div className='bg-[#5D462D] rounded-full py-6 px-5 shrink-0 h-fit'>
+                <img src={`${iconUrl}/cake.svg`} alt="cake"/>
+              </div>
+              <div className='flex flex-col gap-3'>
+                <span className='text-4xl font-medium'>Sweet Cake</span>
+                <img className='w-fit' src={`${iconUrl}/hearts.svg`} alt="rating"/>
+                <span className='text-2xl'>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi eget faucibus tortor. Vivamus blandit eros
               in enim mollis, vel lobortis neque eleifend. Sed a consectetur tellus, ut sodales nibh. Lorem ipsum dolor
               sit amet, consectetur adipiscing elit. Nullam ut nulla urna. Aliquam dolor nisl, convallis sit amet diam
               ut, tempor euismod massa. Etiam commodo placerat libero, ut placerat elit sagittis vel.
             </span>
+              </div>
+            </div>
           </div>
-        </div>
+        ))}
+
         <div className='flex justify-end mt-5 pr-16 mb-14'>
           <button className='bg-[#F0BB81] px-8 py-1 rounded-[20px] text-[32px] font-bold text-[#5D462D]'>
             Add new review

@@ -2,9 +2,9 @@ import {Rate} from "@/models/Rate";
 import ApiService from "@/services/api.service";
 import {HttpMethods} from "@/types/enum";
 
-const getRate = async (id: string) => {
+const getRates = async (restaurantId: string) => {
   return await ApiService.makeApiRequest({
-    url: `/api/rate/${id}`,
+    url: `/api/rate/${restaurantId}`,
     method: HttpMethods.GET,
   });
 }
@@ -22,7 +22,7 @@ const deleteRate = async (id: string) => {
 }
 
 export const rateService = {
-  getRate,
+  getRates,
   addRate,
   deleteRate
 }
