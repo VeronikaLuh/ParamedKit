@@ -12,6 +12,8 @@ import restaurantService from "@/services/restaurant.service";
 import {Restaurant} from "@/models/Restaurant";
 import {useSwipeable} from "react-swipeable";
 import {favouritesService} from "@/services/favourites.service";
+import {useRouter} from "next/navigation";
+import {Routes} from "@/types/routes";
 
 export default function Match() {
   return (
@@ -82,9 +84,20 @@ function Card() {
     await favouritesService.addFavourites(id);
   }
 
+  const router = useRouter();
+
+  const handleRouteGo = () => {
+    console.log('/dsadsa')
+    router.push(`${Routes.INFO}/${getRecommendation()?.id}`);
+  }
+
   return (
     <div
-      className={`flex flex-col w-4/5 justify-center text-white border-0 rounded-b-2xl bg-[#947654] rounded-t-3xl drop-shadow-2xl ${swipeDirection ? `swipe-${swipeDirection}` : ''}`}>
+      className={`flex flex-col w-4/5 justify-center text-white border-0 rounded-b-2xl bg-[#947654] rounded-t-3xl drop-shadow-2xl ${swipeDirection ? `swipe-${swipeDirection}` : ''} pb-6`}
+      style={{
+        boxShadow: swipeDirection === 'left' ? '0px 0px 100px rgba(255, 0, 0, 0.5)' : swipeDirection === 'right' ? '0px 0px 100px rgba(0, 255, 0, 0.5)' : '0px 0px 100px rgba(0, 0, 0, 0.2)'
+      }}
+    >
       <div
         className={`border-[5px] border-black rounded-3xl relative inline-block drop-shadow-2xl`}
         {...handlers}
@@ -100,8 +113,8 @@ function Card() {
         <div className="swiper absolute bottom-0 left-0 bg-opacity-50 bg-black rounded-2xl z-[100] w-[420px] h-[240px]">
           <div
             className="flex flex-col justify-center items-center w-full h-full text-[32px] leading-[42px] font-medium">
-            <span>Bibliotekа resto•Bar</span>
-            <span>Lviv • 150 ₴ • Italic</span>
+            <span>{getRecommendation()?.name}</span>
+            <span>{getRecommendation()?.city} • {getRecommendation()?.lowerPrice} ₴</span>
           </div>
         </div>
         <div
@@ -245,28 +258,35 @@ function Card() {
           {getRecommendation()?.aboutText}
         </div>
       </div>
-      <div className="pt-6 pl-8 pr-8 pb-10">
-        <h1 className="text-5xl ml-8 mb-4">Client&#39;s Review</h1>
-        <hr className="pb-7"/>
-        <div className="flex   gap-8">
-          <div className="bg-[#5D462D] rounded-full py-6 px-5 shrink-0 h-fit">
-            <img src={`${iconUrl}/cake.svg`} alt="cake"/>
-          </div>
-          <div className="flex flex-col gap-3">
-            <span className="text-4xl font-medium">Sweet Cake</span>
-            <img className="w-fit" src={`${iconUrl}/hearts.svg`} alt="rating"/>
-            <span className="text-2xl">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-              eget faucibus tortor. Vivamus blandit eros in enim mollis, vel
-              lobortis neque eleifend. Sed a consectetur tellus, ut sodales
-              nibh. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Nullam ut nulla urna. Aliquam dolor nisl, convallis sit amet diam
-              ut, tempor euismod massa. Etiam commodo placerat libero, ut
-              placerat elit sagittis vel.
-            </span>
-          </div>
-        </div>
+      <div className='px-8 mt-10'>
+        <button
+          onClick={handleRouteGo}
+          className="px-14 py-2 text-[25px] text-nowrap rounded-[30px] bg-[#CF914E] text-white font-bold">
+          View more
+        </button>
       </div>
+      {/*<div className="pt-6 pl-8 pr-8 pb-10">*/}
+      {/*  <h1 className="text-5xl ml-8 mb-4">Client&#39;s Review</h1>*/}
+      {/*  <hr className="pb-7"/>*/}
+      {/*  <div className="flex   gap-8">*/}
+      {/*    <div className="bg-[#5D462D] rounded-full py-6 px-5 shrink-0 h-fit">*/}
+      {/*      <img src={`${iconUrl}/cake.svg`} alt="cake"/>*/}
+      {/*    </div>*/}
+      {/*    <div className="flex flex-col gap-3">*/}
+      {/*      <span className="text-4xl font-medium">Sweet Cake</span>*/}
+      {/*      <img className="w-fit" src={`${iconUrl}/hearts.svg`} alt="rating"/>*/}
+      {/*      <span className="text-2xl">*/}
+      {/*        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi*/}
+      {/*        eget faucibus tortor. Vivamus blandit eros in enim mollis, vel*/}
+      {/*        lobortis neque eleifend. Sed a consectetur tellus, ut sodales*/}
+      {/*        nibh. Lorem ipsum dolor sit amet, consectetur adipiscing elit.*/}
+      {/*        Nullam ut nulla urna. Aliquam dolor nisl, convallis sit amet diam*/}
+      {/*        ut, tempor euismod massa. Etiam commodo placerat libero, ut*/}
+      {/*        placerat elit sagittis vel.*/}
+      {/*      </span>*/}
+      {/*    </div>*/}
+      {/*  </div>*/}
+      {/*</div>*/}
       <style jsx>{`
         .swiper {
           user-select: none;
@@ -277,12 +297,12 @@ function Card() {
         }
 
         .swipe-left {
-          transition: transform 0.3s ease-in-out;
+          transition: transform 0.5s ease-in-out;
           transform: translateX(-100%);
         }
 
         .swipe-right {
-          transition: transform 0.3s ease-in-out;
+          transition: transform 0.5s ease-in-out;
           transform: translateX(100%);
         }
       `}</style>
