@@ -5,7 +5,6 @@ import InfoItem from "@/components/InfoItem";
 import React, { useState } from "react";
 import { useSwipeable } from "react-swipeable";
 import { useRouter } from "next/navigation";
-import Carousel from "../components/homepage/Caurosel";
 import { Routes } from "@/types/routes";
 import "@splidejs/splide/css";
 // @ts-ignore
@@ -26,7 +25,7 @@ export default function Home() {
         "Quick way to choose where you must go today. Delicious and beautiful places await you",
       enableButton: true,
       buttonText: "Make choice",
-      url: Routes.PREFERENCES,
+      url: Routes.PREFERENCES
     },
     {
       title: "Like or pass",
@@ -34,7 +33,7 @@ export default function Home() {
         "Quick way to choose where you must go today. Delicious and beautiful places await you",
       enableButton: true,
       buttonText: "Let's match",
-      url: Routes.MATCH,
+      url: Routes.MATCH
     },
     {
       title: 'Don`t like swipe?',
@@ -134,8 +133,10 @@ export default function Home() {
               porro quidem ratione repudiandae ullam ut, vero, vitae? Animi
 
             </p>
-            
-            <button className='mt-[41px] bg-[#5D462D] py-2 px-9 rounded-[40px] font-bold text-[2rem] w-full md:w-fit'>My saved</button>
+
+            <button className="mt-[41px] bg-[#5D462D] py-2 px-9 rounded-[40px] font-bold text-[1.5rem] w-left md:w-fit text-[2rem]">
+              My saved
+            </button>
           </div>
           <div className='xl:flex-[1] hidden lg:flex justify-end '>
             <img

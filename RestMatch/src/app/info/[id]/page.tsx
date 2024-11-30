@@ -44,6 +44,17 @@ const Info = () => {
             <Stat icon='5' content={<img src={`${iconUrl}/hearts.svg`} alt="rating"/>}/>
           </div>
         </div>
+        <div className="columns-2 md:hidden">
+          <Stat icon="point" content={data?.address} />
+          <Stat icon="clock" content="10:00 — 22:00" />
+          <Stat
+            icon="coin"
+            content={`${data?.lowerPrice}-${data?.upperPrice} ₴`}
+          />
+          <Stat icon="cutlery" content="Italic food" />
+          <Stat icon="telephone" content={data?.phoneNumber} />
+          <Stat icon="menu" content="Menu" />
+        </div>
       </div>
       <div className='mt-11'>
         <h1>About</h1>
