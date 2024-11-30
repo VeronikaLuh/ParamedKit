@@ -13,31 +13,33 @@ import { Splide, SplideSlide } from "@splidejs/react-splide";
 export default function Home() {
   const data = [
     {
-      title: 'Register or login',
-      description: 'fvfkssvkpokvspkopv sflvsvofsvk mvsvsvmf mcs skcmkdmsk ckmmcdk kcsmkcsd j jdcjds mksmc',
+      title: "Register or login",
+      description:
+        "Sign up or log in to personalize your experience and start discovering the best restaurants tailored to your tastes!",
       enableButton: true,
       buttonText: "Register",
       url: Routes.SIGN_UP,
     },
     {
-      title: "Choose preferences",
+      title: "Set preferences",
       description:
-        "Quick way to choose where you must go today. Delicious and beautiful places await you",
+        "Set your preferences easily with our interactive selection to get restaurant recommendations that match your style!",
       enableButton: true,
       buttonText: "Make choice",
-      url: Routes.PREFERENCES
+      url: Routes.PREFERENCES,
     },
     {
       title: "Like or pass",
       description:
-        "Quick way to choose where you must go today. Delicious and beautiful places await you",
+        "Use our fun and interactive swipe feature to quickly choose your next dining spot based on smart recommendations!",
       enableButton: true,
       buttonText: "Let's match",
-      url: Routes.MATCH
+      url: Routes.MATCH,
     },
     {
-      title: 'Don`t like swipe?',
-      description: 'Quick way to choose where you must go today. Delicious and beautiful places await you',
+      title: "Don`t like swipe?",
+      description:
+        "Find your perfect restaurant by filtering results based on your specific needs and desires!",
       enableButton: true,
       buttonText: "Search",
       url: Routes.SEARCH,
@@ -144,12 +146,10 @@ export default function Home() {
               Want to see place that you liked earlier?
             </h2>
             <p className="leading-9 text-[1.6rem] md:text-[1.875rem]">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic,
-              itaque saepe? Ab aliquam dicta, dolores ea enim eveniet,
-              exercitationem facilis fugiat impedit iusto nesciunt quibusdam
-              quis rem sint ut vel. Alias asperiores assumenda aut blanditiis
-              consequatur consequuntur distinctio doloribus harum ipsa maxime,
-              porro quidem ratione repudiandae ullam ut, vero, vitae? Animi
+              Found a restaurant you love? Save it to your "My Saved Places" tab
+              with just a tap! This way, you can easily revisit your favorite
+              spots or explore them later at your convenience. Never worry about
+              forgetting the name of that perfect place again!
             </p>
 
             <button className="mt-[41px] bg-[#5D462D] py-2 px-9 rounded-[40px] font-bold text-[1.5rem] w-left md:w-fit text-[2rem]">
