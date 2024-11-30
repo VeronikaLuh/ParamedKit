@@ -2,6 +2,7 @@
 import "./globals.scss";
 import React from "react";
 import Header from "@/components/common/Header";
+import HeaderM from "@/components/common/HeaderM";
 import Footer from "@/components/common/Footer";
 import HeaderM from "@/components/common/HeaderM";
 
