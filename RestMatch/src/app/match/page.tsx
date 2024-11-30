@@ -65,7 +65,7 @@ function Card() {
       setCurrRecommendation((prev) => {
         return prev + 1;
       });
-    }, 300); // Duration of the animation
+    }, 370); // Duration of the animation
   }
 
   const handlers = useSwipeable({
